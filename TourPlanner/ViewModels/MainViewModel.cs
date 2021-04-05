@@ -13,9 +13,9 @@ namespace TourPlanner.ViewModels
 
         ITourItemFactory myFactory;
 
-       
 
         public ObservableCollection <Tour> Tours { get; set; }
+        //--------------------------------------------------------
 
         private string searchTour;
         public string SearchTour
@@ -35,8 +35,7 @@ namespace TourPlanner.ViewModels
             }
         }
 
-     
-
+        //--------------------------------------------------------
         private Tour currentTour;
         public Tour CurrentTour
         {
@@ -54,6 +53,24 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        private string searchOption;
+
+        public string SearchOption
+        {
+            get
+            {
+                return searchOption;
+            }
+            set
+            {
+                searchOption = value;
+                RaisePropertyChangedEvent(nameof(SearchOption));
+            }
+        }
+
+
+
+        //--------------------------------------------------------
         public MainViewModel()
         {
             Tours = new ObservableCollection<Tour>();

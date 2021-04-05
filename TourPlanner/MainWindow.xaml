@@ -21,6 +21,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="*"/>
 
                 </Grid.ColumnDefinitions>
@@ -29,7 +30,14 @@
                 <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton">Delete</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton">Copy</Button>
                 <TextBlock VerticalAlignment="Center" FontSize="20" Margin="5" Grid.Column="4" Text="Search:" ></TextBlock>
-                <TextBox  FontSize="20" Margin="5" Grid.Column="5" Name="SearchTour" Text="{Binding SearchTour, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                <ComboBox Grid.Column="5" FontSize="20" Margin="5" SelectedItem="{Binding SearchOption}">
+                    <ComboBoxItem>Name</ComboBoxItem>
+                    <ComboBoxItem>Start</ComboBoxItem>
+                    <ComboBoxItem>End</ComboBoxItem>
+                    <ComboBoxItem>Distance</ComboBoxItem>
+
+                </ComboBox>
+                <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="SearchTour" Text="{Binding SearchTour, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             </Grid>
 
             <Grid Grid.Row="2">

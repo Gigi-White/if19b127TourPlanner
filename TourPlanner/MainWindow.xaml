@@ -29,7 +29,7 @@
                 <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton">Delete</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton">Copy</Button>
                 <TextBlock VerticalAlignment="Center" FontSize="20" Margin="5" Grid.Column="4" Text="Search:" ></TextBlock>
-                <TextBox  FontSize="20" Margin="5" Grid.Column="5" Name="SearchTour" Text="{Binding SearchTrip, Mode=TwoWay}" ></TextBox>
+                <TextBox  FontSize="20" Margin="5" Grid.Column="5" Name="SearchTour" Text="{Binding SearchTour, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             </Grid>
 
             <Grid Grid.Row="2">

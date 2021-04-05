@@ -9,6 +9,6 @@ namespace TourPlanner.Models
         public string End { get; set; }
         public string CreationDate { get; set; }
         public int Distance { get; set; }
-        public string image { get; set; }
+        public string Image { get; set; }
     }
 }

@@ -30,7 +30,7 @@
                 <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton">Delete</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton">Copy</Button>
                 <TextBlock VerticalAlignment="Center" FontSize="20" Margin="5" Grid.Column="4" Text="Search:" ></TextBlock>
-                <ComboBox Grid.Column="5" FontSize="20" Margin="5" SelectedItem="{Binding SearchOption}">
+                <ComboBox Grid.Column="5" FontSize="20" Margin="5" SelectedItem="{Binding SearchOption, Mode=TwoWay}">
                     <ComboBoxItem>Name</ComboBoxItem>
                     <ComboBoxItem>Start</ComboBoxItem>
                     <ComboBoxItem>End</ComboBoxItem>

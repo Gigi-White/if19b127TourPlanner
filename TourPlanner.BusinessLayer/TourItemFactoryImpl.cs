@@ -1,19 +1,25 @@
 ﻿using Enums;
 using System;
 using System.Collections.Generic;
+using TourPlanner.DataAccessLayer;
 using TourPlanner.Models;
 
 namespace TourPlanner.BusinessLayer
 {
     internal class TourItemFactoryImpl : ITourItemFactory
-    {      
+    {
         private List<Tour> AllTours { get; set; }
-        
-        public IEnumerable<Tour> GetTours()
+
+        private IDatabaseConnection Databasehandler;
+
+        public TourItemFactoryImpl()
         {
-            if (AllTours == null)
-            {
-                AllTours = new List<Tour>
+
+            Databasehandler = DataConnectionFactory.GetInstance();
+            AllTours = Databasehandler.getTours();
+
+
+            /*AllTours = new List<Tour>
                 {
                     new Tour
                     {
@@ -34,7 +40,15 @@ namespace TourPlanner.BusinessLayer
 
 
                 };
-            }
+
+            */
+
+        }
+
+
+        public IEnumerable<Tour> GetTours()
+        {
+
             return AllTours;
         }
         //Toursuche nach bestimmten wert und Suchoption----------------------------------------------------

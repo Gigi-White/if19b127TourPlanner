@@ -10,7 +10,6 @@ namespace TourPlanner.ViewModels
     public class MainViewModel : ViewModelBase
     {
 
-
         ITourItemFactory myFactory;
 
 

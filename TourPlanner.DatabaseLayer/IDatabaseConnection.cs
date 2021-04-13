@@ -7,7 +7,7 @@ namespace TourPlanner.DataAccessLayer
 {
     public interface IDatabaseConnection
     {
-        IEnumerable<Tour> getTours();
+        List<Tour> getTours();
         bool saveTour(Tour newTour);
 
         bool changeTour(Tour changedTour);

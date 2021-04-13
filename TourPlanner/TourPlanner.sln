@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner", "TourPlanner.csproj", "{8CCF3123-E039-46EC-82D2-8C021729A8E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.Models", "..\TourPlanner.Models\TourPlanner.Models.csproj", "{B44C946D-3266-462D-9006-889B54569171}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.Models", "..\TourPlanner.Models\TourPlanner.Models.csproj", "{B44C946D-3266-462D-9006-889B54569171}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.BusinessLayer", "..\TourPlanner.BusinessLayer\TourPlanner.BusinessLayer.csproj", "{3BFDE0E5-5102-4D5C-A8C2-C0BCC74807E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enums", "..\Enums\Enums.csproj", "{AB1F8C21-F3E9-49EE-886D-2CD819CD827E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayerTests", "..\BusinessLayerTests\BusinessLayerTests.csproj", "{01A24FD6-7CAD-48DF-895C-7914A5E9173B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{B44C946D-3266-462D-9006-889B54569171}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B44C946D-3266-462D-9006-889B54569171}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B44C946D-3266-462D-9006-889B54569171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BFDE0E5-5102-4D5C-A8C2-C0BCC74807E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BFDE0E5-5102-4D5C-A8C2-C0BCC74807E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BFDE0E5-5102-4D5C-A8C2-C0BCC74807E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BFDE0E5-5102-4D5C-A8C2-C0BCC74807E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1F8C21-F3E9-49EE-886D-2CD819CD827E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1F8C21-F3E9-49EE-886D-2CD819CD827E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1F8C21-F3E9-49EE-886D-2CD819CD827E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1F8C21-F3E9-49EE-886D-2CD819CD827E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01A24FD6-7CAD-48DF-895C-7914A5E9173B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01A24FD6-7CAD-48DF-895C-7914A5E9173B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A24FD6-7CAD-48DF-895C-7914A5E9173B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01A24FD6-7CAD-48DF-895C-7914A5E9173B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

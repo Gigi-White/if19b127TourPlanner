@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Enums;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
+using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
 
 namespace TourPlanner.ViewModels
@@ -9,14 +11,33 @@ namespace TourPlanner.ViewModels
     {
 
 
-        
+        ITourItemFactory myFactory;
 
-        string searchTour;
 
         public ObservableCollection <Tour> Tours { get; set; }
+        public ObservableCollection<string> SearchOptionList { get; set; } 
+        //--------------------------------------------------------
 
+        private string searchTour;
+        public string SearchTour
+        {
+            get
+            {
+                return searchTour;
+            }
+            set
+            {
+                if (searchTour != value)
+                {
+                    searchTour = value;
+                    SearchTours();
+                    RaisePropertyChangedEvent(nameof(SearchTour));
+                }
+            }
+        }
+
+        //--------------------------------------------------------
         private Tour currentTour;
-
         public Tour CurrentTour
         {
             get
@@ -33,40 +54,74 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        private string searchOption;
+
+        public string SearchOption
+        {
+            get
+            {
+                return searchOption;
+            }
+            set
+            {
+                if (searchOption != value && value != null)
+                {
+
+                    searchOption = value;
+                    RaisePropertyChangedEvent(nameof(SearchOption));
+                }
+            }
+        }
+
+
+
+        //--------------------------------------------------------
         public MainViewModel()
         {
-            List<Tour> MyTours = new List<Tour>();
-
-            Tour eins = new Tour()
-            {
-                Name = "Gigi",
-                Start = "Wien",
-                End = "Berlin",
-                CreationDate = "26.04.2020",
-                Distance = 200,
-               
-            };
-
-            MyTours.Add(eins);
-
-
-            Tour zwei = new Tour()
-            {
-                Name = "Mike",
-                Start = "Hamburg",
-                End = "Berlin",
-                CreationDate = "25.04.2020",
-                Distance = 100,
-                
-            };
-
-            MyTours.Add(zwei);
-
+            SearchOptionList = new ObservableCollection<string>();
             Tours = new ObservableCollection<Tour>();
-            foreach (var item in MyTours)
-                Tours.Add(item);
+            FillCompleteTourList();
+            FillSearchOtionList();
 
-        }       
+        }
+
+        private void FillSearchOtionList()
+        {
+            SearchOptionList.Add("Name");
+            SearchOptionList.Add("Start");
+            SearchOptionList.Add("End");
+            SearchOptionList.Add("Distance");
+
+        }
+
+        private void FillCompleteTourList()
+        {
+            myFactory = TourItemFactory.GetInstance();
+            FillTourList(myFactory.GetTours());
+        }
+
+        private void FillTourList(IEnumerable<Tour> myTourList)
+        {
+            if (myTourList != null)
+            {
+                Tours.Clear();
+                foreach (var item in myTourList)
+                    Tours.Add(item);
+            }
+        }
+
+        private void SearchTours()
+        {
+            if(searchTour!=null && searchTour != "" && searchOption != null && searchOption != "")
+            {
+
+                FillTourList(myFactory.SearchTours(searchTour, searchOption));
+            }
+            else
+            {
+                FillCompleteTourList();
+            }
+        }
 
     }
 

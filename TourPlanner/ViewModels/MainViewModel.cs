@@ -15,6 +15,7 @@ namespace TourPlanner.ViewModels
 
 
         public ObservableCollection <Tour> Tours { get; set; }
+        public ObservableCollection<string> SearchOptionList { get; set; } 
         //--------------------------------------------------------
 
         private string searchTour;
@@ -63,8 +64,12 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                searchOption = value;
-                RaisePropertyChangedEvent(nameof(SearchOption));
+                if (searchOption != value && value != null)
+                {
+
+                    searchOption = value;
+                    RaisePropertyChangedEvent(nameof(SearchOption));
+                }
             }
         }
 
@@ -73,8 +78,19 @@ namespace TourPlanner.ViewModels
         //--------------------------------------------------------
         public MainViewModel()
         {
+            SearchOptionList = new ObservableCollection<string>();
             Tours = new ObservableCollection<Tour>();
             FillCompleteTourList();
+            FillSearchOtionList();
+
+        }
+
+        private void FillSearchOtionList()
+        {
+            SearchOptionList.Add("Name");
+            SearchOptionList.Add("Start");
+            SearchOptionList.Add("End");
+            SearchOptionList.Add("Distance");
 
         }
 
@@ -86,17 +102,20 @@ namespace TourPlanner.ViewModels
 
         private void FillTourList(IEnumerable<Tour> myTourList)
         {
-            Tours.Clear();
-            foreach (var item in myTourList)
-                Tours.Add(item);
+            if (myTourList != null)
+            {
+                Tours.Clear();
+                foreach (var item in myTourList)
+                    Tours.Add(item);
+            }
         }
 
         private void SearchTours()
         {
-            if(searchTour!=null && searchTour != "")
+            if(searchTour!=null && searchTour != "" && searchOption != null && searchOption != "")
             {
 
-                FillTourList(myFactory.SearchTours(searchTour, TourData.Name));
+                FillTourList(myFactory.SearchTours(searchTour, searchOption));
             }
             else
             {

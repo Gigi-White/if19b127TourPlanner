@@ -10,6 +10,7 @@ namespace TourPlanner.BusinessLayer
     {
         IEnumerable<Tour> GetTours();
 
-        IEnumerable<Tour> SearchTours(string word, TourData searchOption);
+        IEnumerable<Tour> SearchTours(string word, string searchOption);
+
     }
 }

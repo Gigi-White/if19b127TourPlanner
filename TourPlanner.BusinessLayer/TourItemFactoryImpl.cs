@@ -11,37 +11,29 @@ namespace TourPlanner.BusinessLayer
         private List<Tour> AllTours { get; set; }
 
         private IDatabaseConnection Databasehandler;
+        private IHttpConnection HttpRequestHandler;
 
         public TourItemFactoryImpl()
         {
 
             Databasehandler = DataConnectionFactory.GetdatabaseInstance();
+            HttpRequestHandler = DataConnectionFactory.GethttpInstance();
             AllTours = Databasehandler.getTours();
+            
+            
+            //Testbereich für Http Request------------------------
+            TourSearch Test = new TourSearch
+            {
+
+                fromCity = "Vienna",
+                fromCountry = "Austria",
+                toCity = "Graz",
+                toCountry = "Austria"
+            };
+            string request = HttpRequestHandler.getJsonResponse(Test);
 
 
-            /*AllTours = new List<Tour>
-                {
-                    new Tour
-                    {
-                        Name = "Gigi",
-                        Start = "Wien",
-                        End = "Berlin",
-                        CreationDate = "26.04.2020",
-                        Distance = 200
-                    },
-                    new Tour
-                    {
-                        Name = "Mike",
-                        Start = "Frankfurt",
-                        End = "Berlin",
-                        CreationDate = "27.04.2020",
-                        Distance = 100
-                    },
 
-
-                };
-
-            */
 
         }
 

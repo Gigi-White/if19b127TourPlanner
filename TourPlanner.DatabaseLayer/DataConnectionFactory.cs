@@ -17,6 +17,14 @@ namespace TourPlanner.DataAccessLayer
             }
             return databaseinstance;
         }
+        public static IHttpConnection GethttpInstance()
+        {
+            if (httpinstance == null)
+            {
+                httpinstance = new HttpConnection();
+            }
+            return httpinstance;
+        }
 
     }
 }

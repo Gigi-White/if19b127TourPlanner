@@ -1,6 +1,4 @@
-﻿using Enums;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
@@ -10,7 +8,7 @@ namespace TourPlanner.ViewModels
     public class MainViewModel : ViewModelBase
     {
 
-        ITourItemFactory myFactory;
+        ITourItemFactory TourWorker;
 
 
         public ObservableCollection <Tour> Tours { get; set; }
@@ -95,8 +93,8 @@ namespace TourPlanner.ViewModels
 
         private void FillCompleteTourList()
         {
-            myFactory = TourItemFactory.GetInstance();
-            FillTourList(myFactory.GetTours());
+            TourWorker = TourItemFactory.GetInstance();
+            FillTourList(TourWorker.GetTours());
         }
 
         private void FillTourList(IEnumerable<Tour> myTourList)
@@ -114,7 +112,7 @@ namespace TourPlanner.ViewModels
             if(searchTour!=null && searchTour != "" && searchOption != null && searchOption != "")
             {
 
-                FillTourList(myFactory.SearchTours(searchTour, searchOption));
+                FillTourList(TourWorker.SearchTours(searchTour, searchOption));
             }
             else
             {

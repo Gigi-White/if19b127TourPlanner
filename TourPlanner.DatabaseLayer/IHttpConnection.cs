@@ -2,7 +2,7 @@
 
 namespace TourPlanner.DataAccessLayer
 {
-    interface IHttpConnection
+    public interface IHttpConnection
     {
         string getJsonResponse(TourSearch searchData); 
 

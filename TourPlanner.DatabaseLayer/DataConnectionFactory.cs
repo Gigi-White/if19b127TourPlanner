@@ -6,15 +6,16 @@ namespace TourPlanner.DataAccessLayer
 {
     public class DataConnectionFactory
     {
-        private static IDatabaseConnection instance;
+        private static IDatabaseConnection databaseinstance;
+        private static IHttpConnection httpinstance;
 
-        public static IDatabaseConnection GetInstance()
+        public static IDatabaseConnection GetdatabaseInstance()
         {
-            if (instance == null)
+            if (databaseinstance == null)
             {
-                instance = new DatabaseConnection();
+                databaseinstance = new DatabaseConnection();
             }
-            return instance;
+            return databaseinstance;
         }
 
     }

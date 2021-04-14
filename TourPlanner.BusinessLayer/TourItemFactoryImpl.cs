@@ -15,7 +15,7 @@ namespace TourPlanner.BusinessLayer
         public TourItemFactoryImpl()
         {
 
-            Databasehandler = DataConnectionFactory.GetInstance();
+            Databasehandler = DataConnectionFactory.GetdatabaseInstance();
             AllTours = Databasehandler.getTours();
 
 

@@ -19,15 +19,15 @@ namespace TourPlanner.DataAccessLayer
         }
 
 
-        public string getJsonResponse(TourSearch searchData)
+        public string GetJsonResponse(TourSearch searchData)
         {
-            string completeRequest = buildRequest(searchData);
+            string completeRequest = BuildRequest(searchData);
 
-            getMapquestData(completeRequest);
+            GetMapquestData(completeRequest);
             return (responseFromServer);
         }
 
-        private void getMapquestData(string completeRequest)
+        private void GetMapquestData(string completeRequest)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace TourPlanner.DataAccessLayer
             }
         }
 
-        private string buildRequest(TourSearch searchData)
+        private string BuildRequest(TourSearch searchData)
         {
             string completeRequest = urlResource + "&from=" + searchData.fromCity + "," + searchData.fromCountry + 
                                 "&to=" + searchData.toCity + "," + searchData.toCountry;

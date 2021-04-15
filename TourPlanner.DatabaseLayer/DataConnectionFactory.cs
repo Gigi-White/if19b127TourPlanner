@@ -8,8 +8,9 @@ namespace TourPlanner.DataAccessLayer
     {
         private static IDatabaseConnection databaseinstance;
         private static IHttpConnection httpinstance;
+        private ImageHandler myImageHandle;
 
-        public static IDatabaseConnection GetdatabaseInstance()
+        public static IDatabaseConnection GetDatabaseInstance()
         {
             if (databaseinstance == null)
             {
@@ -17,7 +18,7 @@ namespace TourPlanner.DataAccessLayer
             }
             return databaseinstance;
         }
-        public static IHttpConnection GethttpInstance()
+        public static IHttpConnection GetHttpInstance()
         {
             if (httpinstance == null)
             {

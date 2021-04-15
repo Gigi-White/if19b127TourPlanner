@@ -9,30 +9,35 @@ namespace TourPlanner.BusinessLayer
     internal class TourItemFactoryImpl : ITourItemFactory
     {
         private List<Tour> AllTours { get; set; }
+        private List<RawRouteInfo> NewRouteInfo { get; set; }
 
         private IDatabaseConnection Databasehandler;
         private IHttpConnection HttpRequestHandler;
+        private HttpResponseHandler ResponseHandler;
 
         public TourItemFactoryImpl()
         {
 
-            Databasehandler = DataConnectionFactory.GetdatabaseInstance();
-            HttpRequestHandler = DataConnectionFactory.GethttpInstance();
-            AllTours = Databasehandler.getTours();
-            
-            
+            Databasehandler = DataConnectionFactory.GetDatabaseInstance();
+            HttpRequestHandler = DataConnectionFactory.GetHttpInstance();
+            AllTours = Databasehandler.GetTours();
+
+
+            ResponseHandler = new HttpResponseHandler();
+
+
             //Testbereich für Http Request------------------------
             TourSearch Test = new TourSearch
             {
-
+                newTourName="TestTour",
                 fromCity = "Vienna",
                 fromCountry = "Austria",
                 toCity = "Graz",
                 toCountry = "Austria"
             };
-            string request = HttpRequestHandler.getJsonResponse(Test);
+            string request = HttpRequestHandler.GetJsonResponse(Test);
 
-
+            NewRouteInfo = ResponseHandler.GrabRouteData(Test.newTourName, request);
 
 
         }

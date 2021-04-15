@@ -21,7 +21,7 @@ namespace TourPlanner.DataAccessLayer
         }
 
 
-        public List<Tour> getTours()
+        public List<Tour> GetTours()
         {
             try
             {
@@ -58,15 +58,22 @@ namespace TourPlanner.DataAccessLayer
             }
         }
 
-        public bool saveTour(Tour newTour)
+        public bool SaveTour(Tour newTour)
         {
             throw new NotImplementedException();
         }
 
-        public bool changeTour(Tour changedTour)
+        public bool ChangeTour(Tour changedTour)
         {
             throw new NotImplementedException();
         }
+
+        public bool SaveTourRouteData(List<RawRouteInfo> RouteInfo)
+        {
+           
+
+            return true;
+        } 
 
     }
 }

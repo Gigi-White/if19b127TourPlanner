@@ -10,22 +10,15 @@ namespace TourPlanner.BusinessLayer
 
         private JObject jsonData;
 
-
-        public List<RawRouteInfo> GrabRouteData(string newtourName, string jsonstring)
+        public HttpResponseHandler(string jsonstring)
         {
-           /*
-            if (routeInfoList != null)
-            {
-                routeInfoList.Clear();
-            }
-            if(jsonData!= null)
-            {
-                jsonData.RemoveAll();
-            }
-           */
-            routeInfoList = new List<RawRouteInfo>();
             jsonData = JObject.Parse(jsonstring);
+        }
 
+        public List<RawRouteInfo> GrabRouteData(string newtourName)
+        {
+          
+            routeInfoList = new List<RawRouteInfo>();
             fillList(newtourName);
 
             return routeInfoList;
@@ -49,6 +42,13 @@ namespace TourPlanner.BusinessLayer
                 );
 
             }
+        }
+
+        public MainMapSearchData GrabMainMapData()
+        {
+            MainMapSearchData searchData = new MainMapSearchData();
+
+            return searchData;
         }
 
     }

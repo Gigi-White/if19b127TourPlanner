@@ -32,27 +32,17 @@ namespace TourPlanner.DataAccessLayer
             try
             {
                 WebRequest request = WebRequest.Create(completeRequest);
-                // If required by the server, set the credentials.
-
-                // Get the response.
                 WebResponse response = request.GetResponse();
-                // Display the status.
                 Console.WriteLine(((HttpWebResponse)response).StatusDescription);
 
-                // Get the stream containing content returned by the server.
-                // The using block ensures the stream is automatically closed.
+
                 using (Stream dataStream = response.GetResponseStream())
                 {
-                    // Open the stream using a StreamReader for easy access.
-                    StreamReader reader = new StreamReader(dataStream);
-                    // Read the content.
+                    StreamReader reader = new StreamReader(dataStream);         
                     responseFromServer = reader.ReadToEnd();
-                    // Display the content.
-                    Console.WriteLine(responseFromServer);
+                   
                 }
 
-
-                // Close the response.
                 response.Close();
             }
             catch (Exception)

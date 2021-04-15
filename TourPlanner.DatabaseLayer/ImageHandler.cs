@@ -10,17 +10,18 @@ namespace TourPlanner.DataAccessLayer
     public class ImageHandler
     {
 
-        public  List<RawRouteInfo> downloadImages(List<RawRouteInfo> RouteInfo)
+        public  List<RawRouteInfo> DownloadSaveImages(List<RawRouteInfo> RouteInfo)
         {
             
             string folderpath= ConfigurationManager.AppSettings["ImageFolderDirectory"].ToString();
             System.IO.Directory.CreateDirectory(folderpath);
             string newTourFolder = folderpath + "\\" + RouteInfo[0].tourName;
+            System.IO.Directory.CreateDirectory(newTourFolder);
             foreach (RawRouteInfo Route in RouteInfo)
             {
                 if (Route.mapurl != "")
                 {
-                    string imagePath = newTourFolder + "\\" + Route.tourName + Route.maneuverNumber.ToString() + "image.png";
+                    string imagePath = newTourFolder + "\\" +  Route.maneuverNumber.ToString() + "maneuver.png";
                     using (WebClient webClient = new WebClient())
                     {
                         webClient.DownloadFile(Route.mapurl, imagePath);
@@ -33,7 +34,7 @@ namespace TourPlanner.DataAccessLayer
         }
 
 
-        public void deleteFolder()
+        public void DeleteFolder()
         {
 
         }

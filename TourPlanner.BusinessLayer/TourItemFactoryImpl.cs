@@ -13,7 +13,6 @@ namespace TourPlanner.BusinessLayer
 
         private IDatabaseConnection Databasehandler;
         private IHttpConnection HttpRequestHandler;
-        private HttpResponseHandler ResponseHandler;
 
         public TourItemFactoryImpl()
         {
@@ -21,9 +20,6 @@ namespace TourPlanner.BusinessLayer
             Databasehandler = DataConnectionFactory.GetDatabaseInstance();
             HttpRequestHandler = DataConnectionFactory.GetHttpInstance();
             AllTours = Databasehandler.GetTours();
-
-
-            ResponseHandler = new HttpResponseHandler();
 
 
             //Testbereich für Http Request------------------------
@@ -35,10 +31,17 @@ namespace TourPlanner.BusinessLayer
                 toCity = "Graz",
                 toCountry = "Austria"
             };
+
+            
             string request = HttpRequestHandler.GetJsonResponse(Test);
+            HttpResponseHandler ResponseHandler = new HttpResponseHandler(request);
 
-            NewRouteInfo = ResponseHandler.GrabRouteData(Test.newTourName, request);
+            NewRouteInfo = ResponseHandler.GrabRouteData(Test.newTourName);
 
+            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData();
+
+            Databasehandler.SaveTourRouteData(NewRouteInfo);
+            
 
         }
 
@@ -48,7 +51,7 @@ namespace TourPlanner.BusinessLayer
 
             return AllTours;
         }
-        //Toursuche nach bestimmten wert und Suchoption----------------------------------------------------
+        //Search Tours after certen value and searchOtion----------------------------------------------------
         public IEnumerable<Tour> SearchTours(string word, string searchOption)
         {
             List<Tour> foundTours = new List<Tour>();
@@ -111,8 +114,6 @@ namespace TourPlanner.BusinessLayer
                         foundTours.Add(item);
                     }
                 }
-
-
                 return foundTours;
             }
             catch (Exception)

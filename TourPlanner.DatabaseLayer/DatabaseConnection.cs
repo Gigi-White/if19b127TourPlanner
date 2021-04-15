@@ -9,18 +9,21 @@ namespace TourPlanner.DataAccessLayer
     internal class DatabaseConnection : IDatabaseConnection
     {
         private string accessData { get; set; }
+        private ImageHandler myImageHandler;
 
 
         public DatabaseConnection()
         {
             accessData = ConfigurationManager.AppSettings["DatabaseAccess"].ToString();
+            myImageHandler = new ImageHandler();
+
         }
          ~DatabaseConnection()
         {
             // Your code
         }
 
-
+        //Get all Tours form Database---------------------------------------------------------
         public List<Tour> GetTours()
         {
             try
@@ -57,23 +60,33 @@ namespace TourPlanner.DataAccessLayer
                 return null;
             }
         }
-
+        //Save new Tour in Database----------------------------------------------------------------
         public bool SaveTour(Tour newTour)
         {
             throw new NotImplementedException();
         }
+
+
+        // Save Route Data in Database and Folder------------------------------------------------
+        public bool SaveTourRouteData(List<RawRouteInfo> RouteInfo)
+        {
+
+            List<RawRouteInfo> CompleteRouteInfo = myImageHandler.DownloadSaveImages(RouteInfo);
+
+
+
+            return true;
+        }
+
+
+
 
         public bool ChangeTour(Tour changedTour)
         {
             throw new NotImplementedException();
         }
 
-        public bool SaveTourRouteData(List<RawRouteInfo> RouteInfo)
-        {
-           
-
-            return true;
-        } 
+ 
 
     }
 }

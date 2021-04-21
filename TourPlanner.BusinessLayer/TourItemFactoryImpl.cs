@@ -11,21 +11,17 @@ namespace TourPlanner.BusinessLayer
         private List<Tour> AllTours { get; set; }
         private List<RawRouteInfo> NewRouteInfo { get; set; }
 
-        private IDatabaseConnection Databasehandler;
-        private IHttpConnection HttpRequestHandler;
 
         public TourItemFactoryImpl()
         {
 
-            Databasehandler = DataConnectionFactory.GetDatabaseInstance();
-            HttpRequestHandler = DataConnectionFactory.GetHttpInstance();
-            AllTours = Databasehandler.GetTours();
+            AllTours = DataConnectionFactory.GetDatabaseToursInstance().GetTours();
 
 
             //Testbereich für Http Request------------------------
             TourSearch Test = new TourSearch
             {
-                newTourName="TestTour",
+                newTourName = "TestTour",
                 fromCity = "Vienna",
                 fromCountry = "Austria",
                 toCity = "Graz",
@@ -33,15 +29,33 @@ namespace TourPlanner.BusinessLayer
             };
 
             
-            string request = HttpRequestHandler.GetJsonResponse(Test);
+            string request = DataConnectionFactory.GetHttpInstance().GetJsonResponse(Test);  //send "get" request and get json response
             HttpResponseHandler ResponseHandler = new HttpResponseHandler(request);
 
-            NewRouteInfo = ResponseHandler.GrabRouteData(Test.newTourName);
+            NewRouteInfo = ResponseHandler.GrabRouteData(Test.newTourName);  //getroute info out of json response
 
-            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData();
+            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
 
-            Databasehandler.SaveTourRouteData(NewRouteInfo);
-            
+
+            string imagepath = DataConnectionFactory.GetFileHandlerInstance().DownloadSaveImage(mainMap, Test.newTourName); //download and save image
+
+
+            //fill the new created tour with data
+
+            Tour newTour = ResponseHandler.GrabMainTimeAndDistance();
+            newTour.Name = Test.newTourName;
+            newTour.Start = Test.fromCity;
+            newTour.End = Test.toCity;
+            newTour.CreationDate = DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
+            newTour.Imagefile = imagepath;
+
+            //save tour in database
+
+            DataConnectionFactory.GetDatabaseToursInstance().SaveTours(newTour);
+
+            //DataConnectionFactory.GetDatabaseToursInstance().SaveTourRouteData(NewRouteInfo);
+            //Databasehandler.SaveTourRouteData(NewRouteInfo);
+
 
         }
 

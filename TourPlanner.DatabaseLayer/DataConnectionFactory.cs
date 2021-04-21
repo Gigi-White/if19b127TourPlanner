@@ -1,31 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using Npgsql;
+using System.Configuration;
+using TourPlanner.DataAccessLayer.SQLDatabase;
 
 namespace TourPlanner.DataAccessLayer
 {
     public class DataConnectionFactory
     {
-        private static IDatabaseConnection databaseinstance;
-        private static IHttpConnection httpinstance;
-        private ImageHandler myImageHandle;
+        private static IDatabaseTourOrders databaseTourOrdersInstance;
+        private static IHttpConnection httpConnectionInstance;
+        //private ImageHandler imageHandleInstance;
+        private static IDatabaseConnection databaseConnectionInstance;
+        private static IFileHandler fileHandlerInstance;
+        private static NpgsqlConnection con;
 
-        public static IDatabaseConnection GetDatabaseInstance()
+
+        public static IDatabaseTourOrders GetDatabaseToursInstance()
         {
-            if (databaseinstance == null)
+            if (databaseTourOrdersInstance == null)
             {
-                databaseinstance = new DatabaseConnection();
+                databaseTourOrdersInstance = new DatabaseTourOrders();
             }
-            return databaseinstance;
+            return databaseTourOrdersInstance;
         }
         public static IHttpConnection GetHttpInstance()
         {
-            if (httpinstance == null)
+            if (httpConnectionInstance == null)
             {
-                httpinstance = new HttpConnection();
+                httpConnectionInstance = new HttpConnection();
             }
-            return httpinstance;
+            return httpConnectionInstance;
         }
+        public static IDatabaseConnection GetDatabaseConnectionInstance()
+        {
+            if (databaseConnectionInstance == null)
+            {
+                databaseConnectionInstance = new DatabaseConnection();
+            }
+            return databaseConnectionInstance;
+        }
+
+        public static IFileHandler GetFileHandlerInstance()
+        {
+            if (fileHandlerInstance == null)
+            {
+                fileHandlerInstance = new FileHandler();
+            }
+            return fileHandlerInstance;
+        }
+
+
+        public static NpgsqlConnection GetCon()
+        {
+            if (con == null)
+            {
+                string accessData = ConfigurationManager.AppSettings["DatabaseAccess"].ToString();
+                con = new NpgsqlConnection(accessData);
+            }
+            return con;
+        }
+
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.IO;
+using System;
 using TourPlanner.Models;
 namespace TourPlanner.BusinessLayer
 {
@@ -34,7 +34,6 @@ namespace TourPlanner.BusinessLayer
                         tourName = newtourName,
                         maneuverNumber = int.Parse(maneuver["index"].ToString()),
                         narrative = maneuver["narrative"].ToString(),
-                        mapurl = (maneuver["mapUrl"]!= null) ? maneuver["mapUrl"].ToString() : "",
                         distance = float.Parse(maneuver["distance"].ToString()),
                         formattedTime = maneuver["formattedTime"].ToString()
                     }
@@ -48,8 +47,34 @@ namespace TourPlanner.BusinessLayer
         {
             MainMapSearchData searchData = new MainMapSearchData();
 
+            searchData.sessionId = jsonData["route"]["sessionId"].ToString();
+
+            searchData.boundingBox = new List<string>() ;
+            searchData.boundingBox.Add(jsonData["route"]["boundingBox"]["ul"]["lat"].ToString());
+            searchData.boundingBox.Add(jsonData["route"]["boundingBox"]["ul"]["lng"].ToString());
+            searchData.boundingBox.Add(jsonData["route"]["boundingBox"]["lr"]["lat"].ToString());
+            searchData.boundingBox.Add(jsonData["route"]["boundingBox"]["lr"]["lng"].ToString());
+
+            for (int i=0;i < searchData.boundingBox.Count; i++)
+            {
+                searchData.boundingBox[i] = searchData.boundingBox[i].Replace(",", ".");
+            }
+
             return searchData;
+
         }
 
+
+        public Tour GrabMainTimeAndDistance()
+        {
+            Tour newTour = new Tour();
+            newTour.FormattedTime = jsonData["route"]["legs"][0]["formattedTime"].ToString();
+            newTour.Distance = float.Parse(jsonData["route"]["distance"].ToString());
+
+            return newTour;
+
+
+        }
+        
     }
 }

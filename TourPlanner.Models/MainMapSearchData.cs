@@ -6,8 +6,8 @@ namespace TourPlanner.Models
 {
     public class MainMapSearchData
     {
-        string sessionId { get; set; }
-        List<string> boundingBox { get; set; }
+        public string sessionId { get; set; }
+        public List<string> boundingBox { get; set; }
 
     }
 }

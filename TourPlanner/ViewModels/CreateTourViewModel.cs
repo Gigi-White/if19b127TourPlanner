@@ -148,13 +148,14 @@ namespace TourPlanner.ViewModels
         private ICommand createNewTourCommand;
 
         public ICommand CreateNewTourCommand => createNewTourCommand ??= new RelayCommand(CreateNewTour);
+       
         private void CreateNewTour(object commandParameter)
         {
             if(tourName == "" || startCity =="" || startCountry == "" || endCity == "" || endCountry == "")
             {
                 ErrorMessage = "Please fill out all fields!!!";
             }
-            /*else
+            else
             {
                 TourSearch newTour = new TourSearch
                 {
@@ -168,10 +169,15 @@ namespace TourPlanner.ViewModels
                 {
                     SuccessMessage = "Tour was successfully created";
                 }
+                else 
+                {
+                    ErrorMessage = "A error emerged";
+                }
 
             }
-            */
+            
         }
+
         private void CleanMessages()
         {
             SuccessMessage = null;

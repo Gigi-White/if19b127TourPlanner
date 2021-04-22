@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:TourPlanner.ViewModels" d:DataContext="{d:DesignInstance Type = ViewModels:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="900">
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
@@ -140,6 +140,14 @@
 
 
                     </Grid>
+                    <Grid Grid.Row="2">
+                        <Image   Source="{Binding CurrentTourImage}" HorizontalAlignment="Left" 
+                        Margin="5" Name="TourImage" Stretch="Fill" VerticalAlignment="Bottom" 
+                            />
+                        
+                    </Grid>
+                    
+                    
 
                     <!-- <Image Grid.Row="2" Source="{Binding CurrentTrip.Img}"></Image>   -->
 

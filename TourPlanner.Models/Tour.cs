@@ -8,7 +8,8 @@ namespace TourPlanner.Models
         public string Start { get; set; }
         public string End { get; set; }
         public string CreationDate { get; set; }
-        public int Distance { get; set; }
-        public string Image { get; set; }
+        public float Distance { get; set; }
+        public string FormattedTime { get; set; }
+        public string Imagefile { get; set; }
     }
 }

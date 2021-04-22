@@ -93,7 +93,7 @@ namespace TourPlanner.ViewModels
 
         private void FillCompleteTourList()
         {
-            TourWorker = TourItemFactory.GetInstance();
+            TourWorker = TourItemFactory.GetMainViewInstance();
             FillTourList(TourWorker.GetTours());
         }
 

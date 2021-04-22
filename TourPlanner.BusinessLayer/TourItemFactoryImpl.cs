@@ -19,6 +19,7 @@ namespace TourPlanner.BusinessLayer
 
 
             //Testbereich für Http Request------------------------
+           /*
             TourSearch Test = new TourSearch
             {
                 newTourName = "TestTour",
@@ -56,7 +57,7 @@ namespace TourPlanner.BusinessLayer
             //DataConnectionFactory.GetDatabaseToursInstance().SaveTourRouteData(NewRouteInfo);
             //Databasehandler.SaveTourRouteData(NewRouteInfo);
 
-
+            */
         }
 
 
@@ -69,7 +70,6 @@ namespace TourPlanner.BusinessLayer
         public IEnumerable<Tour> SearchTours(string word, string searchOption)
         {
             List<Tour> foundTours = new List<Tour>();
-
 
             switch(searchOption)
             {
@@ -136,6 +136,34 @@ namespace TourPlanner.BusinessLayer
             }
 
            
+        }
+
+        public bool CreateTours(TourSearch newTourData)
+        {
+
+
+            string request = DataConnectionFactory.GetHttpInstance().GetJsonResponse(newTourData);  //send "get" request and get json response
+            HttpResponseHandler ResponseHandler = new HttpResponseHandler(request);
+
+            NewRouteInfo = ResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
+
+            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
+
+            string imagepath = DataConnectionFactory.GetFileHandlerInstance().DownloadSaveImage(mainMap, newTourData.newTourName); //download and save image
+
+            //fill the new created tour with data
+            Tour newTour = ResponseHandler.GrabMainTimeAndDistance();
+            newTour.Name = newTourData.newTourName;
+            newTour.Start = newTourData.fromCity;
+            newTour.End = newTourData.toCity;
+            newTour.CreationDate = DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
+            newTour.Imagefile = imagepath;
+
+            //save tour in database
+
+            DataConnectionFactory.GetDatabaseToursInstance().SaveTours(newTour);
+
+            return true;
         }
     }
 }

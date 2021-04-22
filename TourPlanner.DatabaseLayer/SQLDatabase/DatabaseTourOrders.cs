@@ -48,9 +48,11 @@ namespace TourPlanner.DataAccessLayer
                 {
                     Name = rdr.GetString(1),
                     Start = rdr.GetString(2),
-                    End = rdr.GetString(3),
-                    CreationDate = rdr.GetDate(5).ToString(),
-                    Distance = rdr.GetInt32(4)
+                    End = rdr.GetString(3),                    
+                    Distance = rdr.GetInt32(4),
+                    Imagefile = rdr.GetString(5),
+                    CreationDate = rdr.GetString(6)
+                    
                 }
                 );
             }

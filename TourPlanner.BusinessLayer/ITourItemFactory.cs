@@ -12,5 +12,7 @@ namespace TourPlanner.BusinessLayer
 
         IEnumerable<Tour> SearchTours(string word, string searchOption);
 
+        bool CreateTours(TourSearch newTourData);
+
     }
 }

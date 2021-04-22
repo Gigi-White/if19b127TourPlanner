@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="*"/>
 
                 </Grid.ColumnDefinitions>
-                <Button FontSize="20" Margin="5" Grid.Column="0" Name="CreateButton">Create</Button>
+                <Button FontSize="20" Margin="5" Grid.Column="0" Name="CreateButton" Click="CreateButton_Click">Create</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="1" Name="ModifyButton">Modify</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton">Delete</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton">Copy</Button>

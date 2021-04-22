@@ -6,7 +6,7 @@ namespace TourPlanner.BusinessLayer
     {
         private static ITourItemFactory instance;
 
-        public static ITourItemFactory GetInstance()
+        public static ITourItemFactory GetMainViewInstance()
         {
             if (instance == null)
             {

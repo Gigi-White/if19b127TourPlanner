@@ -12,6 +12,10 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         bool SaveTours(Tour newTour);
 
+        bool ChangeTour(Tour changedTour);
+        bool CopyTour(string tourName);
+        bool DeleteTour(string tourName);
+
 
     }
 }

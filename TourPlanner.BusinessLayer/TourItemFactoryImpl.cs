@@ -14,12 +14,24 @@ namespace TourPlanner.BusinessLayer
 
         private Regex whitelist;
         private List<Tour> AllTours { get; set; }
-        private List<RawRouteInfo> NewRouteInfo { get; set; }
+        private List<RawRouteInfo> CurrentRouteInfo { get; set; }
         private  IDatabaseTourOrders mydatabaseTourOrders;
+        private IDatabaseRouteOrders mydatabaseRouteOrders;
         private IHttpConnection myHttpConnection;
         private IFileHandler myFileHandler;
         private IHttpResponseHandler myResponseHandler;
 
+        public TourItemFactoryImpl()
+        {
+            mydatabaseTourOrders =DataConnectionFactory.GetDatabaseToursInstance();
+            mydatabaseRouteOrders = DataConnectionFactory.GetDatabaseRouteInstance();
+            myHttpConnection = DataConnectionFactory.GetHttpInstance();
+            myFileHandler = DataConnectionFactory.GetFileHandlerInstance();
+            myResponseHandler = new HttpResponseHandler();
+            AllTours = mydatabaseTourOrders.GetTours();
+            whitelist =new Regex (ConfigurationManager.AppSettings["Whitelist"].ToString());
+
+        }
         public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
         {
             mydatabaseTourOrders = databaseTourOrders;
@@ -27,7 +39,7 @@ namespace TourPlanner.BusinessLayer
             myFileHandler = filehandler;
             myResponseHandler = responseHandler;
             AllTours = mydatabaseTourOrders.GetTours();
-            whitelist = new Regex (thewhitelist);
+            whitelist = new Regex(thewhitelist);
 
         }
 
@@ -133,22 +145,19 @@ namespace TourPlanner.BusinessLayer
 
             string request = myHttpConnection.GetJsonResponse(newTourData);  //send "get" request and get json response
             myResponseHandler.SetJObject(request);
-
-            NewRouteInfo = myResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
+            List<RawRouteInfo> NewRouteInfoList = new List<RawRouteInfo>();
+            NewRouteInfoList = myResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
 
             Tour newTour = FillNewTour(newTourData);
             
             //save tour in database
             mydatabaseTourOrders.SaveTours(newTour);
+            mydatabaseRouteOrders.SaveRouteInfo(NewRouteInfoList);
 
             AllTours.Add(newTour);
             OnUpdateTourList();
             return true;
         }
-
-
-
-
 
 
 
@@ -164,11 +173,12 @@ namespace TourPlanner.BusinessLayer
             newTour.End = newTourData.toCity;
             newTour.CreationDate = System.DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
             newTour.Imagefile = imagepath;
+            newTour.Descriptionfile = descriptionpath;
 
             return newTour;
         }
 
-        public bool CheckSearchOption(TourSearch info)
+        public bool CheckNewTourData(TourSearch info)
         {
             if (!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
             {

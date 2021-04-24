@@ -100,14 +100,21 @@ namespace TourPlanner.DataAccessLayer
 
         // Save Route Data in Database and Folder------------------------------------------------
 
-
-
         public bool ChangeTour(Tour changedTour)
         {
             throw new NotImplementedException();
         }
 
- 
+        public bool DeleteTour(string tourname)
+        {
+            throw new NotImplementedException();
+        }
+        public bool CopyTour(string tourname)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
     }
 }

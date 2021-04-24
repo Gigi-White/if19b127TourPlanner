@@ -12,12 +12,7 @@ namespace TourPlanner.BusinessLayer
         {
             if (instance == null)
             {
-                instance = new TourItemFactoryImpl(
-                    DataConnectionFactory.GetDatabaseToursInstance(),
-                    DataConnectionFactory.GetHttpInstance(), 
-                    DataConnectionFactory.GetFileHandlerInstance(),
-                    new HttpResponseHandler(),
-                    ConfigurationManager.AppSettings["Whitelist"].ToString()); 
+                instance = new TourItemFactoryImpl(); 
             }
             return instance;
         }

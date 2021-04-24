@@ -184,11 +184,12 @@ namespace TourPlanner.ViewModels
                     fromCity = startCity,
                     fromCountry = startCountry,
                     toCity = endCity,
-                    toCountry = endCountry
+                    toCountry = endCountry,
+                    tourDescription = description
                 };
-                if (!TourItemFactory.GetMainViewInstance().CheckSearchOption(newTour))
+                if (!TourItemFactory.GetMainViewInstance().CheckNewTourData(newTour))
                 {
-                    ErrorMessage = "Pleas only use Letters numbers and spaces";
+                    ErrorMessage = "please only use letters, numbers or spaces";
                 }
                
                 else if (TourItemFactory.GetMainViewInstance().CreateTours(newTour))

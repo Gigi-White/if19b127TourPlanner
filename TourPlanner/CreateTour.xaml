@@ -59,23 +59,24 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
-                        <TextBlock FontSize="20" Margin="5" Text="New Tour Name:"/>
-                        <TextBlock FontSize="20" Margin="5" Text="Start City:"/>
-                        <TextBlock FontSize="20" Margin="5" Text="Start Country:"/>
-                        <TextBlock FontSize="20" Margin="5" Text="Destination City:"/>
-                        <TextBlock FontSize="20" Margin="5" Text="Destination Country:"/>
+                        <TextBlock FontSize="15" Margin="5" Text="New Tour Name:"/>
+                        <TextBlock FontSize="15" Margin="5" Text="Start City:"/>
+                        <TextBlock FontSize="15" Margin="5" Text="Start Country:"/>
+                        <TextBlock FontSize="15" Margin="5" Text="Destination City:"/>
+                        <TextBlock FontSize="15" Margin="5" Text="Destination Country:"/>
+                        <TextBlock FontSize="15" Margin="5" Text="Description:"/>
+                        <Button FontSize="15" Margin="5" Width="120" HorizontalAlignment="Left" Name="CreateButton" Command="{Binding CreateNewTourCommand}">Create new Trip</Button>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
-                        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="NewTourName" Text="{Binding TourName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
-                        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="StartCity" Text="{Binding StartCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
-                        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="StartCountry" Text="{Binding StartCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
-                        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="EndCity" Text="{Binding EndCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
-                        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="EndCountry" Text="{Binding EndCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                        <TextBox  FontSize="15" Margin="5"  Name="NewTourName" Text="{Binding TourName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                        <TextBox  FontSize="15" Margin="5"  Name="StartCity" Text="{Binding StartCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                        <TextBox  FontSize="15" Margin="5"  Name="StartCountry" Text="{Binding StartCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                        <TextBox  FontSize="15" Margin="5" Name="EndCity" Text="{Binding EndCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                        <TextBox  FontSize="15" Margin="5"  Name="EndCountry" Text="{Binding EndCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                        <TextBox  FontSize="15" Margin="5"  Name="Description" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="2">
-                    <Button FontSize="20" Margin="5" Width="200" HorizontalAlignment="Left" Name="CreateButton" Command="{Binding CreateNewTourCommand}">Create new Trip</Button>
-                </Grid>
+                
             </Grid>
         </StackPanel>
     </Grid>

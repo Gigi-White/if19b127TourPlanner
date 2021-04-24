@@ -49,7 +49,7 @@ namespace BusinessLayerTests
             };
             bool Expected = true;
 
-            bool result=element.CheckSearchOption(goodtest);
+            bool result=element.CheckNewTourData(goodtest);
             Assert.AreEqual(Expected, result);
 
         }
@@ -82,7 +82,7 @@ namespace BusinessLayerTests
             };
             bool Expected = true;
 
-            bool result = element.CheckSearchOption(goodtest);
+            bool result = element.CheckNewTourData(goodtest);
             Assert.AreEqual(Expected, result);
 
         }
@@ -115,7 +115,7 @@ namespace BusinessLayerTests
             };
             bool Expected = false;
 
-            bool result = element.CheckSearchOption(badTest);
+            bool result = element.CheckNewTourData(badTest);
             Assert.AreEqual(Expected, result);
 
         }

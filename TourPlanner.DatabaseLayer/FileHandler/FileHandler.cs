@@ -17,12 +17,12 @@ namespace TourPlanner.DataAccessLayer
 
         public FileHandler()
         {
-            folderpath = ConfigurationManager.AppSettings["ImageFolderDirectory"].ToString();
+            folderpath = ConfigurationManager.AppSettings["FolderDirectory"].ToString();
             urlImageDownload = ConfigurationManager.AppSettings["UrlImageDownload"].ToString();
-            System.IO.Directory.CreateDirectory(folderpath);
-            imagefolder = folderpath + "\\images";
+            descriptionfolder = folderpath + "\\descriptionFolder";
+            System.IO.Directory.CreateDirectory(descriptionfolder);
+            imagefolder = folderpath + "\\imageFolder";
             System.IO.Directory.CreateDirectory(imagefolder);
-            descriptionfolder = folderpath + "\\descriptions";
 
         }
 
@@ -58,10 +58,10 @@ namespace TourPlanner.DataAccessLayer
 
         public string SaveDescription(string description, string tourname)
         {
-            string descritionPath = descriptionfolder + tourname + "txt";
+            string descritionPath = descriptionfolder +"\\"+ tourname + ".txt";
             StreamWriter newTextfile = File.CreateText(descritionPath);
             newTextfile.WriteLine(description);
-
+            newTextfile.Close();
             return descritionPath;
         }
         

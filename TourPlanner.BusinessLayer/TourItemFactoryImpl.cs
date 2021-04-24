@@ -20,15 +20,14 @@ namespace TourPlanner.BusinessLayer
         private IFileHandler myFileHandler;
         private IHttpResponseHandler myResponseHandler;
 
-        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler)
+        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
         {
             mydatabaseTourOrders = databaseTourOrders;
             myHttpConnection = httpConnection;
             myFileHandler = filehandler;
             myResponseHandler = responseHandler;
-
             AllTours = mydatabaseTourOrders.GetTours();
-            whitelist = new Regex (ConfigurationManager.AppSettings["Whitelist"].ToString());
+            whitelist = new Regex (thewhitelist);
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using TourPlanner.DataAccessLayer;
 
 namespace TourPlanner.BusinessLayer
@@ -11,8 +12,12 @@ namespace TourPlanner.BusinessLayer
         {
             if (instance == null)
             {
-                instance = new TourItemFactoryImpl(DataConnectionFactory.GetDatabaseToursInstance(),
-                    DataConnectionFactory.GetHttpInstance(), DataConnectionFactory.GetFileHandlerInstance(),new HttpResponseHandler()); 
+                instance = new TourItemFactoryImpl(
+                    DataConnectionFactory.GetDatabaseToursInstance(),
+                    DataConnectionFactory.GetHttpInstance(), 
+                    DataConnectionFactory.GetFileHandlerInstance(),
+                    new HttpResponseHandler(),
+                    ConfigurationManager.AppSettings["Whitelist"].ToString()); 
             }
             return instance;
         }

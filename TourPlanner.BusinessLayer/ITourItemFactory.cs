@@ -19,5 +19,7 @@ namespace TourPlanner.BusinessLayer
 
         bool CreateTours(TourSearch newTourData);
 
+        bool CheckSearchOption(TourSearch info);
+
     }
 }

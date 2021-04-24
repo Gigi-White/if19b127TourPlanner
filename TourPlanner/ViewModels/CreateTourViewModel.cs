@@ -11,6 +11,7 @@ namespace TourPlanner.ViewModels
     class CreateTourViewModel : ViewModelBase
     {
 
+
         private string successMessage;
         public string SuccessMessage
         {
@@ -144,6 +145,25 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        private string description;
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            set
+            {
+                if (description != value)
+                {
+                    description = value;
+                    CleanMessages();
+                    RaisePropertyChangedEvent(nameof(Description));
+                }
+            }
+        }
+
+
 
         private ICommand createNewTourCommand;
 
@@ -155,6 +175,7 @@ namespace TourPlanner.ViewModels
             {
                 ErrorMessage = "Please fill out all fields!!!";
             }
+            
             else
             {
                 TourSearch newTour = new TourSearch
@@ -165,7 +186,12 @@ namespace TourPlanner.ViewModels
                     toCity = endCity,
                     toCountry = endCountry
                 };
-                if (TourItemFactory.GetMainViewInstance().CreateTours(newTour))
+                if (!TourItemFactory.GetMainViewInstance().CheckSearchOption(newTour))
+                {
+                    ErrorMessage = "Pleas only use Letters numbers and spaces";
+                }
+               
+                else if (TourItemFactory.GetMainViewInstance().CreateTours(newTour))
                 {
                     SuccessMessage = "Tour was successfully created";
                 }

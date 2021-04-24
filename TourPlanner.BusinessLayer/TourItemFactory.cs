@@ -1,4 +1,5 @@
 ﻿using System;
+using TourPlanner.DataAccessLayer;
 
 namespace TourPlanner.BusinessLayer
 {
@@ -10,7 +11,8 @@ namespace TourPlanner.BusinessLayer
         {
             if (instance == null)
             {
-                instance = new TourItemFactoryImpl(); 
+                instance = new TourItemFactoryImpl(DataConnectionFactory.GetDatabaseToursInstance(),
+                    DataConnectionFactory.GetHttpInstance(), DataConnectionFactory.GetFileHandlerInstance(),new HttpResponseHandler()); 
             }
             return instance;
         }

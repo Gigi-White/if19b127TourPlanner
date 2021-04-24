@@ -1,20 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Text.RegularExpressions;
 using TourPlanner.DataAccessLayer;
+using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
 using VisioForge.MediaFramework.ONVIF;
 
 namespace TourPlanner.BusinessLayer
 {
-    internal class TourItemFactoryImpl : ITourItemFactory
+    public class TourItemFactoryImpl : ITourItemFactory
     {
+
+        private Regex whitelist;
         private List<Tour> AllTours { get; set; }
         private List<RawRouteInfo> NewRouteInfo { get; set; }
+        private  IDatabaseTourOrders mydatabaseTourOrders;
+        private IHttpConnection myHttpConnection;
+        private IFileHandler myFileHandler;
+        private IHttpResponseHandler myResponseHandler;
 
-        public TourItemFactoryImpl()
+        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler)
         {
+            mydatabaseTourOrders = databaseTourOrders;
+            myHttpConnection = httpConnection;
+            myFileHandler = filehandler;
+            myResponseHandler = responseHandler;
 
-            AllTours = DataConnectionFactory.GetDatabaseToursInstance().GetTours();
+            AllTours = mydatabaseTourOrders.GetTours();
+            whitelist = new Regex (ConfigurationManager.AppSettings["Whitelist"].ToString());
 
         }
 
@@ -118,15 +132,15 @@ namespace TourPlanner.BusinessLayer
         public bool CreateTours(TourSearch newTourData)
         {
 
-            string request = DataConnectionFactory.GetHttpInstance().GetJsonResponse(newTourData);  //send "get" request and get json response
-            HttpResponseHandler ResponseHandler = new HttpResponseHandler(request);
+            string request = myHttpConnection.GetJsonResponse(newTourData);  //send "get" request and get json response
+            myResponseHandler.SetJObject(request);
 
-            NewRouteInfo = ResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
+            NewRouteInfo = myResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
 
-            Tour newTour = FillNewTour(newTourData, ResponseHandler);
+            Tour newTour = FillNewTour(newTourData);
             
             //save tour in database
-            DataConnectionFactory.GetDatabaseToursInstance().SaveTours(newTour);
+            mydatabaseTourOrders.SaveTours(newTour);
 
             AllTours.Add(newTour);
             OnUpdateTourList();
@@ -139,12 +153,13 @@ namespace TourPlanner.BusinessLayer
 
 
 
-        private Tour FillNewTour(TourSearch newTourData, HttpResponseHandler ResponseHandler)
+        private Tour FillNewTour(TourSearch newTourData)
         {
-            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
-            string imagepath = DataConnectionFactory.GetFileHandlerInstance().DownloadSaveImage(mainMap, newTourData.newTourName); //download and save image
+            MainMapSearchData mainMap = myResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
+            string imagepath = myFileHandler.DownloadSaveImage(mainMap, newTourData.newTourName); //download and save image
+            string descriptionpath = myFileHandler.SaveDescription(newTourData.tourDescription, newTourData.newTourName);
             //fill the new created tour with data
-            Tour newTour = ResponseHandler.GrabMainTimeAndDistance();
+            Tour newTour = myResponseHandler.GrabMainTimeAndDistance();
             newTour.Name = newTourData.newTourName;
             newTour.Start = newTourData.fromCity;
             newTour.End = newTourData.toCity;
@@ -153,5 +168,25 @@ namespace TourPlanner.BusinessLayer
 
             return newTour;
         }
+
+        public bool CheckSearchOption(TourSearch info)
+        {
+            if (!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+        private bool CheckText(string text)
+        {
+            return whitelist.IsMatch(text);
+
+        }
+
     }
 }

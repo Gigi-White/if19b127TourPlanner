@@ -4,13 +4,13 @@ using System;
 using TourPlanner.Models;
 namespace TourPlanner.BusinessLayer
 {
-    class HttpResponseHandler
+    public class HttpResponseHandler: IHttpResponseHandler
     {
         private List<RawRouteInfo> routeInfoList;
 
         private JObject jsonData;
 
-        public HttpResponseHandler(string jsonstring)
+        public void SetJObject(string jsonstring)
         {
             jsonData = JObject.Parse(jsonstring);
         }

@@ -9,6 +9,9 @@ namespace TourPlanner.DataAccessLayer
     {
 
         string DownloadSaveImage(MainMapSearchData searchData, string tourname);
-        bool DeleteImage();
+        string SaveDescription(string tourname, string description);
+        bool DeleteImage(string imagefile);
+        bool DeleteDescription(string description);
+
     }
 }

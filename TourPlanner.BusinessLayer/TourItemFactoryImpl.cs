@@ -1,63 +1,46 @@
-﻿using Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Text.RegularExpressions;
 using TourPlanner.DataAccessLayer;
+using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
+using VisioForge.MediaFramework.ONVIF;
 
 namespace TourPlanner.BusinessLayer
 {
-    internal class TourItemFactoryImpl : ITourItemFactory
+    public class TourItemFactoryImpl : ITourItemFactory
     {
-        private List<Tour> AllTours { get; set; }
-        private List<RawRouteInfo> NewRouteInfo { get; set; }
 
+        private Regex whitelist;
+        private List<Tour> AllTours { get; set; }
+        private List<RawRouteInfo> CurrentRouteInfo { get; set; }
+        private  IDatabaseTourOrders mydatabaseTourOrders;
+        private IDatabaseRouteOrders mydatabaseRouteOrders;
+        private IHttpConnection myHttpConnection;
+        private IFileHandler myFileHandler;
+        private IHttpResponseHandler myResponseHandler;
 
         public TourItemFactoryImpl()
         {
+            mydatabaseTourOrders =DataConnectionFactory.GetDatabaseToursInstance();
+            mydatabaseRouteOrders = DataConnectionFactory.GetDatabaseRouteInstance();
+            myHttpConnection = DataConnectionFactory.GetHttpInstance();
+            myFileHandler = DataConnectionFactory.GetFileHandlerInstance();
+            myResponseHandler = new HttpResponseHandler();
+            AllTours = mydatabaseTourOrders.GetTours();
+            whitelist =new Regex (ConfigurationManager.AppSettings["Whitelist"].ToString());
 
-            AllTours = DataConnectionFactory.GetDatabaseToursInstance().GetTours();
+        }
+        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
+        {
+            mydatabaseTourOrders = databaseTourOrders;
+            myHttpConnection = httpConnection;
+            myFileHandler = filehandler;
+            myResponseHandler = responseHandler;
+            AllTours = mydatabaseTourOrders.GetTours();
+            whitelist = new Regex(thewhitelist);
 
-
-            //Testbereich für Http Request------------------------
-           /*
-            TourSearch Test = new TourSearch
-            {
-                newTourName = "TestTour",
-                fromCity = "Vienna",
-                fromCountry = "Austria",
-                toCity = "Graz",
-                toCountry = "Austria"
-            };
-
-            
-            string request = DataConnectionFactory.GetHttpInstance().GetJsonResponse(Test);  //send "get" request and get json response
-            HttpResponseHandler ResponseHandler = new HttpResponseHandler(request);
-
-            NewRouteInfo = ResponseHandler.GrabRouteData(Test.newTourName);  //getroute info out of json response
-
-            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
-
-
-            string imagepath = DataConnectionFactory.GetFileHandlerInstance().DownloadSaveImage(mainMap, Test.newTourName); //download and save image
-
-
-            //fill the new created tour with data
-
-            Tour newTour = ResponseHandler.GrabMainTimeAndDistance();
-            newTour.Name = Test.newTourName;
-            newTour.Start = Test.fromCity;
-            newTour.End = Test.toCity;
-            newTour.CreationDate = DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
-            newTour.Imagefile = imagepath;
-
-            //save tour in database
-
-            DataConnectionFactory.GetDatabaseToursInstance().SaveTours(newTour);
-
-            //DataConnectionFactory.GetDatabaseToursInstance().SaveTourRouteData(NewRouteInfo);
-            //Databasehandler.SaveTourRouteData(NewRouteInfo);
-
-            */
         }
 
 
@@ -71,10 +54,10 @@ namespace TourPlanner.BusinessLayer
         {
             List<Tour> foundTours = new List<Tour>();
 
-            switch(searchOption)
+            switch (searchOption)
             {
                 case "Name":
-                    foreach(var item in AllTours)
+                    foreach (var item in AllTours)
                     {
                         if (item.Name.ToLower().Contains(word.ToLower()))
                         {
@@ -116,13 +99,13 @@ namespace TourPlanner.BusinessLayer
         private List<Tour> SearchWithDistance(string number)
         {
             List<Tour> foundTours = new List<Tour>();
-            
+
             try
             {
                 float checkdistance = float.Parse(number);
                 foreach (var item in AllTours)
                 {
-                    
+
                     if (checkdistance <= item.Distance)
                     {
                         foundTours.Add(item);
@@ -135,35 +118,84 @@ namespace TourPlanner.BusinessLayer
                 return null;
             }
 
-           
+
         }
+
+        private UpdateToursEventHandler UpdatingTourList;
+
+
+        public void setUpdateToursEventhandler(UpdateToursEventHandler newEvent)
+        {
+            UpdatingTourList += newEvent;
+        }
+
+        protected virtual void OnUpdateTourList()
+        {
+            if (UpdatingTourList!=null)
+            {
+                UpdatingTourList(this, EventArgs.Empty);
+            }
+
+        }
+
+
 
         public bool CreateTours(TourSearch newTourData)
         {
 
+            string request = myHttpConnection.GetJsonResponse(newTourData);  //send "get" request and get json response
+            myResponseHandler.SetJObject(request);
+            List<RawRouteInfo> NewRouteInfoList = new List<RawRouteInfo>();
+            NewRouteInfoList = myResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
 
-            string request = DataConnectionFactory.GetHttpInstance().GetJsonResponse(newTourData);  //send "get" request and get json response
-            HttpResponseHandler ResponseHandler = new HttpResponseHandler(request);
+            Tour newTour = FillNewTour(newTourData);
+            
+            //save tour in database
+            mydatabaseTourOrders.SaveTours(newTour);
+            mydatabaseRouteOrders.SaveRouteInfo(NewRouteInfoList);
 
-            NewRouteInfo = ResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
+            AllTours.Add(newTour);
+            OnUpdateTourList();
+            return true;
+        }
 
-            MainMapSearchData mainMap = ResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
 
-            string imagepath = DataConnectionFactory.GetFileHandlerInstance().DownloadSaveImage(mainMap, newTourData.newTourName); //download and save image
 
+        private Tour FillNewTour(TourSearch newTourData)
+        {
+            MainMapSearchData mainMap = myResponseHandler.GrabMainMapData(); //getmapdata out of jaosn response
+            string imagepath = myFileHandler.DownloadSaveImage(mainMap, newTourData.newTourName); //download and save image
+            string descriptionpath = myFileHandler.SaveDescription(newTourData.tourDescription, newTourData.newTourName);
             //fill the new created tour with data
-            Tour newTour = ResponseHandler.GrabMainTimeAndDistance();
+            Tour newTour = myResponseHandler.GrabMainTimeAndDistance();
             newTour.Name = newTourData.newTourName;
             newTour.Start = newTourData.fromCity;
             newTour.End = newTourData.toCity;
-            newTour.CreationDate = DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
+            newTour.CreationDate = System.DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
             newTour.Imagefile = imagepath;
+            newTour.Descriptionfile = descriptionpath;
 
-            //save tour in database
-
-            DataConnectionFactory.GetDatabaseToursInstance().SaveTours(newTour);
-
-            return true;
+            return newTour;
         }
+
+        public bool CheckNewTourData(TourSearch info)
+        {
+            if (!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+        private bool CheckText(string text)
+        {
+            return whitelist.IsMatch(text);
+
+        }
+
     }
 }

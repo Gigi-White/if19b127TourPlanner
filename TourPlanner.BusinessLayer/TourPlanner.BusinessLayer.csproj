@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="VisioForge.DotNet.Core.TRIAL" Version="14.0.39" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using TourPlanner.DataAccessLayer;
 
 namespace TourPlanner.BusinessLayer
 {

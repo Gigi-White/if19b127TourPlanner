@@ -11,6 +11,7 @@ namespace TourPlanner.DataAccessLayer
         private static IHttpConnection httpConnectionInstance;
         //private ImageHandler imageHandleInstance;
         private static IDatabaseConnection databaseConnectionInstance;
+        private static IDatabaseRouteOrders databaseRouteOrdersInstance;
         private static IFileHandler fileHandlerInstance;
         private static NpgsqlConnection con;
 
@@ -23,6 +24,16 @@ namespace TourPlanner.DataAccessLayer
             }
             return databaseTourOrdersInstance;
         }
+
+        public static IDatabaseRouteOrders GetDatabaseRouteInstance()
+        {
+            if (databaseRouteOrdersInstance == null)
+            {
+                databaseRouteOrdersInstance = new DatabaseRouteOrders();
+            }
+            return databaseRouteOrdersInstance;
+        }
+
         public static IHttpConnection GetHttpInstance()
         {
             if (httpConnectionInstance == null)

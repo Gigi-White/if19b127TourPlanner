@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
+using System;
 
 namespace TourPlanner.ViewModels
 {
@@ -46,10 +47,31 @@ namespace TourPlanner.ViewModels
                 if(currentTour != value && value != null)
                 {
                     currentTour = value;
+                    CurrentTourImage = currentTour.Imagefile;
                     RaisePropertyChangedEvent(nameof(CurrentTour));
                 } 
             }
         }
+
+        private string currentTourImage;
+
+        public string CurrentTourImage
+        {
+            get
+            {
+                return currentTourImage;
+            }
+
+            set
+            {
+                if (currentTourImage != value)
+                {
+                    currentTourImage = value;
+                    RaisePropertyChangedEvent(nameof(CurrentTourImage));
+                }
+            }
+        }
+
 
         private string searchOption;
 
@@ -70,16 +92,24 @@ namespace TourPlanner.ViewModels
             }
         }
 
-
+       
 
         //--------------------------------------------------------
         public MainViewModel()
         {
+            TourWorker = TourItemFactory.GetMainViewInstance();
             SearchOptionList = new ObservableCollection<string>();
             Tours = new ObservableCollection<Tour>();
             FillCompleteTourList();
             FillSearchOtionList();
+            TourWorker.setUpdateToursEventhandler(UpdateTourList);
 
+;
+
+        }
+        public void UpdateTourList(object source, EventArgs e)
+        {
+            FillCompleteTourList();
         }
 
         private void FillSearchOtionList()
@@ -93,7 +123,7 @@ namespace TourPlanner.ViewModels
 
         private void FillCompleteTourList()
         {
-            TourWorker = TourItemFactory.GetMainViewInstance();
+            
             FillTourList(TourWorker.GetTours());
         }
 

@@ -11,6 +11,7 @@ namespace TourPlanner.ViewModels
     class CreateTourViewModel : ViewModelBase
     {
 
+
         private string successMessage;
         public string SuccessMessage
         {
@@ -144,17 +145,38 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        private string description;
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            set
+            {
+                if (description != value)
+                {
+                    description = value;
+                    CleanMessages();
+                    RaisePropertyChangedEvent(nameof(Description));
+                }
+            }
+        }
+
+
 
         private ICommand createNewTourCommand;
 
         public ICommand CreateNewTourCommand => createNewTourCommand ??= new RelayCommand(CreateNewTour);
+       
         private void CreateNewTour(object commandParameter)
         {
             if(tourName == "" || startCity =="" || startCountry == "" || endCity == "" || endCountry == "")
             {
                 ErrorMessage = "Please fill out all fields!!!";
             }
-            /*else
+            
+            else
             {
                 TourSearch newTour = new TourSearch
                 {
@@ -162,16 +184,27 @@ namespace TourPlanner.ViewModels
                     fromCity = startCity,
                     fromCountry = startCountry,
                     toCity = endCity,
-                    toCountry = endCountry
+                    toCountry = endCountry,
+                    tourDescription = description
                 };
-                if (TourItemFactory.GetMainViewInstance().CreateTours(newTour))
+                if (!TourItemFactory.GetMainViewInstance().CheckNewTourData(newTour))
+                {
+                    ErrorMessage = "please only use letters, numbers or spaces";
+                }
+               
+                else if (TourItemFactory.GetMainViewInstance().CreateTours(newTour))
                 {
                     SuccessMessage = "Tour was successfully created";
                 }
+                else 
+                {
+                    ErrorMessage = "A error emerged";
+                }
 
             }
-            */
+            
         }
+
         private void CleanMessages()
         {
             SuccessMessage = null;

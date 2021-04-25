@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Net;
 using TourPlanner.Models;
 
@@ -11,19 +12,28 @@ namespace TourPlanner.DataAccessLayer
 
         private string folderpath;
         private string urlImageDownload;
+        private string imagefolder;
+        private string descriptionfolder;
 
         public FileHandler()
         {
-            folderpath = ConfigurationManager.AppSettings["ImageFolderDirectory"].ToString();
+            folderpath = ConfigurationManager.AppSettings["FolderDirectory"].ToString();
             urlImageDownload = ConfigurationManager.AppSettings["UrlImageDownload"].ToString();
+            descriptionfolder = folderpath + "\\descriptionFolder";
+            System.IO.Directory.CreateDirectory(descriptionfolder);
+            imagefolder = folderpath + "\\imageFolder";
+            System.IO.Directory.CreateDirectory(imagefolder);
+
         }
 
 
         public string DownloadSaveImage(MainMapSearchData searchData, string tourname)
         {
 
-            System.IO.Directory.CreateDirectory(folderpath);
-            string imagePath = folderpath + "\\" + tourname + ".png";
+       
+
+
+            string imagePath = imagefolder + "\\" + tourname + ".png";
 
 
             string fullUrl = urlImageDownload +
@@ -45,7 +55,22 @@ namespace TourPlanner.DataAccessLayer
 
 
         }
-        public bool DeleteImage()
+
+        public string SaveDescription(string description, string tourname)
+        {
+            string descritionPath = descriptionfolder +"\\"+ tourname + ".txt";
+            StreamWriter newTextfile = File.CreateText(descritionPath);
+            newTextfile.WriteLine(description);
+            newTextfile.Close();
+            return descritionPath;
+        }
+        
+        public bool DeleteImage(string imagefile)
+        {
+            return true;
+        }
+
+        public bool DeleteDescription(string imagefile)
         {
             return true;
         }

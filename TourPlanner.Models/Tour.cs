@@ -11,5 +11,7 @@ namespace TourPlanner.Models
         public float Distance { get; set; }
         public string FormattedTime { get; set; }
         public string Imagefile { get; set; }
+
+        public string Descriptionfile { get; set; }
     }
 }

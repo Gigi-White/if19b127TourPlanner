@@ -10,7 +10,7 @@ namespace TourPlanner.ViewModels
 {
     class CreateTourViewModel : ViewModelBase
     {
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private string successMessage;
         public string SuccessMessage
@@ -171,6 +171,9 @@ namespace TourPlanner.ViewModels
        
         private void CreateNewTour(object commandParameter)
         {
+
+            log.Info("Interaction: Start to create new Tour");
+
             if(tourName == "" || startCity =="" || startCountry == "" || endCity == "" || endCountry == "")
             {
                 ErrorMessage = "Please fill out all fields!!!";
@@ -195,6 +198,7 @@ namespace TourPlanner.ViewModels
                 else if (TourItemFactory.GetMainViewInstance().CreateTours(newTour))
                 {
                     SuccessMessage = "Tour was successfully created";
+                    log.Info("Interaction: Tour was successfully created");
                 }
                 else 
                 {

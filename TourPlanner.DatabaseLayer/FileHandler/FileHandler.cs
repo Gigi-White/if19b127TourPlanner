@@ -9,6 +9,8 @@ namespace TourPlanner.DataAccessLayer
 {
     internal class FileHandler : IFileHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 
         private string folderpath;
         private string urlImageDownload;
@@ -45,13 +47,24 @@ namespace TourPlanner.DataAccessLayer
                              searchData.boundingBox[2].ToString() + "," +
                              searchData.boundingBox[3].ToString();
 
-            using (WebClient webClient = new WebClient())
+            try
             {
-                webClient.DownloadFile(fullUrl, imagePath);
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadFile(fullUrl, imagePath);
+                }
+
+
+                return imagePath;
+            }
+            catch(Exception ex)
+            {
+                log.Error("Maintenance: Falied to download the image",ex);
+                return "null";
+
             }
 
-
-            return imagePath;
+           
 
 
         }

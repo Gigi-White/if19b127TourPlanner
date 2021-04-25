@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Enums\Enums.csproj" />
     <ProjectReference Include="..\TourPlanner.BusinessLayer\TourPlanner.BusinessLayer.csproj" />
     <ProjectReference Include="..\TourPlanner.Models\TourPlanner.Models.csproj" />

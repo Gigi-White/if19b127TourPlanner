@@ -10,6 +10,7 @@ namespace TourPlanner.DataAccessLayer
 
     internal class DatabaseTourOrders : IDatabaseTourOrders
     {
+
         private string accessData { get; set; }
 
 
@@ -88,6 +89,7 @@ namespace TourPlanner.DataAccessLayer
             }
             else
             {
+                
                 con.Close();
                 return false;
             }

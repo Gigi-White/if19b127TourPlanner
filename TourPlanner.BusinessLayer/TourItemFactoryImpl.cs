@@ -5,12 +5,12 @@ using System.Text.RegularExpressions;
 using TourPlanner.DataAccessLayer;
 using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
-using VisioForge.MediaFramework.ONVIF;
 
 namespace TourPlanner.BusinessLayer
 {
     public class TourItemFactoryImpl : ITourItemFactory
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Regex whitelist;
         private List<Tour> AllTours { get; set; }
@@ -30,6 +30,7 @@ namespace TourPlanner.BusinessLayer
             myResponseHandler = new HttpResponseHandler();
             AllTours = mydatabaseTourOrders.GetTours();
             whitelist =new Regex (ConfigurationManager.AppSettings["Whitelist"].ToString());
+
 
         }
         public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)

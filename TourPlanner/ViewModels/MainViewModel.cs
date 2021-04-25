@@ -4,10 +4,14 @@ using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
 using System;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace TourPlanner.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         ITourItemFactory TourWorker;
 
@@ -97,6 +101,8 @@ namespace TourPlanner.ViewModels
         //--------------------------------------------------------
         public MainViewModel()
         {
+
+            log.Info("Maintenance: Main View Model has startet");
             TourWorker = TourItemFactory.GetMainViewInstance();
             SearchOptionList = new ObservableCollection<string>();
             Tours = new ObservableCollection<Tour>();
@@ -104,7 +110,6 @@ namespace TourPlanner.ViewModels
             FillSearchOtionList();
             TourWorker.setUpdateToursEventhandler(UpdateTourList);
 
-;
 
         }
         public void UpdateTourList(object source, EventArgs e)

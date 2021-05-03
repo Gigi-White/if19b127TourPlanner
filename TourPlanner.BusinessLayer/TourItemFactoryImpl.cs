@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using TourPlanner.DataAccessLayer;
 using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
-
 namespace TourPlanner.BusinessLayer
 {
     public class TourItemFactoryImpl : ITourItemFactory
@@ -33,10 +32,11 @@ namespace TourPlanner.BusinessLayer
 
 
         }
-        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
+        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders,IDatabaseRouteOrders databaseRouteOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
         {
             mydatabaseTourOrders = databaseTourOrders;
-            myHttpConnection = httpConnection;
+            mydatabaseRouteOrders = databaseRouteOrders;
+           myHttpConnection = httpConnection;
             myFileHandler = filehandler;
             myResponseHandler = responseHandler;
             AllTours = mydatabaseTourOrders.GetTours();
@@ -140,12 +140,12 @@ namespace TourPlanner.BusinessLayer
         }
 
 
-
+        //Create new Tour plus help functions---------------------------------------------------------------------------------
         public bool CreateTours(TourSearch newTourData)
         {
 
-            string request = myHttpConnection.GetJsonResponse(newTourData);  //send "get" request and get json response
-            myResponseHandler.SetJObject(request);
+            string response = myHttpConnection.GetJsonResponse(newTourData);  //send "get" request and get json response
+            myResponseHandler.SetJObject(response);
             List<RawRouteInfo> NewRouteInfoList = new List<RawRouteInfo>();
             NewRouteInfoList = myResponseHandler.GrabRouteData(newTourData.newTourName);  //getroute info out of json response
 
@@ -198,5 +198,18 @@ namespace TourPlanner.BusinessLayer
 
         }
 
+
+        //Delete Current Tour Code----------------------------------------------------------------------
+        public bool DeleteCurrentTour(string name)
+        {
+            if (mydatabaseTourOrders.DeleteTour(name)&& mydatabaseRouteOrders.DeleteRouteData(name) && myFileHandler.DeleteImage(name) && myFileHandler.DeleteDescription(name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

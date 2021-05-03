@@ -7,6 +7,7 @@ using VisioForge.MediaFramework.ONVIF;
 
 namespace TourPlanner.BusinessLayer
 {
+    
     public delegate void UpdateToursEventHandler(object source, EventArgs args);
     public interface ITourItemFactory
     {
@@ -20,6 +21,6 @@ namespace TourPlanner.BusinessLayer
         bool CreateTours(TourSearch newTourData);
 
         bool CheckNewTourData(TourSearch info);
-
+        bool DeleteCurrentTour(string name);
     }
 }

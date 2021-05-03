@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
                 <Button FontSize="20" Margin="5" Grid.Column="0" Name="CreateButton" Click="CreateButton_Click">Create</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="1" Name="ModifyButton">Modify</Button>
-                <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton">Delete</Button>
+                <Button FontSize="20" Margin="5,5,5,0" Grid.Column="2" Name="DeleteButton" Height="33" VerticalAlignment="Top" Command="{Binding DeleteTourCommand}" >Delete</Button>
                 <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton">Copy</Button>
                 <TextBlock VerticalAlignment="Center" FontSize="20" Margin="5" Grid.Column="4" Text="Search:" ></TextBlock>
                 <ComboBox Grid.Column="5" FontSize="20" Margin="5"
@@ -63,7 +63,7 @@
                              ItemsSource="{Binding Tours}"
                              SelectedItem="{Binding CurrentTour, Mode=TwoWay}"
                              DisplayMemberPath="Name"
-                             Margin="5">
+                             Margin="5" SelectionChanged="listTourNames_SelectionChanged">
 
 
                     </ListBox>
@@ -144,10 +144,10 @@
                         <Image   Source="{Binding CurrentTourImage}" HorizontalAlignment="Left" 
                         Margin="5" Name="TourImage" Stretch="Fill" VerticalAlignment="Bottom" 
                             />
-                        
+
                     </Grid>
-                    
-                    
+
+
 
                     <!-- <Image Grid.Row="2" Source="{Binding CurrentTrip.Img}"></Image>   -->
 

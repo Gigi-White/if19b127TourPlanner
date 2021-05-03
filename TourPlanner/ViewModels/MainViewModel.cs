@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
 using System;
+using System.Windows.Input;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -16,8 +17,8 @@ namespace TourPlanner.ViewModels
         ITourItemFactory TourWorker;
 
 
-        public ObservableCollection <Tour> Tours { get; set; }
-        public ObservableCollection<string> SearchOptionList { get; set; } 
+        public ObservableCollection<Tour> Tours { get; set; }
+        public ObservableCollection<string> SearchOptionList { get; set; }
         //--------------------------------------------------------
 
         private string searchTour;
@@ -48,12 +49,12 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if(currentTour != value && value != null)
+                if (currentTour != value && value != null)
                 {
                     currentTour = value;
                     CurrentTourImage = currentTour.Imagefile;
                     RaisePropertyChangedEvent(nameof(CurrentTour));
-                } 
+                }
             }
         }
 
@@ -96,7 +97,7 @@ namespace TourPlanner.ViewModels
             }
         }
 
-       
+
 
         //--------------------------------------------------------
         public MainViewModel()
@@ -128,7 +129,7 @@ namespace TourPlanner.ViewModels
 
         private void FillCompleteTourList()
         {
-            
+
             FillTourList(TourWorker.GetTours());
         }
 
@@ -144,7 +145,7 @@ namespace TourPlanner.ViewModels
 
         private void SearchTours()
         {
-            if(searchTour!=null && searchTour != "" && searchOption != null && searchOption != "")
+            if (searchTour != null && searchTour != "" && searchOption != null && searchOption != "")
             {
 
                 FillTourList(TourWorker.SearchTours(searchTour, searchOption));
@@ -154,6 +155,22 @@ namespace TourPlanner.ViewModels
                 FillCompleteTourList();
             }
         }
+
+        private ICommand deleteTourCommand;
+
+        public ICommand DeleteTourCommand => deleteTourCommand ??= new RelayCommand(DeleteTour);
+
+        private void DeleteTour(object commandParameter)
+        {
+            if (currentTour != null)
+            {
+                TourWorker.DeleteCurrentTour(currentTour.Name);
+            }
+        }
+
+
+
+
 
     }
 

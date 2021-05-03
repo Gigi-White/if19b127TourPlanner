@@ -12,8 +12,9 @@ namespace TourPlanner.DataAccessLayer
     {
 
         private string accessData { get; set; }
-
-
+        private static string getAllToursSql = "SELECT* FROM tours";
+        private static string saveToursSql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile) VALUES(@name, @start, @end, @distance, @date, @image)";
+        private static string deleteTourSql = "DELETE FROM tours WHERE  tourname = @name";
         public DatabaseTourOrders()
         {
             accessData = ConfigurationManager.AppSettings["DatabaseAccess"].ToString();
@@ -28,7 +29,7 @@ namespace TourPlanner.DataAccessLayer
         public List<Tour> GetTours()
         {
            
-            var sql = "SELECT * FROM tours";
+            var sql = getAllToursSql;
 
             //NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(sql);
             NpgsqlConnection con = DataConnectionFactory.GetCon();
@@ -67,8 +68,8 @@ namespace TourPlanner.DataAccessLayer
         public bool SaveTours(Tour newTour)
         {
 
-            var sql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile) VALUES(@name, @start, @end, @distance, @date, @image)";
-
+            //var sql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile) VALUES(@name, @start, @end, @distance, @date, @image)";
+            var sql = saveToursSql;
             NpgsqlConnection con = DataConnectionFactory.GetCon();
             con.Open();
 
@@ -100,17 +101,44 @@ namespace TourPlanner.DataAccessLayer
         }
 
 
-        // Save Route Data in Database and Folder------------------------------------------------
+       
 
         public bool ChangeTour(Tour changedTour)
         {
             throw new NotImplementedException();
         }
 
+
+
+        //Delete Tour Data
         public bool DeleteTour(string tourname)
         {
-            throw new NotImplementedException();
+            //var sql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile) VALUES(@name, @start, @end, @distance, @date, @image)";
+            var sql = deleteTourSql;
+            NpgsqlConnection con = DataConnectionFactory.GetCon();
+            con.Open();
+
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("name", tourname);
+            
+            cmd.Prepare();
+
+
+            if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
+            {
+                con.Close();
+                return true;
+            }
+            else
+            {
+
+                con.Close();
+                return false;
+            }
         }
+
+
+
         public bool CopyTour(string tourname)
         {
             throw new NotImplementedException();

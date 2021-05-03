@@ -24,8 +24,39 @@ namespace BusinessLayerTests
             mockDatabaseTourOrders.Setup(mr => mr.SaveTours(It.IsAny<Tour>()))
                        .Returns(mySaveToursAnswer);
 
+            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<Tour>()))
+                       .Returns(true);
+
+            mockDatabaseTourOrders.Setup(mr => mr.CopyTour(It.IsAny<string>()))
+                       .Returns(true);
+            
+            mockDatabaseTourOrders.Setup(mr => mr.DeleteTour(It.IsAny<string>()))
+                       .Returns(true);
+
             return mockDatabaseTourOrders;
         }
+
+        public static Mock<IDatabaseRouteOrders> GeneratesDatabaseRouteOrdersMock(List<RawRouteInfo> routeinfoList, string Tourname)
+        {
+            var mockDatabaseRouteOrders = new Mock<IDatabaseRouteOrders>();
+            List<RawRouteInfo> routeInfo = routeinfoList;
+
+            mockDatabaseRouteOrders.Setup(mr => mr.SaveRouteInfo(It.IsAny<List<RawRouteInfo>>()))
+                       .Returns(true);
+
+            mockDatabaseRouteOrders.Setup(mr => mr.GetRouteInfo(It.IsAny<string>()))
+                       .Returns(routeinfoList);
+
+            mockDatabaseRouteOrders.Setup(mr => mr.DeleteRouteData(It.IsAny<string>()))
+                       .Returns(true);
+
+            return mockDatabaseRouteOrders;
+
+        }
+
+      
+
+
 
         public static Mock<IHttpConnection> GeneratesHttpConnectionMock(string jsonResponse)
         {

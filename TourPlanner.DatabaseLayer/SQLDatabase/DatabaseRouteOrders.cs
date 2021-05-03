@@ -12,6 +12,8 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private static string SaveRouteInfoSql = "INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)";
+
         private string accessData { get; set; }
 
         public DatabaseRouteOrders()
@@ -28,9 +30,9 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             con.Open();
             foreach (RawRouteInfo item in routeInfoList)
             {
-                var sql = "INSERT INTO routeinfo(tourname,maneuvernumber,narrative,distance,formattedtime) VALUES(@name, @number, @narrative, @distance, @time)";
+                //var sql = "INSERT INTO routeinfo(tourname,maneuvernumber,narrative,distance,formattedtime) VALUES(@name, @number, @narrative, @distance, @time)";
+                var sql = SaveRouteInfoSql;
 
-                
                 //con.Open();
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);

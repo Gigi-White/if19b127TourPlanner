@@ -14,8 +14,6 @@ namespace TourPlanner.DataAccessLayer
             accessData = ConfigurationManager.AppSettings["DatabaseAccess"].ToString();
         }
 
-
-
         public NpgsqlDataReader getDatabaseData(NpgsqlCommand sqlCommand)
         {
 

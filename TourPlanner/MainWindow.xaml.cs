@@ -33,5 +33,10 @@ namespace TourPlanner
             createTourWindow.Show();
 
         }
+
+        private void listTourNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

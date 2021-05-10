@@ -226,8 +226,60 @@ namespace TourPlanner.BusinessLayer
             
            
         }
+        //Copy Current Tour Code----------------------------------------------------------------------
+        public bool CopyCurrentTour(Tour currentTour)
+        {
 
+            Tour copiedTour = new Tour
+            {
+                Start = currentTour.Start,
+                End = currentTour.End,
+                Distance = currentTour.Distance,
+                FormattedTime = currentTour.FormattedTime
 
+            };
+                      
+            copiedTour.Name = currentTour.Name + "copy";
+
+            copiedTour.Imagefile = currentTour.Imagefile.Replace(".png", "copy.png");
+            copiedTour.Descriptionfile = currentTour.Descriptionfile.Replace(".txt", "copy.txt");
+
+            copiedTour.CreationDate = System.DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
+
+            
+            if (!myFileHandler.CopyFile(currentTour.Imagefile, copiedTour.Imagefile))
+            {
+
+                return false;
+            }
+
+            if (!myFileHandler.CopyFile(currentTour.Descriptionfile, copiedTour.Descriptionfile))
+            {
+                return false;
+            }
+
+            if(!mydatabaseTourOrders.SaveTours(copiedTour))
+            {
+                return false;
+            }
+
+            if(!mydatabaseRouteOrders.CopyRouteInfo(currentTour.Name, copiedTour.Name))
+            {
+                return false;
+            }
+
+            if(!mydatabaseLogOrders.copyLogsofTour(currentTour.Name, copiedTour.Name))
+            {
+                return false;
+            }
+            
+            
+            AllTours.Add(copiedTour);
+            OnUpdateTourList();
+
+            return true;
+        }
 
     }
+        
 }

@@ -15,6 +15,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         bool deleteOneLog(string logname);
         bool deleteAllLogsofTour(string tourname);
+        bool copyLogsofTour(string tourname, string copiedtourname);
 
     }
 }

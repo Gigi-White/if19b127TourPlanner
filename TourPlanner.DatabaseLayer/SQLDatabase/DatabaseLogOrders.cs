@@ -7,6 +7,8 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 {
     internal class DatabaseLogOrders : IDatabaseLogOrders
     {
+       
+
         public bool createLog(Log newLog)
         {
             throw new NotImplementedException();
@@ -30,6 +32,11 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
         public bool updateLog(Log updatedLog)
         {
             throw new NotImplementedException();
+        }
+
+        public bool copyLogsofTour(string tourname, string copiedtourname)
+        {
+            return true;
         }
     }
 }

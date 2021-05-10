@@ -11,6 +11,8 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
         List<RawRouteInfo> GetRouteInfo(string tourName);
 
         bool DeleteRouteData(string tourName);
+
+        bool CopyRouteInfo(string toruname, string copýTour);
      
 
     }

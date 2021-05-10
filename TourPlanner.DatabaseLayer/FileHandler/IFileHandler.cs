@@ -16,5 +16,7 @@ namespace TourPlanner.DataAccessLayer
         bool DeleteImage(string imagefile);
         bool DeleteDescription(string description);
 
+        bool CopyFile(string filename, string newfilename);
+
     }
 }

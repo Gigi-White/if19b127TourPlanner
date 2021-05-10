@@ -13,7 +13,7 @@ namespace TourPlanner.DataAccessLayer
 
         private string accessData { get; set; }
         private static string getAllToursSql = "SELECT* FROM tours";
-        private static string saveToursSql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile) VALUES(@name, @start, @end, @distance, @date, @image)";
+        private static string saveToursSql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile,descriptionfile,formattedtime ) VALUES(@name, @start, @end, @distance, @date, @image, @description,@formattedtime)";
         private static string deleteTourSql = "DELETE FROM tours WHERE  tourname = @name";
         public DatabaseTourOrders()
         {
@@ -53,8 +53,10 @@ namespace TourPlanner.DataAccessLayer
                     End = rdr.GetString(3),                    
                     Distance = rdr.GetInt32(4),
                     Imagefile = rdr.GetString(5),
-                    CreationDate = rdr.GetString(6)
-                    
+                    CreationDate = rdr.GetString(6),
+                    Descriptionfile = rdr.GetString(7),
+                    FormattedTime = rdr.GetString(8)
+
                 }
                 );
             }
@@ -80,6 +82,8 @@ namespace TourPlanner.DataAccessLayer
             cmd.Parameters.AddWithValue("distance", newTour.Distance);
             cmd.Parameters.AddWithValue("date", newTour.CreationDate);
             cmd.Parameters.AddWithValue("image", newTour.Imagefile);
+            cmd.Parameters.AddWithValue("description", newTour.Descriptionfile);
+            cmd.Parameters.AddWithValue("formattedtime", newTour.FormattedTime);
             cmd.Prepare();
 
             

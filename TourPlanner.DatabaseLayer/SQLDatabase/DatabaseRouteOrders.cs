@@ -12,6 +12,8 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private static string getRouteInfoFromTourSql = "SELECT* FROM routeinfo WHERE tourname = @name";
+
         private static string SaveRouteInfoSql = "INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)";
 
         private static string deleteRouteInfoSql = "DELETE FROM routeinfo WHERE tourname = @name";
@@ -61,7 +63,38 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         public List<RawRouteInfo> GetRouteInfo(string tourName)
         {
-            throw new NotImplementedException();
+            var sql = getRouteInfoFromTourSql;
+
+            //NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(sql);
+            NpgsqlConnection con = DataConnectionFactory.GetCon();
+            con.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("name", tourName);
+            cmd.Prepare();
+
+            NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(cmd);
+            if (rdr == null)
+            {
+                return null;
+            }
+
+            List<RawRouteInfo> routeInfoList = new List<RawRouteInfo>();
+            while (rdr.Read())
+            {
+                routeInfoList.Add(new RawRouteInfo
+                {
+                    tourName = rdr.GetString(1),
+                    maneuverNumber = rdr.GetInt32(2),
+                    narrative = rdr.GetString(3),
+                    distance = rdr.GetInt32(4),
+                    formattedTime = rdr.GetString(5)
+                    
+
+                }
+                );
+            }
+            con.Close();
+            return routeInfoList;
         }
 
 
@@ -87,6 +120,17 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
                 con.Close();
                 return false;
             }
+        }
+
+        public bool CopyRouteInfo(string toruname, string copyTourname)
+        {
+            List <RawRouteInfo> toCopieRouteInfo = GetRouteInfo(toruname);
+
+            foreach(var routinfo in toCopieRouteInfo)
+            {
+                routinfo.tourName = copyTourname;
+            }
+            return SaveRouteInfo(toCopieRouteInfo);
         }
     }
 }

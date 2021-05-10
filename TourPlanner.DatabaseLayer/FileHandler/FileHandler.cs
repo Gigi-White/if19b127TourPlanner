@@ -84,6 +84,14 @@ namespace TourPlanner.DataAccessLayer
             return true;
         }
 
+        public bool CopyFile(string filename, string newfilename)
+        {
+
+            File.Copy(filename, newfilename); 
+            return File.Exists(newfilename) ;
+        }
+
+
         public bool ChangeDescription(string filename,string newDescription)
         {
             return true;

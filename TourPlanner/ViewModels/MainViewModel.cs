@@ -254,6 +254,29 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        private ICommand copyTourCommand;
+
+        public ICommand CopyTourCommand => copyTourCommand ??= new RelayCommand(CopyTour);
+
+        private void CopyTour(object commandParameter)
+        {
+            if (currentTour != null)
+            {
+                if (TourWorker.CopyCurrentTour(currentTour))
+                {
+                    CurrentTour = null;
+                    TourMessage = "Tour was successfully deleted";
+                }
+                else
+                {
+                    ErrorMessage = "The deletion could not be completed";
+                }
+            }
+            else
+            {
+                ErrorMessage = "Please select a Tour first";
+            }
+        }
 
         private void CleanMessages()
         {

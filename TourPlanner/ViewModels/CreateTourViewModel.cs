@@ -174,7 +174,7 @@ namespace TourPlanner.ViewModels
 
             log.Info("Interaction: Start to create new Tour");
 
-            if(tourName == "" || startCity =="" || startCountry == "" || endCity == "" || endCountry == "")
+            if(tourName == "" || startCity =="" || startCountry == "" || endCity == "" || endCountry == "" || description=="")
             {
                 ErrorMessage = "Please fill out all fields!!!";
             }
@@ -190,6 +190,7 @@ namespace TourPlanner.ViewModels
                     toCountry = endCountry,
                     tourDescription = description
                 };
+
                 if (!TourItemFactory.GetMainViewInstance().CheckNewTourData(newTour))
                 {
                     ErrorMessage = "please only use letters, numbers or spaces";

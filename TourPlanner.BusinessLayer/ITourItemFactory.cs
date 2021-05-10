@@ -21,6 +21,6 @@ namespace TourPlanner.BusinessLayer
         bool CreateTours(TourSearch newTourData);
 
         bool CheckNewTourData(TourSearch info);
-        bool DeleteCurrentTour(string name);
+        bool DeleteCurrentTour(Tour currentTour);
     }
 }

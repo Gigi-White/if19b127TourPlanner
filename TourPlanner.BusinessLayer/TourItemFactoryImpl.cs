@@ -16,6 +16,7 @@ namespace TourPlanner.BusinessLayer
         private List<RawRouteInfo> CurrentRouteInfo { get; set; }
         private  IDatabaseTourOrders mydatabaseTourOrders;
         private IDatabaseRouteOrders mydatabaseRouteOrders;
+        private IDatabaseLogOrders mydatabaseLogOrders;
         private IHttpConnection myHttpConnection;
         private IFileHandler myFileHandler;
         private IHttpResponseHandler myResponseHandler;
@@ -24,6 +25,7 @@ namespace TourPlanner.BusinessLayer
         {
             mydatabaseTourOrders =DataConnectionFactory.GetDatabaseToursInstance();
             mydatabaseRouteOrders = DataConnectionFactory.GetDatabaseRouteInstance();
+            mydatabaseLogOrders = DataConnectionFactory.GetDatabaseLogInstance();
             myHttpConnection = DataConnectionFactory.GetHttpInstance();
             myFileHandler = DataConnectionFactory.GetFileHandlerInstance();
             myResponseHandler = new HttpResponseHandler();
@@ -194,22 +196,38 @@ namespace TourPlanner.BusinessLayer
 
         private bool CheckText(string text)
         {
+            if (text == null)
+            {
+                return false;
+            }
+            
             return whitelist.IsMatch(text);
 
         }
 
 
         //Delete Current Tour Code----------------------------------------------------------------------
-        public bool DeleteCurrentTour(string name)
-        {
-            if (mydatabaseTourOrders.DeleteTour(name)&& mydatabaseRouteOrders.DeleteRouteData(name) && myFileHandler.DeleteImage(name) && myFileHandler.DeleteDescription(name))
+        public bool DeleteCurrentTour(Tour currentTour)
+        {          
+            OnUpdateTourList();
+            if (mydatabaseTourOrders.DeleteTour(currentTour.Name) && mydatabaseRouteOrders.DeleteRouteData(currentTour.Name) && mydatabaseLogOrders.deleteAllLogsofTour(currentTour.Name) && myFileHandler.DeleteDescription(currentTour.Descriptionfile) && myFileHandler.DeleteImage(currentTour.Imagefile))
             {
+                AllTours.Remove(currentTour);
+                OnUpdateTourList();
                 return true;
             }
             else
             {
                 return false;
             }
+
+
+             
+            
+           
         }
+
+
+
     }
 }

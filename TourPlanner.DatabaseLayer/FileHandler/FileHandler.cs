@@ -52,8 +52,9 @@ namespace TourPlanner.DataAccessLayer
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadFile(fullUrl, imagePath);
+                    webClient.Dispose();
                 }
-
+               
 
                 return imagePath;
             }
@@ -78,15 +79,30 @@ namespace TourPlanner.DataAccessLayer
             return descritionPath;
         }
         
-        public bool DeleteImage(string imagefile)
+        public bool ChangeFilename(string filename)
         {
             return true;
         }
 
-        public bool DeleteDescription(string imagefile)
+        public bool ChangeDescription(string filename,string newDescription)
         {
             return true;
         }
+
+        public bool DeleteImage(string imageFile)
+        {
+            File.Delete(imageFile);
+            return(!File.Exists(imageFile) ?  true :  false);
+                        
+        }
+
+        public bool DeleteDescription(string descriptionFile)
+        {
+            File.Delete(descriptionFile);
+            return (!File.Exists(descriptionFile) ? true : false);
+        }
+
+
 
     }
 }

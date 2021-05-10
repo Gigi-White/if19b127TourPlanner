@@ -14,6 +14,8 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         private static string SaveRouteInfoSql = "INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)";
 
+        private static string deleteRouteInfoSql = "DELETE FROM routeinfo WHERE tourname = @name";
+
         private string accessData { get; set; }
 
         public DatabaseRouteOrders()
@@ -65,7 +67,26 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         public bool DeleteRouteData(string tourName)
         {
-            throw new NotImplementedException();
+            var sql = deleteRouteInfoSql;
+            NpgsqlConnection con = DataConnectionFactory.GetCon();
+            con.Open();
+
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("name", tourName);
+
+            cmd.Prepare();
+
+
+            if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
+            {
+                con.Close();
+                return true;
+            }
+            else
+            {
+                con.Close();
+                return false;
+            }
         }
     }
 }

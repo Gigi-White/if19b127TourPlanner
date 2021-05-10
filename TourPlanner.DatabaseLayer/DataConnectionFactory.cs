@@ -8,10 +8,12 @@ namespace TourPlanner.DataAccessLayer
     public class DataConnectionFactory
     {
         private static IDatabaseTourOrders databaseTourOrdersInstance;
+        private static IDatabaseRouteOrders databaseRouteOrdersInstance;
+        private static IDatabaseLogOrders databaseLogOrdersInstance;
         private static IHttpConnection httpConnectionInstance;
         //private ImageHandler imageHandleInstance;
         private static IDatabaseConnection databaseConnectionInstance;
-        private static IDatabaseRouteOrders databaseRouteOrdersInstance;
+        
         private static IFileHandler fileHandlerInstance;
         private static NpgsqlConnection con;
 
@@ -32,6 +34,15 @@ namespace TourPlanner.DataAccessLayer
                 databaseRouteOrdersInstance = new DatabaseRouteOrders();
             }
             return databaseRouteOrdersInstance;
+        }
+
+        public static IDatabaseLogOrders GetDatabaseLogInstance()
+        {
+            if (databaseLogOrdersInstance == null)
+            {
+                databaseLogOrdersInstance = new DatabaseLogOrders();
+            }
+            return databaseLogOrdersInstance;
         }
 
         public static IHttpConnection GetHttpInstance()

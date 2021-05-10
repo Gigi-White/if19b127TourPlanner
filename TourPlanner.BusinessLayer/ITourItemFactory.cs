@@ -23,5 +23,6 @@ namespace TourPlanner.BusinessLayer
         bool CheckNewTourData(TourSearch info);
         bool DeleteCurrentTour(Tour currentTour);
         bool CopyCurrentTour(Tour currentTour);
+        IEnumerable<RawRouteInfo> GetRouteInfo(string tourname);
     }
 }

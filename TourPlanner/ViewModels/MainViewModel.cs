@@ -54,6 +54,8 @@ namespace TourPlanner.ViewModels
 
         public ObservableCollection<Tour> Tours { get; set; }
         public ObservableCollection<string> SearchOptionList { get; set; }
+
+        public ObservableCollection<RawRouteInfo> RouteInfo { get; set; }
         //--------------------------------------------------------
 
         private string searchTour;
@@ -87,11 +89,23 @@ namespace TourPlanner.ViewModels
                 if (currentTour != value && value != null)
                 {
                     currentTour = value;
+                    FillRouteInfo();
                     CleanMessages();
                     CurrentTourImage = currentTour.Imagefile;
                     RaisePropertyChangedEvent(nameof(CurrentTour));
                 }
             }
+        }
+
+        private void FillRouteInfo()
+        {          
+            IEnumerable<RawRouteInfo> myRouteinfo = TourWorker.GetRouteInfo(currentTour.Name);
+            {
+                RouteInfo.Clear();
+                foreach (var item in myRouteinfo)
+                RouteInfo.Add(item);
+            }
+
         }
 
         private string currentTourImage;
@@ -176,6 +190,7 @@ namespace TourPlanner.ViewModels
             log.Info("Maintenance: Main View Model has startet");
             TourWorker = TourItemFactory.GetMainViewInstance();
             SearchOptionList = new ObservableCollection<string>();
+            RouteInfo = new ObservableCollection<RawRouteInfo>();
             Tours = new ObservableCollection<Tour>();
             FillCompleteTourList();
             FillSearchOtionList();
@@ -225,6 +240,10 @@ namespace TourPlanner.ViewModels
                 FillCompleteTourList();
             }
         }
+
+
+
+        //Commands-----------------------------------------------------------------------------------------------
 
         private ICommand deleteTourCommand;
 

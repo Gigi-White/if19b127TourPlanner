@@ -52,6 +52,12 @@ namespace TourPlanner.BusinessLayer
 
             return AllTours;
         }
+
+        public IEnumerable<RawRouteInfo> GetRouteInfo(string tourname)
+        {
+            IEnumerable<RawRouteInfo> myRouteInfoList = mydatabaseRouteOrders.GetRouteInfo(tourname);
+            return myRouteInfoList;
+        }
         //Search Tours after certen value and searchOtion----------------------------------------------------
         public IEnumerable<Tour> SearchTours(string word, string searchOption)
         {

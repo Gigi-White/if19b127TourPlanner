@@ -98,7 +98,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="260"/>
 
                     </Grid.RowDefinitions>
 
@@ -122,7 +122,17 @@
                     </Grid>
 
                     <Grid Grid.Row="2">
-                        <!--Hier sollte die Routenbeschreibung aufgelistet werden -->
+                        <ListBox x:Name="listRouteInfo" ItemsSource="{Binding RouteInfo}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=maneuverNumber}" />
+                                        <TextBlock Text=": " />
+                                        <TextBlock Text="{Binding Path=narrative}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </Grid>
 
 

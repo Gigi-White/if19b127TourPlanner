@@ -94,6 +94,7 @@ namespace TourPlanner.DataAccessLayer
 
         public bool ChangeDescription(string filename,string newDescription)
         {
+            System.IO.File.WriteAllText(filename, newDescription);
             return true;
         }
 
@@ -108,6 +109,12 @@ namespace TourPlanner.DataAccessLayer
         {
             File.Delete(descriptionFile);
             return (!File.Exists(descriptionFile) ? true : false);
+        }
+
+        public string getDescription(string descriptionFile)
+        {
+            string text = File.ReadAllText(descriptionFile);
+            return text;
         }
 
 

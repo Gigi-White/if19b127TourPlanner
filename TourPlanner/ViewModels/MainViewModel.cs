@@ -17,6 +17,10 @@ namespace TourPlanner.ViewModels
 
         ITourItemFactory TourWorker;
 
+        public ObservableCollection<Tour> Tours { get; set; }
+        public ObservableCollection<string> SearchOptionList { get; set; }
+        public ObservableCollection<RawRouteInfo> RouteInfo { get; set; }
+
 
         private string tourMessage;
         public string TourMessage
@@ -52,10 +56,7 @@ namespace TourPlanner.ViewModels
         }
 
 
-        public ObservableCollection<Tour> Tours { get; set; }
-        public ObservableCollection<string> SearchOptionList { get; set; }
 
-        public ObservableCollection<RawRouteInfo> RouteInfo { get; set; }
         //--------------------------------------------------------
 
         private string searchTour;
@@ -90,6 +91,7 @@ namespace TourPlanner.ViewModels
                 {
                     currentTour = value;
                     FillRouteInfo();
+                    TourWorker.SetCurrentTour(currentTour);
                     CleanMessages();
                     CurrentTourImage = currentTour.Imagefile;
                     RaisePropertyChangedEvent(nameof(CurrentTour));

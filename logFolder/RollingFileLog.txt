@@ -548,3 +548,172 @@
 16:34:56,035 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
 16:34:56,712 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
 16:34:59,961 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+14:48:00,935 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+14:48:02,850 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+14:48:07,478 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+14:48:09,690 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+14:48:37,341 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+14:48:42,430 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+14:48:43,153 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+18:16:53,342 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:16:55,125 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:17:00,491 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+18:17:01,332 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+18:40:02,347 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:40:03,215 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:41:27,960 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:41:28,871 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:41:43,618 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+18:42:43,137 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:42:44,084 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:53:16,525 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:53:17,199 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:53:25,242 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+18:53:36,473 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:53:37,154 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:53:39,359 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+18:56:18,923 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+18:56:19,894 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+18:56:22,432 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:00:25,452 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+19:00:26,452 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+19:00:28,249 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:00:55,945 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:00:56,514 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:00:56,921 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:00:57,667 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:01:00,550 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:01:13,175 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+19:01:13,986 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+19:03:06,069 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+19:03:07,051 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+19:03:15,388 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:03:18,751 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:09:12,600 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+19:09:13,474 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+19:09:19,608 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+19:10:07,515 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:10:08,550 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+20:10:09,568 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+20:10:13,180 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:11:59,511 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: UPDATE tours SET tourname = @newtoruname  WHERE tourname = @oldtourname
+20:12:24,348 TourPlanner.DataAccessLayer.DatabaseConnection ERROR - Maintenance: Database did not execute the SQL Command
+Npgsql.PostgresException (0x80004005): 42703: Spalte »oldtourname« existiert nicht
+   at Npgsql.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|194_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at TourPlanner.DataAccessLayer.DatabaseConnection.updateDatabaseData(NpgsqlCommand sqlCommand) in C:\Users\chris\OneDrive\Desktop\FH\Viertes Semester\Software Engineering 2\Übung\Projekt\TourPlanner.DatabaseLayer\SQLDatabase\DatabaseConnection.cs:line 42
+  Exception data:
+    Severity: FEHLER
+    SqlState: 42703
+    MessageText: Spalte »oldtourname« existiert nicht
+    Hint: Vielleicht wurde beabsichtigt, auf die Spalte »tours.tourname« zu verweisen.
+    Position: 51
+    File: d:\pginstaller_13.auto\postgres.windows-x64\src\backend\parser\parse_relation.c
+    Line: 3513
+    Routine: errorMissingColumn
+20:12:34,282 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:12:34,947 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:12:36,003 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:12:36,275 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:12:37,659 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:12:37,994 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:14:50,746 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+20:14:51,720 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+20:14:53,555 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:16:12,801 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+20:16:13,718 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+20:17:31,205 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+20:17:32,083 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+20:17:35,917 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:18:23,528 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: UPDATE tours SET tourname = @newtourname  WHERE tourname = @oldtourname
+20:22:41,903 TourPlanner.ViewModels.MainViewModel INFO - Maintenance: Main View Model has startet
+20:22:42,701 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM tours
+20:23:29,395 TourPlanner.ViewModels.CreateTourViewModel INFO - Interaction: Start to create new Tour
+20:23:44,056 TourPlanner.ViewModels.CreateTourViewModel INFO - Interaction: Start to create new Tour
+20:23:46,615 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile,descriptionfile,formattedtime ) VALUES(@name, @start, @end, @distance, @date, @image, @description,@formattedtime)
+20:23:46,629 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,635 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,636 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,636 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,637 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,638 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,638 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,639 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,639 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,640 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,641 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,641 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,642 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,643 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,643 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,644 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,645 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,645 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,646 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,647 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:46,650 TourPlanner.ViewModels.CreateTourViewModel INFO - Interaction: Tour was successfully created
+20:23:49,485 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:23:53,087 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile,descriptionfile,formattedtime ) VALUES(@name, @start, @end, @distance, @date, @image, @description,@formattedtime)
+20:23:53,090 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:23:53,091 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,092 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,093 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,094 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,094 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,095 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,096 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,096 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,097 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,098 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,099 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,099 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,100 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,100 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,101 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,102 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,102 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,103 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,103 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:53,104 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: INSERT INTO routeinfo(tourname, maneuvernumber, narrative, distance, formattedtime) VALUES(@name, @number, @narrative, @distance, @time)
+20:23:55,115 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:23:58,000 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:23:58,868 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: DELETE FROM tours WHERE  tourname = @name
+20:23:58,870 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: DELETE FROM routeinfo WHERE tourname = @name
+20:24:00,028 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:01,224 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:01,738 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:02,371 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:29,010 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: UPDATE tours SET tourname = @newtourname  WHERE tourname = @oldtourname
+20:24:29,021 TourPlanner.BusinessLayer.TourItemFactoryImpl INFO - Tour "Neue Tourcopy" was changed
+20:24:35,940 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:37,050 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:37,377 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:37,674 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:39,107 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:39,497 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:39,868 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:40,872 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:41,425 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:41,779 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:42,192 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:42,565 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:42,867 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:43,139 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:43,393 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:43,816 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:44,140 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:44,523 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:50,491 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:50,859 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:53,026 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: DELETE FROM tours WHERE  tourname = @name
+20:24:53,031 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: updateDatabaseData SQLCommand: DELETE FROM routeinfo WHERE tourname = @name
+20:24:53,919 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:53,949 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:55,190 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:55,667 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name
+20:24:56,730 TourPlanner.DataAccessLayer.DatabaseConnection DEBUG - Maintenance: getDatabaseData SQLCommand: SELECT* FROM routeinfo WHERE tourname = @name

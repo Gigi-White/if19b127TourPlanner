@@ -15,6 +15,7 @@ namespace TourPlanner.DataAccessLayer
         private static string getAllToursSql = "SELECT* FROM tours";
         private static string saveToursSql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile,descriptionfile,formattedtime ) VALUES(@name, @start, @end, @distance, @date, @image, @description,@formattedtime)";
         private static string deleteTourSql = "DELETE FROM tours WHERE  tourname = @name";
+        private static string changeTourNameSql = "UPDATE tours SET tourname = @newtourname  WHERE tourname = @oldtourname";
         public DatabaseTourOrders()
         {
             accessData = ConfigurationManager.AppSettings["DatabaseAccess"].ToString();
@@ -107,9 +108,26 @@ namespace TourPlanner.DataAccessLayer
 
        
 
-        public bool ChangeTour(Tour changedTour)
+        public bool ChangeTour(string oldTourName, string newTourName)
         {
-            throw new NotImplementedException();
+            string sql = changeTourNameSql;
+            NpgsqlConnection con = DataConnectionFactory.GetCon();
+            con.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("newtourname", newTourName);
+            cmd.Parameters.AddWithValue("oldtourname", oldTourName);
+            
+            if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
+            {
+                con.Close();
+                return true;
+            }
+            else
+            {
+
+                con.Close();
+                return false;
+            }
         }
 
 
@@ -140,14 +158,6 @@ namespace TourPlanner.DataAccessLayer
                 return false;
             }
         }
-
-
-
-        public bool CopyTour(string tourname)
-        {
-            throw new NotImplementedException();
-        }
-
 
 
     }

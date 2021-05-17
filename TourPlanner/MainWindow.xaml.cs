@@ -27,12 +27,20 @@ namespace TourPlanner
             InitializeComponent();
         }
 
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        private void CreateTourButton_Click(object sender, RoutedEventArgs e)
         {
             CreateTour createTourWindow = new CreateTour();
             createTourWindow.Show();
 
         }
+
+        private void ModifyTourButton_Click(object sender, RoutedEventArgs e)
+        {
+            ModifyTour createTourWindow = new ModifyTour();
+            createTourWindow.Show();
+
+        }
+
 
         private void listTourNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

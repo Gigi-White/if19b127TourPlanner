@@ -15,6 +15,9 @@ namespace TourPlanner.BusinessLayer
         void setUpdateToursEventhandler(UpdateToursEventHandler newEvent);
 
         IEnumerable<Tour> GetTours();
+        void SetCurrentTour(Tour viewModelCurrentTour);
+        string GetCurrentTourname();
+        string GetCurrentTourDescription();
 
         IEnumerable<Tour> SearchTours(string word, string searchOption);
 
@@ -23,6 +26,8 @@ namespace TourPlanner.BusinessLayer
         bool CheckNewTourData(TourSearch info);
         bool DeleteCurrentTour(Tour currentTour);
         bool CopyCurrentTour(Tour currentTour);
+        bool CheckText(string text);
         IEnumerable<RawRouteInfo> GetRouteInfo(string tourname);
+        bool ModifyTour(string currentTourName, string changedTourName, string currentTourDescription);
     }
 }

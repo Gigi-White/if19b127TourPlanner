@@ -13,6 +13,7 @@ namespace TourPlanner.BusinessLayer
 
         private Regex whitelist;
         private List<Tour> AllTours { get; set; }
+        private Tour currentTour { get; set; }
         private List<RawRouteInfo> CurrentRouteInfo { get; set; }
         private  IDatabaseTourOrders mydatabaseTourOrders;
         private IDatabaseRouteOrders mydatabaseRouteOrders;
@@ -46,19 +47,49 @@ namespace TourPlanner.BusinessLayer
 
         }
 
+        public void SetCurrentTour(Tour viewModelCurrentTour)
+        {
+            if (viewModelCurrentTour != null) 
+            {
+                currentTour = viewModelCurrentTour;
+            }
+        }
+
+        public string GetCurrentTourname()
+        {
+            if (currentTour != null)
+            {
+                return currentTour.Name;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public string GetCurrentTourDescription()
+        {
+            if (currentTour != null)
+            {
+                string myText = myFileHandler.getDescription(currentTour.Descriptionfile);
+                return myText;
+            }
+            else 
+            {
+                return null;
+            }
+        }
 
         public IEnumerable<Tour> GetTours()
         {
-
             return AllTours;
         }
-
         public IEnumerable<RawRouteInfo> GetRouteInfo(string tourname)
         {
             IEnumerable<RawRouteInfo> myRouteInfoList = mydatabaseRouteOrders.GetRouteInfo(tourname);
             return myRouteInfoList;
         }
-        //Search Tours after certen value and searchOtion----------------------------------------------------
+        //Search Tours after certan value and search Option----------------------------------------------------
         public IEnumerable<Tour> SearchTours(string word, string searchOption)
         {
             List<Tour> foundTours = new List<Tour>();
@@ -200,7 +231,7 @@ namespace TourPlanner.BusinessLayer
         }
 
 
-        private bool CheckText(string text)
+        public bool CheckText(string text)
         {
             if (text == null)
             {
@@ -286,6 +317,35 @@ namespace TourPlanner.BusinessLayer
             return true;
         }
 
+        
+        
+        public bool ModifyTour(string currentTourName, string changedTourName, string changedTourDescription)
+        {
+            bool worked = true;
+            Tour toModifyTour = new Tour();
+            foreach(var item in AllTours)
+            {
+                if (item.Name == currentTourName)
+                {
+                    toModifyTour = item;
+                }
+
+            }
+            if (currentTourName != changedTourName)
+            {
+                worked = mydatabaseTourOrders.ChangeTour(currentTourName,changedTourName);
+            }
+
+            worked = myFileHandler.ChangeDescription(toModifyTour.Descriptionfile, changedTourDescription);
+            if (worked)
+            {
+                toModifyTour.Name = changedTourName;
+                OnUpdateTourList();
+            }
+            log.Info("Tour \"" + currentTourName + "\" was changed");
+
+            return worked;
+        }
     }
         
 }

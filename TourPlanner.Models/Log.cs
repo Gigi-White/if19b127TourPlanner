@@ -6,8 +6,9 @@ namespace TourPlanner.Models
 {
     public class Log
     {
+        string name { get; set; }
         string date { get; set; }
-        string report { get; set; }
+        string reportfile { get; set; }
         int distance { get; set; }
         string totalTime { get; set; }
         int rating { get; set; }

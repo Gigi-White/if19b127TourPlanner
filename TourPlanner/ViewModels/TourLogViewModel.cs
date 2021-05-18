@@ -18,11 +18,31 @@ namespace TourPlanner.ViewModels
         public ObservableCollection<string> SearchOptionList { get; set; }
 
         private string currentTourName;
-      
+
 
         //--------------------------------------------------------------------------------------
 
         //Getter and setter for the view Information---------------------------------------------
+        private string errorMessage;
+        public string ErrorMessage
+        {
+            get
+            {
+                return errorMessage;
+            }
+            set
+            {
+                if (errorMessage != value)
+                {
+                    errorMessage = value;
+                    RaisePropertyChangedEvent(nameof(ErrorMessage));
+                }
+            }
+        }
+
+
+
+
         private string searchLog;
         public string SearchLog
         {
@@ -79,6 +99,9 @@ namespace TourPlanner.ViewModels
             }
         }
 
+
+
+
         //------------------------------------------------------------------------------------
 
 
@@ -89,11 +112,20 @@ namespace TourPlanner.ViewModels
         {
             TourWorker = TourItemFactory.GetMainViewInstance();
             LogWorker = TourItemFactory.GetLogViewInstance();
-
-            currentTourName = TourWorker.GetCurrentTourname();
             TourLogs = new ObservableCollection<Log>();
-            FillCompleteLogList();
-            FillSearchOtionList();
+            SearchOptionList = new ObservableCollection<string>();
+            currentTourName = TourWorker.GetCurrentTourname();
+            if (currentTourName == null)
+            {
+                ErrorMessage = "No Tour was chosen. Please close this window";
+            }
+            else
+            {
+                FillCompleteLogList();
+                FillSearchOtionList();
+            }
+            
+          
 
         }
 
@@ -131,7 +163,7 @@ namespace TourPlanner.ViewModels
         //commands---------------------------------------------------------------------------
         private void CleanMessages()
         {
-            throw new NotImplementedException();
+            ErrorMessage=null;
         }
 
         private void SearchLogs()

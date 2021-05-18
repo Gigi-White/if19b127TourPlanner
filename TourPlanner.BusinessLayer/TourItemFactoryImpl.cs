@@ -15,7 +15,7 @@ namespace TourPlanner.BusinessLayer
         private List<Tour> AllTours { get; set; }
         private Tour currentTour { get; set; }
         private List<RawRouteInfo> CurrentRouteInfo { get; set; }
-        private  IDatabaseTourOrders mydatabaseTourOrders;
+        private IDatabaseTourOrders mydatabaseTourOrders;
         private IDatabaseRouteOrders mydatabaseRouteOrders;
         private IDatabaseLogOrders mydatabaseLogOrders;
         private IHttpConnection myHttpConnection;

@@ -95,7 +95,7 @@
 
                         <Button FontSize="15" Margin="5" Grid.Column="0" Name="ExportButton" HorizontalAlignment="Center">Export Tour</Button>
                         <Button FontSize="15" Margin="5" Grid.Column="1" Name="ImportButton" HorizontalAlignment="Center">Import Tour</Button>
-                        <Button FontSize="15" Margin="5" Grid.Column="2" Name="TourReportButton" HorizontalAlignment="Center">Show Logs</Button>
+                        <Button FontSize="15" Margin="5" Grid.Column="2" Name="TourReportButton" HorizontalAlignment="Center" Click="ShowLogsButton_Click">Show Logs</Button>
 
                     </Grid>
 

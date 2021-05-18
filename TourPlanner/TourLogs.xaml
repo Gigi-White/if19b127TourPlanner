@@ -31,17 +31,6 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <TextBlock FontSize="20" Text="{Binding Path=TourMessage}" HorizontalAlignment="Center" Foreground="MediumBlue">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TourMessage}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
                 </StackPanel>
             </Grid>
             
@@ -70,7 +59,7 @@
                     <ListBox Grid.Row="1" x:Name="listTourNames"
                              ItemsSource="{Binding TourLogs}"
                              SelectedItem="{Binding CurrentLog, Mode=TwoWay}"
-                             DisplayMemberPath="Name"
+                             DisplayMemberPath="name"
                              Margin="5">
 
 

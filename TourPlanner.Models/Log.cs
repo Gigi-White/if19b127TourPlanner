@@ -6,17 +6,17 @@ namespace TourPlanner.Models
 {
     public class Log
     {
-        string name { get; set; }
-        string date { get; set; }
-        string reportfile { get; set; }
-        int distance { get; set; }
-        string totalTime { get; set; }
-        int rating { get; set; }
-        string travelBy { get; set; }
-        float averageSpeed { get; set; }
-        string recommandRestaurant{ get; set; }
-        string recommandHotel { get; set; }
-        string sightWorthSeeing { get; set; }
+        public string name { get; set; }
+        public string date { get; set; }
+        public string reportfile { get; set; }
+        public int distance { get; set; }
+        public string totalTime { get; set; }
+        public int rating { get; set; }
+        public string travelBy { get; set; }
+        public string averageSpeed { get; set; }
+        public string recommandRestaurant { get; set; }
+        public string recommandHotel { get; set; }
+        public string sightWorthSeeing { get; set; }
 
     }
 }

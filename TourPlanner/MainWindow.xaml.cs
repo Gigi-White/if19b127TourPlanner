@@ -41,7 +41,11 @@ namespace TourPlanner
 
         }
 
-
+        private void ShowLogsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TourLogs tourLogsWindow = new TourLogs();
+            tourLogsWindow.Show();
+        }
         private void listTourNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 

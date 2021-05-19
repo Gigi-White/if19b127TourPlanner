@@ -24,14 +24,37 @@ namespace TourPlanner.BusinessLayer
         }
         //----------------------------------------------------------------------
 
+        //Set Event Handler for Update of Loglist-------------------------------
+        private UpdateLogsEventHandler UpdatingLogList;
+
+
+        public void setUpdateLogsEventhandler(UpdateLogsEventHandler newEvent)
+        {
+            UpdatingLogList += newEvent;
+        }
+
+        protected virtual void OnUpdateLogList()
+        {
+            if (UpdatingLogList != null)
+            {
+                UpdatingLogList(this, EventArgs.Empty);
+            }
+
+        }
+
+        //--------------------------------------------------------------------------
+
+
         //get logs of current Tour
         public IEnumerable<Log> GetLogs(string currentTourName)
         {
+            //AllLogs.Clear();
             AllLogs = myDatabaseLogOrders.GetLogsofTour(currentTourName);
+                     
             return AllLogs;
         }
 
-        //get end set current Tour name-----------------------------------
+        //get and set current Tour name-----------------------------------
         public string GetCurrentTourName()
         {
             return currentTourName;
@@ -67,8 +90,11 @@ namespace TourPlanner.BusinessLayer
             //save the new log in the database
             if (myDatabaseLogOrders.CreateLog(myNewLog))
             {
+                OnUpdateLogList();
                 return "true";
+                
             }
+            
             else
             {
                 return "There was a error in during the procedure";

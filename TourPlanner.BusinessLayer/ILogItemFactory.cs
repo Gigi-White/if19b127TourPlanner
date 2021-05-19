@@ -5,8 +5,11 @@ using TourPlanner.Models;
 
 namespace TourPlanner.BusinessLayer
 {
+
+    public delegate void UpdateLogsEventHandler(object source, EventArgs args);
     public interface ILogItemFactory
     {
+        void setUpdateLogsEventhandler(UpdateLogsEventHandler newEvent);
         IEnumerable<Log> GetLogs(string currentTourName);
         void SetCurrentTourName(string currentTourName);
         string GetCurrentTourName();

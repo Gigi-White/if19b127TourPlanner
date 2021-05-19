@@ -133,7 +133,8 @@ namespace TourPlanner.ViewModels
             TourLogs = new ObservableCollection<Log>();
             SearchOptionList = new ObservableCollection<string>();
             currentTourName = TourWorker.GetCurrentTourname();
-            
+            LogWorker.setUpdateLogsEventhandler(UpdateLogList);
+
             if (currentTourName == null || currentTourName == "")
             {
                 ErrorMessage = "No Tour was chosen. Please close this window";
@@ -148,7 +149,10 @@ namespace TourPlanner.ViewModels
           
 
         }
-
+        public void UpdateLogList(object source, EventArgs e)
+        {
+            FillCompleteLogList();
+        }
 
 
         private void FillCompleteLogList()

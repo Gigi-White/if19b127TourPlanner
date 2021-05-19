@@ -10,5 +10,7 @@ namespace TourPlanner.BusinessLayer
         IEnumerable<Log> GetLogs(string currentTourName);
         void SetCurrentTourName(string currentTourName);
         string GetCurrentTourName();
+        string CreateNewTourLog(Log myNewLog, string report);
+        string GetLogReport(string reportfile);
     }
 }

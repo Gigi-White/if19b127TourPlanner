@@ -56,14 +56,14 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Grid.Row="0"  FontSize="20"  Margin="5" Text="Logs"></TextBlock>
-                        <Button FontSize="20" Margin="5" Grid.Column="0" Name="CreateButton" Click="CreateTourButton_Click">Create</Button>
+                        <Button FontSize="20" Margin="5" Grid.Column="0" Name="CreateButton" Click="CreateTourLogButton_Click">Create</Button>
                         <Button FontSize="20" Margin="5" Grid.Column="1" Name="ModifyButton" Click="ModifyTourButton_Click" >Modify</Button>
 
                     </StackPanel>
                     <ListBox Grid.Row="1" x:Name="listTourNames"
                              ItemsSource="{Binding TourLogs}"
                              SelectedItem="{Binding CurrentLog, Mode=TwoWay}"
-                             DisplayMemberPath="name"
+                             DisplayMemberPath="logname"
                              Margin="5">
 
 
@@ -110,16 +110,16 @@
                         <TextBlock Grid.Row="8" Grid.Column="0" Text="Rating:"/>
                         <TextBlock Grid.Row="9" Grid.Column="0" Text="Report:"/>
 
-                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding CurrentLog.date}"/>
-                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding CurrentLog.distance}"/>
-                        <TextBlock  Grid.Row="2" Grid.Column="1" Text="{Binding CurrentLog.totalTime}"/>
-                        <TextBlock  Grid.Row="3" Grid.Column="1" Text="{Binding CurrentLog.travelBy}"/>
-                        <TextBlock  Grid.Row="4" Grid.Column="1" Text="{Binding CurrentLog.averageSpeed}"/>
-                        <TextBlock  Grid.Row="5" Grid.Column="1" Text="{Binding CurrentLog.recommandRestaurant}"/>
-                        <TextBlock  Grid.Row="6" Grid.Column="1" Text="{Binding CurrentLog.recommandHotel}"/>
-                        <TextBlock  Grid.Row="7" Grid.Column="1" Text="{Binding CurrentLog.sightWorthSeeing}"/>
-                        <TextBlock  Grid.Row="8" Grid.Column="1" Text="{Binding CurrentLog.rating}"/>
-                        <TextBlock  Grid.Row="8" Grid.Column="1" Text="{Binding  CurrentLogReport}"/>
+                        <TextBlock  Grid.Row="0" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.date}"/>
+                        <TextBlock  Grid.Row="1" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.distance}"/>
+                        <TextBlock  Grid.Row="2" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.totalTime}"/>
+                        <TextBlock  Grid.Row="3" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.travelBy}"/>
+                        <TextBlock  Grid.Row="4" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.averageSpeed}"/>
+                        <TextBlock  Grid.Row="5" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.recommandRestaurant}"/>
+                        <TextBlock  Grid.Row="6" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.recommandHotel}"/>
+                        <TextBlock  Grid.Row="7" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.sightWorthSeeing}"/>
+                        <TextBlock  Grid.Row="8" Margin="5,0,0,0" Grid.Column="1" Text="{Binding CurrentLog.rating}"/>
+                        <TextBlock  Grid.Row="9" Margin="5,0,0,0" Grid.Column="1" Text="{Binding  CurrentLogReport}"/>
                     </Grid>
                     <Grid Grid.Row="2">
                         

@@ -91,6 +91,7 @@ namespace TourPlanner.ViewModels
                 if (currentLog != value && value != null)
                 {
                     currentLog = value;
+                    CurrentLogReport = LogWorker.GetLogReport(currentLog.reportfile);
                     CleanMessages();                   
                     RaisePropertyChangedEvent(nameof(CurrentLog));
                 }
@@ -141,7 +142,7 @@ namespace TourPlanner.ViewModels
             {
                 LogWorker.SetCurrentTourName(currentTourName);
                 FillCompleteLogList();
-                FillSearchOtionList();
+                FillSearchOptionList();
             }
             
           
@@ -167,7 +168,7 @@ namespace TourPlanner.ViewModels
         }
 
 
-        private void FillSearchOtionList()
+        private void FillSearchOptionList()
         {
             SearchOptionList.Add("Name");
             SearchOptionList.Add("Start");

@@ -22,10 +22,10 @@ namespace TourPlanner
             InitializeComponent();
         }
 
-        private void CreateTourButton_Click(object sender, RoutedEventArgs e)
+        private void CreateTourLogButton_Click(object sender, RoutedEventArgs e)
         {
-            //CreateTour createTourWindow = new CreateTour();
-            //createTourWindow.Show();
+            CreateTourLog createLogWindow = new CreateTourLog();
+            createLogWindow.Show();
 
         }
 

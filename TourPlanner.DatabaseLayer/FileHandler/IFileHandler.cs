@@ -19,6 +19,6 @@ namespace TourPlanner.DataAccessLayer
         bool CopyFile(string filename, string newfilename);
 
         string getDescription(string descriptionFile);
-
+        string SaveReport(string report, string logname);
     }
 }

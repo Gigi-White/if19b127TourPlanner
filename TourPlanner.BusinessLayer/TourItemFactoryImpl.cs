@@ -247,7 +247,7 @@ namespace TourPlanner.BusinessLayer
         public bool DeleteCurrentTour(Tour currentTour)
         {          
             OnUpdateTourList();
-            if (mydatabaseTourOrders.DeleteTour(currentTour.Name) && mydatabaseRouteOrders.DeleteRouteData(currentTour.Name) && mydatabaseLogOrders.deleteAllLogsofTour(currentTour.Name) && myFileHandler.DeleteDescription(currentTour.Descriptionfile) && myFileHandler.DeleteImage(currentTour.Imagefile))
+            if (mydatabaseTourOrders.DeleteTour(currentTour.Name)  && myFileHandler.DeleteDescription(currentTour.Descriptionfile) && myFileHandler.DeleteImage(currentTour.Imagefile))
             {
                 AllTours.Remove(currentTour);
                 OnUpdateTourList();
@@ -305,7 +305,7 @@ namespace TourPlanner.BusinessLayer
                 return false;
             }
 
-            if(!mydatabaseLogOrders.copyLogsofTour(currentTour.Name, copiedTour.Name))
+            if(!mydatabaseLogOrders.CopyLogsofTour(currentTour.Name, copiedTour.Name))
             {
                 return false;
             }

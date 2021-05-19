@@ -16,7 +16,10 @@ namespace TourPlanner.DataAccessLayer
         private string urlImageDownload;
         private string imagefolder;
         private string descriptionfolder;
+        private string logreportfolder;
 
+
+        //constructor-----------------------------------------------------------------------------------------
         public FileHandler()
         {
             folderpath = ConfigurationManager.AppSettings["FolderDirectory"].ToString();
@@ -25,16 +28,17 @@ namespace TourPlanner.DataAccessLayer
             System.IO.Directory.CreateDirectory(descriptionfolder);
             imagefolder = folderpath + "\\imageFolder";
             System.IO.Directory.CreateDirectory(imagefolder);
+            logreportfolder = folderpath + "\\logreportFolder";
+            System.IO.Directory.CreateDirectory(logreportfolder);
 
         }
+        //------------------------------------------------------------------------------------------------------
 
 
+        //methodes for the tour--------------------------------------------------------------------------------
         public string DownloadSaveImage(MainMapSearchData searchData, string tourname)
         {
-
-       
-
-
+ 
             string imagePath = imagefolder + "\\" + tourname + ".png";
 
 
@@ -70,39 +74,51 @@ namespace TourPlanner.DataAccessLayer
 
         }
 
+
+        public bool DeleteImage(string imageFile)
+        {
+            File.Delete(imageFile);
+            return (!File.Exists(imageFile) ? true : false);
+
+        }
+
         public string SaveDescription(string description, string tourname)
         {
             string descritionPath = descriptionfolder +"\\"+ tourname + ".txt";
             StreamWriter newTextfile = File.CreateText(descritionPath);
             newTextfile.WriteLine(description);
             newTextfile.Close();
+            log.Debug("new tourfile of " + tourname + " was created");
             return descritionPath;
         }
-        
-        public bool ChangeFilename(string filename)
+
+
+
+        //-----------------------------------------------------------------------------------------------------------
+
+        //Logfile metodes--------------------------------------------------------------------------------------------
+
+        public string SaveReport(string report, string logname)
         {
-            return true;
+            
+            string logReportPath = logreportfolder + "\\" + logname + ".txt";
+            StreamWriter newTextfile = File.CreateText(logReportPath);
+            newTextfile.WriteLine(report);
+            newTextfile.Close();
+            log.Debug("new logfile of " + logname + " was created");
+            return logReportPath;
+            
         }
 
-        public bool CopyFile(string filename, string newfilename)
-        {
 
-            File.Copy(filename, newfilename); 
-            return File.Exists(newfilename) ;
-        }
+        //-----------------------------------------------------------------------------------------------------------
 
+        //generally metodes------------------------------------------------------
 
-        public bool ChangeDescription(string filename,string newDescription)
+        public bool ChangeDescription(string filename, string newDescription)
         {
             System.IO.File.WriteAllText(filename, newDescription);
             return true;
-        }
-
-        public bool DeleteImage(string imageFile)
-        {
-            File.Delete(imageFile);
-            return(!File.Exists(imageFile) ?  true :  false);
-                        
         }
 
         public bool DeleteDescription(string descriptionFile)
@@ -117,7 +133,19 @@ namespace TourPlanner.DataAccessLayer
             return text;
         }
 
+        public bool ChangeFilename(string filename)
+        {
+            return true;
+        }
+
+        public bool CopyFile(string filename, string newfilename)
+        {
+
+            File.Copy(filename, newfilename);
+            return File.Exists(newfilename);
+        }
 
 
+        //---------------------------------------------------------------------------
     }
 }

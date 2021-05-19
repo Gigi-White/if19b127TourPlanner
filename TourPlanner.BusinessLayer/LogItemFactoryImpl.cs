@@ -13,6 +13,8 @@ namespace TourPlanner.BusinessLayer
         private IDatabaseLogOrders myDatabaseLogOrders;
         private IFileHandler myFileHandler;
         private List<Log> AllLogs { get; set; }
+
+        private string currentTourName;
        
         public LogItemFactoryImpl()
         {
@@ -24,6 +26,15 @@ namespace TourPlanner.BusinessLayer
         {
             AllLogs = myDatabaseLogOrders.getLogsofTour(currentTourName);
             return AllLogs;
+        }
+
+        public void SetCurrentTourName(string currentTourName)
+        {
+            this.currentTourName = currentTourName;
+        }
+        public string GetCurrentTourName()
+        {
+            return currentTourName;
         }
     }
 }

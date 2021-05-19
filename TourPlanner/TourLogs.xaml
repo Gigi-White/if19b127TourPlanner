@@ -18,8 +18,12 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.RowSpan="2">
             <Grid Grid.Row="0">
-                <StackPanel>
-                    <TextBlock Text="Tour Logs" FontSize="30" Margin="5" HorizontalAlignment="Center"/>
+                <StackPanel >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Current Tour: " FontSize="30" Margin="5" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Path=CurrentTourName}" FontSize="30" Margin="5" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    
                     <TextBlock FontSize="20" Text="{Binding Path=ErrorMessage}" HorizontalAlignment="Center" Foreground="DarkRed">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -73,7 +77,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"  FontSize="20" HorizontalAlignment="Center" Text="Trip Data"></TextBlock>
+                    <TextBlock Grid.Row="0"  FontSize="20" HorizontalAlignment="Center" Text="TourLog Data"></TextBlock>
 
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>

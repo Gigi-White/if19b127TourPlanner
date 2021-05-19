@@ -148,19 +148,7 @@ namespace TourPlanner.ViewModels
 
         }
 
-        private BitmapImage CreateBitmapImage(string imagePath)
-        {
-            if (imagePath == null)
-            {
-                return null;
-            }
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(imagePath);
-            image.EndInit();
-            return image;
-        }
+
 
 
         private string searchOption;
@@ -297,6 +285,20 @@ namespace TourPlanner.ViewModels
             {
                 ErrorMessage = "Please select a Tour first";
             }
+        }
+
+        private BitmapImage CreateBitmapImage(string imagePath)
+        {
+            if (imagePath == null)
+            {
+                return null;
+            }
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(imagePath);
+            image.EndInit();
+            return image;
         }
 
         private void CleanMessages()

@@ -19,6 +19,23 @@ namespace TourPlanner.ViewModels
 
         private string currentTourName;
 
+        public string CurrentTourName
+        {
+            get
+            {
+                return currentTourName;
+            }
+            set
+            {
+                if (currentTourName != value)
+                {
+                    currentTourName = value;
+                    LogWorker.SetCurrentTourName(currentTourName);
+                    RaisePropertyChangedEvent(nameof(CurrentTourName));
+                }
+            }
+        }
+
 
         //--------------------------------------------------------------------------------------
 
@@ -115,12 +132,14 @@ namespace TourPlanner.ViewModels
             TourLogs = new ObservableCollection<Log>();
             SearchOptionList = new ObservableCollection<string>();
             currentTourName = TourWorker.GetCurrentTourname();
-            if (currentTourName == null)
+            
+            if (currentTourName == null || currentTourName == "")
             {
                 ErrorMessage = "No Tour was chosen. Please close this window";
             }
             else
             {
+                LogWorker.SetCurrentTourName(currentTourName);
                 FillCompleteLogList();
                 FillSearchOtionList();
             }

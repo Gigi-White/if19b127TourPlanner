@@ -68,7 +68,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Grid.Row="0"  FontSize="20"  Margin="5" Text="Logs"></TextBlock>
                         <Button FontSize="20" Margin="5" Grid.Column="0" Name="CreateButton" Click="CreateTourLogButton_Click">Create</Button>
-                        <Button FontSize="20" Margin="5" Grid.Column="1" Name="ModifyButton" Click="ModifyTourButton_Click" >Modify</Button>
+                        <Button FontSize="20" Margin="5" Grid.Column="1" Name="ModifyButton" Click="ModifyTourLogButton_Click" >Modify</Button>
 
                     </StackPanel>
                     <ListBox Grid.Row="1" x:Name="listTourNames"

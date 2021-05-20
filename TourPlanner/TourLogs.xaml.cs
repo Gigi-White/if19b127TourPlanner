@@ -29,10 +29,10 @@ namespace TourPlanner
 
         }
 
-        private void ModifyTourButton_Click(object sender, RoutedEventArgs e)
+        private void ModifyTourLogButton_Click(object sender, RoutedEventArgs e)
         {
-            //ModifyTour createTourWindow = new ModifyTour();
-            //createTourWindow.Show();
+            ModifyTourLog modifyLogWindow = new ModifyTourLog();
+            modifyLogWindow.Show();
 
         }
     }

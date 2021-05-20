@@ -129,6 +129,7 @@ namespace TourPlanner.ViewModels
                 {
                     currentLog = value;
                     CurrentLogReport = LogWorker.GetLogReport(currentLog.reportfile);
+                    LogWorker.SetCurrentLog(currentLog);
                     CleanMessages();                   
                     RaisePropertyChangedEvent(nameof(CurrentLog));
                 }
@@ -224,7 +225,8 @@ namespace TourPlanner.ViewModels
         //-----------------------------------------------------------------------------------
 
         //commands---------------------------------------------------------------------------
-
+        
+        //delete Command--------------
         private ICommand deleteLogCommand;
 
         public ICommand DeleteCommand => deleteLogCommand ??= new RelayCommand(DeleteLog);
@@ -235,7 +237,7 @@ namespace TourPlanner.ViewModels
             if (currentLog != null)
             {            
 
-                if (LogWorker.DeleteCurrentLog(currentTourName, currentLog.logname))
+                if (LogWorker.DeleteCurrentLog(currentLog))
                 {
                     CurrentLog = null;
                     SuccessMessage = "Tour was successfully deleted";
@@ -248,10 +250,39 @@ namespace TourPlanner.ViewModels
             }
             else
             {
-                ErrorMessage = "Please select a Tour first";
+                ErrorMessage = "Please select a Log first";
             }
         }
+        //--------------------
 
+        //copy command----------------
+        private ICommand copyLogCommand;
+
+        public ICommand CopyCommand => copyLogCommand ??= new RelayCommand(CopyLog);
+
+
+        private void CopyLog(object commandParameter)
+        {
+            if (currentLog != null)
+            {
+
+                if (LogWorker.CopyCurrentLog(currentTourName, currentLog))
+                {
+                    CurrentLog = null;
+
+                    SuccessMessage = "Log was successfully copied";
+                }
+                else
+                {
+                    ErrorMessage = "The copy could not be completed";
+                }
+
+            }
+            else
+            {
+                ErrorMessage = "Please select a Log first";
+            }
+        }
 
         //----------------------------------------------------------------------------------
         private void CleanMessages()

@@ -16,6 +16,11 @@ namespace TourPlanner.BusinessLayer
         string CreateNewTourLog(Log myNewLog, string report);
         string GetLogReport(string reportfile);
         IEnumerable<Log> SearchLogs(string searchElement, string searchOption);
-        bool DeleteCurrentLog(string currentTourName, string currentLog);
+        bool DeleteCurrentLog(Log currentLog);
+
+        bool CopyCurrentLog(string currentTourName, Log currentLog);
+
+        void SetCurrentLog(Log myCurrentLog);
+        Log GetCurrentLog();
     }
 }

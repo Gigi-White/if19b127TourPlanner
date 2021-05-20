@@ -14,6 +14,10 @@ namespace TourPlanner.BusinessLayer
         private IFileHandler myFileHandler;
         private List<Log> AllLogs { get; set; }
 
+        private Log currentLog;
+
+       
+
         private string currentTourName;
        
         //constructor----------------------------------------------------------
@@ -91,7 +95,7 @@ namespace TourPlanner.BusinessLayer
             myNewLog = FillLog(myNewLog);
 
             //create new report file and save the report in file;
-            string reportPath = myFileHandler.SaveReport(report, myNewLog.logname);
+            string reportPath = myFileHandler.SaveReport(report, myNewLog.logname);                   
             myNewLog.reportfile = reportPath;
             //save the new log in the database
             if (myDatabaseLogOrders.CreateLog(myNewLog))
@@ -271,25 +275,73 @@ namespace TourPlanner.BusinessLayer
 
 
         //delete Log------------------------------------------------------------
-        public bool DeleteCurrentLog(string currentTourName, string currentLogName)
+        public bool DeleteCurrentLog(Log currentLog)
         {
-            if (myDatabaseLogOrders.DeleteOneLog(currentTourName, currentLogName))
+            if (!myDatabaseLogOrders.DeleteOneLog(currentLog.tourname, currentLog.logname))
+            {
+                return false;
+            }
+            if (!myFileHandler.DeleteFile(currentLog.reportfile))
+            {
+                return false;
+            }
+            else
+            {
+                OnUpdateLogList();
+                return true;
+            }
+            
+        }
+
+        //Copy Log-------------------------------------------------------------
+
+        public bool CopyCurrentLog(string currentTourName, Log currentLog)
+        {
+            //add copy to logname and filename
+            currentLog.logname = currentLog.logname + "copy";
+            
+            string copyfilePath = currentLog.reportfile.Replace(".txt", "copy.txt");
+            //create copy of file with copy name
+            if(!myFileHandler.CopyFile(currentLog.reportfile, copyfilePath))
+            {
+                return false;
+            }
+            currentLog.reportfile = copyfilePath;
+            if (myDatabaseLogOrders.CreateLog(currentLog))
             {
                 OnUpdateLogList();
                 return true;
             }
             else
             {
+                myFileHandler.DeleteFile(copyfilePath);
                 return false;
             }
             
         }
 
+        //---------------------------------------------------------------------
+
 
         //----------------------------------------------------------------------
         public string GetLogReport(string reportfile)
         {
-            return myFileHandler.getDescription(reportfile);
+            return myFileHandler.GetFileText(reportfile);
+        }
+
+        public void SetCurrentLog(Log myCurrentLog)
+        {
+            if (currentLog == null)
+            {
+                currentLog = new Log();
+            }
+            currentLog = myCurrentLog;
+
+
+        }
+        public Log GetCurrentLog()
+        {
+            return currentLog;
         }
     }
 

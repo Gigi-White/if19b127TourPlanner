@@ -115,19 +115,19 @@ namespace TourPlanner.DataAccessLayer
 
         //generally metodes------------------------------------------------------
 
-        public bool ChangeDescription(string filename, string newDescription)
+        public bool ChangeFile(string filename, string newDescription)
         {
             System.IO.File.WriteAllText(filename, newDescription);
             return true;
         }
 
-        public bool DeleteDescription(string descriptionFile)
+        public bool DeleteFile(string descriptionFile)
         {
             File.Delete(descriptionFile);
             return (!File.Exists(descriptionFile) ? true : false);
         }
 
-        public string getDescription(string descriptionFile)
+        public string GetFileText(string descriptionFile)
         {
             string text = File.ReadAllText(descriptionFile);
             return text;

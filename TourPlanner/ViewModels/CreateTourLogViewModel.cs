@@ -201,7 +201,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (sightWorthSeeing != value && CheckText(20, whitelist, value, "Recommand Hotel"))
+                if (sightWorthSeeing != value && CheckText(20, whitelist, value, "Sight worth seeing"))
                 {
                     sightWorthSeeing = value;
                     CleanMessages();
@@ -309,7 +309,7 @@ namespace TourPlanner.ViewModels
             {
                 tourname = LogWorker.GetCurrentTourName(),
                 logname = this.logName,
-                date = DateTime.UtcNow.ToString("dd-MM-yyyy"),
+                date = System.DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt"),
                 distance = this.distance,
                 totalTime = this.totalTime,
                 rating = this.rating,

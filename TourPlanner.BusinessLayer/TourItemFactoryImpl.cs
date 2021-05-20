@@ -71,7 +71,7 @@ namespace TourPlanner.BusinessLayer
         {
             if (currentTour != null)
             {
-                string myText = myFileHandler.getDescription(currentTour.Descriptionfile);
+                string myText = myFileHandler.GetFileText(currentTour.Descriptionfile);
                 return myText;
             }
             else 
@@ -247,7 +247,7 @@ namespace TourPlanner.BusinessLayer
         public bool DeleteCurrentTour(Tour currentTour)
         {          
             OnUpdateTourList();
-            if (mydatabaseTourOrders.DeleteTour(currentTour.Name)  && myFileHandler.DeleteDescription(currentTour.Descriptionfile) && myFileHandler.DeleteImage(currentTour.Imagefile))
+            if (mydatabaseTourOrders.DeleteTour(currentTour.Name)  && myFileHandler.DeleteFile(currentTour.Descriptionfile) && myFileHandler.DeleteImage(currentTour.Imagefile))
             {
                 AllTours.Remove(currentTour);
                 OnUpdateTourList();
@@ -336,7 +336,7 @@ namespace TourPlanner.BusinessLayer
                 worked = mydatabaseTourOrders.ChangeTour(currentTourName,changedTourName);
             }
 
-            worked = myFileHandler.ChangeDescription(toModifyTour.Descriptionfile, changedTourDescription);
+            worked = myFileHandler.ChangeFile(toModifyTour.Descriptionfile, changedTourDescription);
             if (worked)
             {
                 toModifyTour.Name = changedTourName;

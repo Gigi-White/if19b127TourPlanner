@@ -81,6 +81,12 @@ namespace TourPlanner.BusinessLayer
                 return message;
             }
 
+            //check if Log already existst
+            if (!LogAlreadyExists(myNewLog.logname))
+            {
+                return "A Tour Log with the name " + myNewLog.logname + " already exists";
+            }
+
             //fill not important parts of Log if they have no value
             myNewLog = FillLog(myNewLog);
 
@@ -101,8 +107,6 @@ namespace TourPlanner.BusinessLayer
             }
 
 
-
-            return message;
         }
 
         //check if important parts have values
@@ -120,7 +124,23 @@ namespace TourPlanner.BusinessLayer
                 return null;
             }
         }
+        
+        //check if Log with certan name already exitst
+        private bool LogAlreadyExists(string logName)
+        {
+            foreach (var item in AllLogs)
+            {
+                if (item.logname == logName)
+                {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
 
+
+        //fillemptyLogElements
         private Log FillLog(Log myNewLog)
         {
             if(myNewLog.travelBy==null || myNewLog.travelBy == "")
@@ -149,9 +169,113 @@ namespace TourPlanner.BusinessLayer
 
         //--------------------------------------------------------------
 
+
+        //search Logs----------------------------------------------------------
+
+        public IEnumerable<Log> SearchLogs(string searchElement, string searchOption)
+        {
+            List<Log> foundLogs = new List<Log>();
+
+            switch (searchOption)
+            {
+                case "Log Name":
+                    foreach(var item in AllLogs)
+                    {
+                        if (item.logname.ToLower().Contains(searchElement.ToLower()))
+                        {
+                            foundLogs.Add(item);
+                        }
+                    }
+                    break;
+                case "Rating":
+                    foreach (var item in AllLogs)
+                    {
+                        if(item.rating.ToString()== searchElement)
+                        {
+                            foundLogs.Add(item);
+                        }
+                    }
+                    break;
+                case "Distance":
+                    foreach (var item in AllLogs)
+                    {
+                        if(SearchWithNumber(searchElement, item.distance))
+                        {
+                            foundLogs.Add(item);
+                        }
+                     
+                    }
+                    break;
+                case "Total Time":
+                    foreach (var item in AllLogs)
+                    {
+                        if (SearchWithNumber(searchElement, item.totalTime))
+                        {
+                            foundLogs.Add(item);
+                        }
+                    }
+                    break;
+                case "Travel By":
+                    foreach(var item in AllLogs)
+                    if (item.travelBy.ToLower().Contains(searchElement.ToLower()))
+                    {
+                        foundLogs.Add(item);
+                    }
+                    break;
+                case "Average Speed":
+                    foreach(var item in AllLogs)
+                    {
+                        if (SearchWithNumber(searchElement, item.averageSpeed))
+                        {
+                            foundLogs.Add(item);
+                        }
+                    }
+                    break;
+
+
+            };
+            return foundLogs;
+
+
+        }
+
+        //helpfunction to for search to number check
+        private bool SearchWithNumber(string number, string element)
+        {
+
+            try
+            {
+                
+                float myNumber = float.Parse(number);
+                float myElement = float.Parse(element);
+
+                if(myNumber >= myElement)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+        }
+
+
+        //----------------------------------------------------------------------
+
+
+
         public string GetLogReport(string reportfile)
         {
             return myFileHandler.getDescription(reportfile);
         }
+
+
     }
 }

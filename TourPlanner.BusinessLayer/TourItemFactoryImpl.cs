@@ -318,7 +318,7 @@ namespace TourPlanner.BusinessLayer
         }
 
         
-        
+        //Modify current Tour------------------------------------------------------------------------------------
         public bool ModifyTour(string currentTourName, string changedTourName, string changedTourDescription)
         {
             bool worked = true;
@@ -346,6 +346,8 @@ namespace TourPlanner.BusinessLayer
 
             return worked;
         }
+        //------------------------------------------------------------------------------------------
+
     }
-        
+
 }

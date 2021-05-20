@@ -60,20 +60,40 @@ namespace TourPlanner.ViewModels
 
 
 
-        private string searchLog;
-        public string SearchLog
+        private string searchElement;
+        public string SearchElement
         {
             get
             {
-                return searchLog;
+                return searchElement;
             }
             set
             {
-                if (searchLog != value)
+                if (searchElement != value)
                 {
-                    searchLog = value;
+                    searchElement = value;
                     SearchLogs();
-                    RaisePropertyChangedEvent(nameof(SearchLog));
+                    RaisePropertyChangedEvent(nameof(SearchElement));
+                }
+            }
+        }
+
+        private string searchOption;
+
+        public string SearchOption
+        {
+            get
+            {
+                return searchOption;
+            }
+            set
+            {
+                if (searchOption != value && value != null)
+                {
+
+                    searchOption = value;
+                    CleanMessages();
+                    RaisePropertyChangedEvent(nameof(SearchOption));
                 }
             }
         }
@@ -174,11 +194,13 @@ namespace TourPlanner.ViewModels
 
         private void FillSearchOptionList()
         {
-            SearchOptionList.Add("Name");
-            SearchOptionList.Add("Start");
-            SearchOptionList.Add("End");
+            SearchOptionList.Add("Log Name");
+            SearchOptionList.Add("Rating");
             SearchOptionList.Add("Distance");
-
+            SearchOptionList.Add("Total Time");
+            SearchOptionList.Add("Travel By");
+            SearchOptionList.Add("Average Speed");
+    
         }
 
 
@@ -192,7 +214,15 @@ namespace TourPlanner.ViewModels
 
         private void SearchLogs()
         {
-            throw new NotImplementedException();
+            if (searchElement != null && searchElement != "" && searchOption != null && searchOption != "")
+            {
+
+                FillLogList(LogWorker.SearchLogs(searchElement, searchOption));
+            }
+            else
+            {
+                FillCompleteLogList();
+            }
         }
     }
 }

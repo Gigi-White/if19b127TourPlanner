@@ -26,6 +26,6 @@
 
 
         </ComboBox>
-        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="SearchTour" Text="{Binding SearchTour, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+        <TextBox  FontSize="20" Margin="5" Grid.Column="6" Name="SearchTour" Text="{Binding SearchElement, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
     </Grid>
 </UserControl>

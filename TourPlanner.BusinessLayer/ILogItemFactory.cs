@@ -15,5 +15,6 @@ namespace TourPlanner.BusinessLayer
         string GetCurrentTourName();
         string CreateNewTourLog(Log myNewLog, string report);
         string GetLogReport(string reportfile);
+        IEnumerable<Log> SearchLogs(string searchElement, string searchOption);
     }
 }

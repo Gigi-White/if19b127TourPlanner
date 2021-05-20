@@ -59,20 +59,20 @@ namespace TourPlanner.ViewModels
 
         //--------------------------------------------------------
 
-        private string searchTour;
-        public string SearchTour
+        private string searchElement;
+        public string SearchElement
         {
             get
             {
-                return searchTour;
+                return searchElement;
             }
             set
             {
-                if (searchTour != value)
+                if (searchElement != value)
                 {
-                    searchTour = value;
+                    searchElement = value;
                     SearchTours();
-                    RaisePropertyChangedEvent(nameof(SearchTour));
+                    RaisePropertyChangedEvent(nameof(SearchElement));
                 }
             }
         }
@@ -220,10 +220,10 @@ namespace TourPlanner.ViewModels
 
         private void SearchTours()
         {
-            if (searchTour != null && searchTour != "" && searchOption != null && searchOption != "")
+            if (searchElement != null && searchElement != "" && searchOption != null && searchOption != "")
             {
 
-                FillTourList(TourWorker.SearchTours(searchTour, searchOption));
+                FillTourList(TourWorker.SearchTours(searchElement, searchOption));
             }
             else
             {

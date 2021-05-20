@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
 
@@ -57,7 +58,22 @@ namespace TourPlanner.ViewModels
             }
         }
 
-
+        private string successMessage;
+        public string SuccessMessage
+        {
+            get
+            {
+                return successMessage;
+            }
+            set
+            {
+                if (successMessage != value)
+                {
+                    successMessage = value;
+                    RaisePropertyChangedEvent(nameof(SuccessMessage));
+                }
+            }
+        }
 
 
         private string searchElement;
@@ -72,6 +88,7 @@ namespace TourPlanner.ViewModels
                 if (searchElement != value)
                 {
                     searchElement = value;
+                    CleanMessages();
                     SearchLogs();
                     RaisePropertyChangedEvent(nameof(SearchElement));
                 }
@@ -207,9 +224,40 @@ namespace TourPlanner.ViewModels
         //-----------------------------------------------------------------------------------
 
         //commands---------------------------------------------------------------------------
+
+        private ICommand deleteLogCommand;
+
+        public ICommand DeleteCommand => deleteLogCommand ??= new RelayCommand(DeleteLog);
+
+        private void DeleteLog(object commandParameter)
+        {
+
+            if (currentLog != null)
+            {            
+
+                if (LogWorker.DeleteCurrentLog(currentTourName, currentLog.logname))
+                {
+                    CurrentLog = null;
+                    SuccessMessage = "Tour was successfully deleted";
+                }
+                else
+                {
+                    ErrorMessage = "The deletion could not be completed";
+                }
+
+            }
+            else
+            {
+                ErrorMessage = "Please select a Tour first";
+            }
+        }
+
+
+        //----------------------------------------------------------------------------------
         private void CleanMessages()
         {
             ErrorMessage=null;
+            SuccessMessage = null;
         }
 
         private void SearchLogs()

@@ -13,7 +13,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         bool UpdateLog(Log updatedLog);
 
-        bool DeleteOneLog(string logname);
+        bool DeleteOneLog(string tourname, string logname);
         bool DeleteAllLogsofTour(string tourname);
         bool CopyLogsofTour(string tourname, string copiedtourname);
 

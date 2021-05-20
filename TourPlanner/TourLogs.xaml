@@ -35,6 +35,17 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
+                    <TextBlock FontSize="20" Text="{Binding Path=SuccessMessage}" HorizontalAlignment="Center" Foreground="MediumBlue">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SuccessMessage}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
             

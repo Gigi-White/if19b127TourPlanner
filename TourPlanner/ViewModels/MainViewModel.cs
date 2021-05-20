@@ -237,7 +237,7 @@ namespace TourPlanner.ViewModels
 
         private ICommand deleteTourCommand;
 
-        public ICommand DeleteTourCommand => deleteTourCommand ??= new RelayCommand(DeleteTour);
+        public ICommand DeleteCommand => deleteTourCommand ??= new RelayCommand(DeleteTour);
 
         private void DeleteTour(object commandParameter)
         {
@@ -265,7 +265,7 @@ namespace TourPlanner.ViewModels
 
         private ICommand copyTourCommand;
 
-        public ICommand CopyTourCommand => copyTourCommand ??= new RelayCommand(CopyTour);
+        public ICommand CopyCommand => copyTourCommand ??= new RelayCommand(CopyTour);
 
         private void CopyTour(object commandParameter)
         {

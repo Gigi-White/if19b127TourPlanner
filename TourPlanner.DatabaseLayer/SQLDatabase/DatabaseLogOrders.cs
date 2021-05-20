@@ -16,6 +16,8 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
                                                 "rating, travelby, averagespeed, recommandrestaurant, recommandhotel, sightworthseeing, distance)" +
                                                 "VALUES(@tourname, @logname, @date, @reportfile, @totaltime, @rating, @travelby, @averagespeed, @recommandrestaurant, @recommandhotel, @sightworthseeing, @distance)";
 
+        private static string deleteOneLogSql = "DELETE FROM tourlog WHERE tourname = @tourname AND logname = @logname";
+
         public bool CreateLog(Log newLog)
         {
             string sql = createLogSql;
@@ -116,9 +118,28 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             return true;
         }
 
-        public bool DeleteOneLog(string logname)
+        public bool DeleteOneLog(string tourname, string logname)
         {
-            throw new NotImplementedException();
+            
+            string sql = deleteOneLogSql;
+            NpgsqlConnection con = DataConnectionFactory.GetCon();
+            con.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("tourname", tourname);
+            cmd.Parameters.AddWithValue("logname", logname);
+            cmd.Prepare();
+
+            if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
+            {
+                con.Close();
+                return true;
+            }
+            else
+            {
+
+                con.Close();
+                return false;
+            }
         }
     }
 }

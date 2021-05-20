@@ -13,12 +13,12 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
-        <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton" Command="{Binding DeleteTourCommand}" >Delete</Button>
-        <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton" Command="{Binding CopyTourCommand}" >Copy</Button>
+        <Button FontSize="20" Margin="5" Grid.Column="2" Name="DeleteButton" Command="{Binding DeleteCommand}" >Delete</Button>
+        <Button FontSize="20" Margin="5" Grid.Column="3" Name="CopyButton" Command="{Binding CopyCommand}" >Copy</Button>
         <TextBlock VerticalAlignment="Center" FontSize="20" Margin="5" Grid.Column="4" Text="Search:" ></TextBlock>
         <ComboBox Grid.Column="5" FontSize="20" Margin="5"
                           ItemsSource="{Binding SearchOptionList}"

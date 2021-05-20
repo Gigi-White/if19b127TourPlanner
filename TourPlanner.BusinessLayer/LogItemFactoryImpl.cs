@@ -270,12 +270,28 @@ namespace TourPlanner.BusinessLayer
         //----------------------------------------------------------------------
 
 
+        //delete Log------------------------------------------------------------
+        public bool DeleteCurrentLog(string currentTourName, string currentLogName)
+        {
+            if (myDatabaseLogOrders.DeleteOneLog(currentTourName, currentLogName))
+            {
+                OnUpdateLogList();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
 
+
+        //----------------------------------------------------------------------
         public string GetLogReport(string reportfile)
         {
             return myFileHandler.getDescription(reportfile);
         }
-
-
     }
+
+
 }

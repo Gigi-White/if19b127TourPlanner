@@ -98,10 +98,10 @@ namespace TourPlanner.DataAccessLayer
 
         //Logfile metodes--------------------------------------------------------------------------------------------
 
-        public string SaveReport(string report, string logname)
+        public string SaveReport(string report,string tourname, string logname)
         {
             
-            string logReportPath = logreportfolder + "\\" + logname + ".txt";
+            string logReportPath = logreportfolder + "\\"+ tourname + logname + ".txt";
             StreamWriter newTextfile = File.CreateText(logReportPath);
             newTextfile.WriteLine(report);
             newTextfile.Close();

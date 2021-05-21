@@ -95,7 +95,7 @@ namespace TourPlanner.BusinessLayer
             myNewLog = FillLog(myNewLog);
 
             //create new report file and save the report in file;
-            string reportPath = myFileHandler.SaveReport(report, myNewLog.logname);                   
+            string reportPath = myFileHandler.SaveReport(report, myNewLog.tourname, myNewLog.logname);                   
             myNewLog.reportfile = reportPath;
             //save the new log in the database
             if (myDatabaseLogOrders.CreateLog(myNewLog))
@@ -343,6 +343,46 @@ namespace TourPlanner.BusinessLayer
         {
             return currentLog;
         }
+
+
+        //modify Log
+        public string ModifyLog(string report,string oldReportFile, string logname, Log myModifiedLog)
+        {            
+            //check if modifiedLogNamen already exists 
+            if(logname!= myModifiedLog.logname)
+            {
+                foreach(var item in AllLogs)
+                {
+                    if(item.logname== myModifiedLog.logname)
+                    {
+                        return "This Log Name already exists. Please use another one";
+                    }
+                }
+            }
+            //update Log in Database
+            if (!myDatabaseLogOrders.UpdateLog(logname, myModifiedLog))
+            {
+                return "false";
+            }
+            //update txtfile
+            if (!myFileHandler.DeleteFile(oldReportFile)) 
+            {
+                return "false";
+            }
+            
+
+            if(!myFileHandler.ChangeFile(myModifiedLog.reportfile, report))
+            {
+                return "false";
+            }
+
+            OnUpdateLogList();
+            return "true";
+            
+        }
+
+
+
     }
 
 

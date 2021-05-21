@@ -18,6 +18,11 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         private static string deleteOneLogSql = "DELETE FROM tourlog WHERE tourname = @tourname AND logname = @logname";
 
+        private static string updateLogsSql = "UPDATE tourlog " +
+                                                "SET logname=@logname, date=@date, reportfile=@reportfile, totaltime=@totaltime, rating=@rating,travelby=@travelby, averagespeed=@averagespeed, " +
+                                                     "recommandrestaurant=@recommandrestaurant, recommandhotel=@recommandhotel, sightworthseeing=@sightworthseeing, distance=@distance " + 
+	                                            "WHERE tourname =@tourname AND logname = @oldlogname";
+
         public bool CreateLog(Log newLog)
         {
             string sql = createLogSql;
@@ -52,19 +57,9 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
           
         }
 
- 
-
-
-
-
-
-
-
         public List<Log> GetLogsofTour(string tourname)
         {
             var sql = getLogsOfTourSql;
-
-            //NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(sql);
             NpgsqlConnection con = DataConnectionFactory.GetCon();
             con.Open();
             NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
@@ -103,9 +98,41 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         }
 
-        public bool UpdateLog(Log updatedLog)
+        public bool UpdateLog(string logname, Log updatedLog)
         {
-            throw new NotImplementedException();
+
+            var sql = updateLogsSql;
+          
+            NpgsqlConnection con = DataConnectionFactory.GetCon();
+            con.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("logname", updatedLog.logname);
+            cmd.Parameters.AddWithValue("date", updatedLog.date);
+            cmd.Parameters.AddWithValue("reportfile", updatedLog.reportfile);
+            cmd.Parameters.AddWithValue("distance", updatedLog.distance);
+            cmd.Parameters.AddWithValue("totalTime", updatedLog.totalTime);
+            cmd.Parameters.AddWithValue("rating", updatedLog.rating);
+            cmd.Parameters.AddWithValue("travelBy", updatedLog.travelBy);
+            cmd.Parameters.AddWithValue("averageSpeed", updatedLog.averageSpeed);
+            cmd.Parameters.AddWithValue("recommandRestaurant", updatedLog.recommandRestaurant);
+            cmd.Parameters.AddWithValue("recommandHotel", updatedLog.recommandHotel);
+            cmd.Parameters.AddWithValue("sightWorthSeeing", updatedLog.sightWorthSeeing);
+            
+            cmd.Parameters.AddWithValue("tourname", updatedLog.tourname);
+            cmd.Parameters.AddWithValue("oldlogname", logname);
+            cmd.Prepare();
+
+            if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
+            {
+                con.Close();
+                return true;
+            }
+            else
+            {
+
+                con.Close();
+                return false;
+            }
         }
 
         public bool CopyLogsofTour(string tourname, string copiedtourname)

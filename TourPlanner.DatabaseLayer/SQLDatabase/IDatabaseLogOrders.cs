@@ -11,7 +11,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 
         List<Log> GetLogsofTour(string tourname);
 
-        bool UpdateLog(Log updatedLog);
+        bool UpdateLog(string logname, Log updatedLog);
 
         bool DeleteOneLog(string tourname, string logname);
         bool DeleteAllLogsofTour(string tourname);

@@ -22,5 +22,6 @@ namespace TourPlanner.BusinessLayer
 
         void SetCurrentLog(Log myCurrentLog);
         Log GetCurrentLog();
+        string ModifyLog(string report,string oldReportFile,  string logname, Log myModifiedLog);
     }
 }

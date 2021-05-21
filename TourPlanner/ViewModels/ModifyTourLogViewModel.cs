@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
 using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
 
@@ -22,6 +23,9 @@ namespace TourPlanner.ViewModels
         public ObservableCollection<string> TravelByList { get; set; }
         public ObservableCollection<int> RatingList { get; set; }
 
+        private static string businessErrorMessage = "There was a problem with the system. Log could not by modified.";
+
+        private static string modiyLogSuccessMessage = "Change was successfull";
         //successMessage and Error Message Getter and Setter----------------------------------------
         private string successMessage;
         public string SuccessMessage
@@ -422,7 +426,7 @@ namespace TourPlanner.ViewModels
             {
                 if (changedReport != value && CheckText(200, whitelist, value, "Report"))
                 {
-                    ChangedReport = value;
+                    changedReport = value;
                     CleanMessages();
                     RaisePropertyChangedEvent(nameof(ChangedReport));
                 }
@@ -431,7 +435,8 @@ namespace TourPlanner.ViewModels
 
 
         //-------------------------------------------------------------------------------------
-     
+        
+        //constructor--------------------------------------------------------------------------
         public ModifyTourLogViewModel()
         {
             LogWorker = TourItemFactory.GetLogViewInstance();
@@ -446,6 +451,14 @@ namespace TourPlanner.ViewModels
                 ErrorMessage = "No Log was selected. Please close this window";
                 return;
             }
+
+            FillCurrentLogData(); 
+            
+                   
+        }
+
+        private void FillCurrentLogData()
+        {
             CurrentLogName = currentLog.logname;
             CurrentDistance = currentLog.distance;
             CurrentTotalTime = currentLog.totalTime;
@@ -456,7 +469,6 @@ namespace TourPlanner.ViewModels
             CurrentSightWorthSeeing = currentLog.sightWorthSeeing;
             CurrentRating = currentLog.rating;
             CurrentReport = LogWorker.GetLogReport(currentLog.reportfile);
-                   
         }
 
         private void FillTravelBy()
@@ -468,9 +480,72 @@ namespace TourPlanner.ViewModels
         {
             RatingList = new ObservableCollection<int> { 0, 1, 2, 3, 4, 5 };
         }
+        //-----------------------------------------------------------------------------------------------------
+
+        //commands---------------------------------------------------------------------------------------------
+
+        private ICommand modifyLogCommand;
+
+        public ICommand ModifyLogCommand => modifyLogCommand ??= new RelayCommand(ModifyLog);
+
+        private void ModifyLog (object commandParameter)
+        {
+            //fill the modified Log
+            Log myModifiedLog = FillModifiedLog();
+            //check if report ´was changed 
+            string myReport = (changedReport!=null && changedReport!="") ? changedReport : currentReport;
+
+            //modify Log in Database and report file 
+
+            string answer = LogWorker.ModifyLog(myReport, currentLog.reportfile, currentLog.logname, myModifiedLog);
+
+            //check if ModifyLog worked
+            if (answer =="false") 
+            {
+                ErrorMessage = businessErrorMessage;
+                return;
+            }
+            if (answer != "true")
+            {
+                ErrorMessage = answer;
+                return;
+            }
+
+            //set new data in view 
+            currentLog = myModifiedLog;
+            SuccessMessage = modiyLogSuccessMessage;
+            FillCurrentLogData();
 
 
-        //checks the text, if it is long enouth and has only whitelist characters---
+
+        }
+
+        private Log FillModifiedLog()
+        {
+            Log mynewLog = new Log();
+            
+            mynewLog.tourname = currentLog.tourname;
+            mynewLog.logname = (changedLogName != null && changedLogName != "") ? changedLogName : currentLogName;
+            mynewLog.date = currentLog.date;
+            mynewLog.reportfile = currentLog.reportfile.Replace(currentLog.logname+ ".txt", mynewLog.logname + ".txt");
+            mynewLog.distance = (changedDistance != null && changedDistance != "") ? changedDistance : currentDistance;
+            mynewLog.totalTime = (changedTotalTime != null && changedTotalTime != "") ? changedTotalTime : currentTotalTime;
+            mynewLog.rating = changedRating;
+            mynewLog.travelBy = (changedTravelBy != null && changedTravelBy != "") ? changedTravelBy : currentTravelBy;
+            mynewLog.averageSpeed = (changedAverageSpeed != null && changedAverageSpeed != "") ? changedAverageSpeed : currentAverageSpeed;
+            mynewLog.recommandRestaurant = (changedRecRestaurant != null && changedRecRestaurant != "") ? changedRecRestaurant : currentRecRestaurant;
+            mynewLog.recommandHotel = (changedRecHotel != null && changedRecHotel != "") ? changedRecHotel : currentRecHotel;
+            mynewLog.sightWorthSeeing = (changedSightWorthSeeing != null && changedSightWorthSeeing != "") ? changedSightWorthSeeing : currentSightWorthSeeing;
+
+            return mynewLog;
+
+        }
+
+        //-----------------------------------------------------------------------------------------------------
+
+
+
+        //checks the text, if it is long enouth and has only whitelist characters------------------------------
         private void CleanMessages()  //delets Error and success message
         {
             SuccessMessage = null;
@@ -533,7 +608,7 @@ namespace TourPlanner.ViewModels
             }
 
         }
-        //---------
+        //---------------------------------------------------------------------------
 
     }
 }

@@ -240,7 +240,7 @@ namespace TourPlanner.ViewModels
                 if (LogWorker.DeleteCurrentLog(currentLog))
                 {
                     CurrentLog = null;
-                    SuccessMessage = "Tour was successfully deleted";
+                    SuccessMessage = "Log was successfully deleted";
                 }
                 else
                 {

@@ -87,13 +87,21 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (currentTour != value && value != null)
+                if (currentTour != value)
                 {
                     currentTour = value;
-                    FillRouteInfo();
+                    if (currentTour != null)                       
+                    {
+                        FillRouteInfo();
+                        CurrentTourImage = currentTour.Imagefile;
+                    }
+                    else
+                    {
+                        RouteInfo.Clear();
+                        CurrentTourImage = null;
+                    }
                     TourWorker.SetCurrentTour(currentTour);
-                    CleanMessages();
-                    CurrentTourImage = currentTour.Imagefile;
+                    CleanMessages();                   
                     RaisePropertyChangedEvent(nameof(CurrentTour));
                 }
             }
@@ -274,11 +282,11 @@ namespace TourPlanner.ViewModels
                 if (TourWorker.CopyCurrentTour(currentTour))
                 {
                     CurrentTour = null;
-                    TourMessage = "Tour was successfully deleted";
+                    TourMessage = "Tour was successfully copied";
                 }
                 else
                 {
-                    ErrorMessage = "The deletion could not be completed";
+                    ErrorMessage = "The copy could not be copied";
                 }
             }
             else

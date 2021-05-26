@@ -426,6 +426,33 @@ namespace TourPlanner.BusinessLayer
 
             return true;
         }
+
+
+        //------------------------------------------------------------------------------------------
+
+        //Create Tour Report------------------------------------------------------------------------
+
+        public bool CreateReport(Tour currentTour)
+        {
+            List<RawRouteInfo> routeList = mydatabaseRouteOrders.GetRouteInfo(currentTour.Name);
+            List<Log> logList = mydatabaseLogOrders.GetLogsofTour(currentTour.Name);
+
+            if(!myFileHandler.CreateTourReport(currentTour, routeList, logList))
+            {
+                return false;
+            }
+            if(!myFileHandler.CreateSummarizeReport(currentTour, logList))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+
+
+
         //------------------------------------------------------------------------------------------
 
     }

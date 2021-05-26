@@ -1,4 +1,10 @@
-﻿using System;
+﻿using iText.IO.Image;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Draw;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -17,6 +23,7 @@ namespace TourPlanner.DataAccessLayer
         private string imagefolder;
         private string descriptionfolder;
         private string logreportfolder;
+        private string pdfFolder;
 
 
         //constructor-----------------------------------------------------------------------------------------
@@ -30,7 +37,8 @@ namespace TourPlanner.DataAccessLayer
             System.IO.Directory.CreateDirectory(imagefolder);
             logreportfolder = folderpath + "\\logreportFolder";
             System.IO.Directory.CreateDirectory(logreportfolder);
-
+            pdfFolder = folderpath + "\\pdfFolder";
+            System.IO.Directory.CreateDirectory(pdfFolder);
         }
         //------------------------------------------------------------------------------------------------------
 
@@ -146,6 +154,190 @@ namespace TourPlanner.DataAccessLayer
         }
 
 
-        //---------------------------------------------------------------------------
+
+
+        //Create Report PDF files----------------------------------------------------------------------- 
+        
+        //Create Tour Report PDF
+        public bool CreateTourReport(Tour currentTour, List<RawRouteInfo> routeList, List<Log> logList)
+        {
+
+            try
+            {
+                //create pdf FilePath with name---------
+                string pdfPath = pdfFolder + "\\" + currentTour.Name +".pdf" ;
+                int filenumber = 0;
+                //check if file with this name already exists
+                while(File.Exists(pdfPath))
+                {
+                    filenumber++;
+                    pdfPath = pdfFolder + "\\" + currentTour.Name + filenumber + ".pdf";
+                }
+                //create pdf File----------
+
+                PdfWriter writer = new PdfWriter(pdfPath);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
+
+                //create header image and Line Separaton----
+
+                Paragraph header = new Paragraph(currentTour.Name).SetTextAlignment(TextAlignment.CENTER).SetFontSize(20).SetMarginBottom(10);
+
+
+                LineSeparator ls = new LineSeparator(new SolidLine()).SetMarginTop(10).SetMarginBottom(10);
+
+                Image map = new Image(ImageDataFactory.Create(currentTour.Imagefile))
+                    .SetHorizontalAlignment(HorizontalAlignment.CENTER).SetHeight(240).SetWidth(320);
+
+                document.Add(header);
+                document.Add(map);
+                document.Add(ls);
+
+                //create part with Tour Data
+
+                document.Add(new Paragraph("Tour Data").SetTextAlignment(TextAlignment.CENTER).SetFontSize(15).SetMarginBottom(10));
+                document.Add(new Paragraph($"Start:\t{currentTour.Start}"));
+                document.Add(new Paragraph($"End:\t{currentTour.End}"));
+                document.Add(new Paragraph($"Creation Date:\t{currentTour.CreationDate}"));
+                document.Add(new Paragraph($"Distance:\t{currentTour.Distance}"));
+                document.Add(new Paragraph($"Formatted Time:\t{currentTour.FormattedTime}"));
+
+                string description = GetFileText(currentTour.Descriptionfile);
+                document.Add(new Paragraph($"Formatted Time:\t{description}"));
+
+                document.Add(ls);
+
+                //create Route Information
+                document.Add(new Paragraph("Route Data").SetTextAlignment(TextAlignment.CENTER).SetFontSize(15).SetMarginBottom(10));
+                foreach (var item in routeList)
+                {
+                    document.Add(new Paragraph($"{item.maneuverNumber}.) {item.narrative} "));
+                    document.Add(new Paragraph($"Für {item.distance}km\tZeit:{item.formattedTime}").SetMarginBottom(10));
+                }
+                document.Add(ls);
+
+                //create Tour Log Information
+
+                document.Add(new Paragraph("Log Data").SetTextAlignment(TextAlignment.CENTER).SetFontSize(15).SetMarginBottom(10));
+                foreach (var item in logList)
+                {
+                    document.Add(new Paragraph($"Log Name:\t{item.logname}").SetBold());
+                    document.Add(new Paragraph($"Creation Date:\t{item.date}"));
+                    document.Add(new Paragraph($"Distance:\t{item.distance}km"));
+                    document.Add(new Paragraph($"Total Time:\t{item.totalTime}h"));
+                    document.Add(new Paragraph($"Travel By:\t{item.travelBy}"));
+                    document.Add(new Paragraph($"Average Speed:\t{item.averageSpeed}km/h"));
+                    document.Add(new Paragraph($"Recommand Restaurant:\t{item.recommandRestaurant}"));
+                    document.Add(new Paragraph($"Recommand Hotel:\t{item.recommandHotel}"));
+                    document.Add(new Paragraph($"Sight worth seeing:\t{item.sightWorthSeeing}"));
+                    document.Add(new Paragraph($"Rating:\t{item.rating}"));
+
+                    string logReport = GetFileText(item.reportfile);
+                    document.Add(new Paragraph($"Log Report:\t{logReport}").SetMarginBottom(10));
+
+                }
+                document.Add(ls);
+                document.Close();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+        //Create Summarize Report PDF
+        public bool CreateSummarizeReport(Tour currentTour, List<Log> logList)
+        {
+            try
+            {
+                //create pdf FilePath with name---------
+                string pdfPath = pdfFolder + "\\" + currentTour.Name + "Sum.pdf";
+                int filenumber = 0;
+                //check if file with this name already exists
+                while (File.Exists(pdfPath))
+                {
+                    filenumber++;
+                    pdfPath = pdfFolder + "\\" + currentTour.Name +"Sum"+ filenumber + ".pdf";
+                }
+
+
+                //create pdf File----------
+
+                PdfWriter writer = new PdfWriter(pdfPath);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
+
+                //create header image and Line Separaton----
+
+                Paragraph header = new Paragraph(currentTour.Name).SetTextAlignment(TextAlignment.CENTER).SetFontSize(20).SetMarginBottom(10);
+
+
+                LineSeparator ls = new LineSeparator(new SolidLine()).SetMarginTop(10).SetMarginBottom(10);
+
+                Image map = new Image(ImageDataFactory.Create(currentTour.Imagefile))
+                    .SetHorizontalAlignment(HorizontalAlignment.CENTER).SetHeight(240).SetWidth(320);
+
+                document.Add(header);
+                document.Add(map);
+                document.Add(ls);
+
+                //create part with Tour Data
+
+                document.Add(new Paragraph("Tour Data").SetTextAlignment(TextAlignment.CENTER).SetFontSize(15).SetMarginBottom(10));
+                document.Add(new Paragraph($"Start:\t{currentTour.Start}"));
+                document.Add(new Paragraph($"End:\t{currentTour.End}"));
+                document.Add(new Paragraph($"Creation Date:\t{currentTour.CreationDate}"));
+                document.Add(new Paragraph($"Distance:\t{currentTour.Distance}km"));
+                document.Add(new Paragraph($"Formatted Time:\t{currentTour.FormattedTime}"));
+
+                string description = GetFileText(currentTour.Descriptionfile);
+                document.Add(new Paragraph($"Formatted Time:\t{description}"));
+
+                document.Add(ls);
+
+                //create Tour Log Summary;
+                document.Add(new Paragraph("Log Data Summary").SetTextAlignment(TextAlignment.CENTER).SetFontSize(15).SetMarginBottom(10));
+                int numberLogs = logList.Count;
+                float averageRating=0;
+                float averageSpeed=0;
+                float sumDistance=0;
+                float sumTotalTime=0;
+                
+                foreach(var item in logList)
+                {                   
+                    averageRating += item.rating;
+                    averageSpeed += float.Parse(item.averageSpeed);
+                    sumDistance += float.Parse(item.distance);
+                    sumTotalTime += float.Parse(item.totalTime);
+                }
+                if (numberLogs > 0)
+                {
+                    averageRating = averageRating / numberLogs;
+                    averageSpeed = averageSpeed / numberLogs;
+                }
+                
+                document.Add(new Paragraph($"Number of Tour Logs:\t{numberLogs}"));
+                document.Add(new Paragraph($"Average Rating:\t{averageRating:0.0}"));
+                document.Add(new Paragraph($"Average Speed:\t{averageSpeed:0.0}km/h"));
+                document.Add(new Paragraph($"Distance Summary:\t{sumDistance:0.0km}"));
+                document.Add(new Paragraph($"TotalTime Summary:\t{sumTotalTime:0.0}h"));
+
+                document.Add(ls);
+                document.Close();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        //----------------------------------------------------------------------------------------------
+
+
     }
 }

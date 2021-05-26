@@ -24,10 +24,7 @@ namespace BusinessLayerTests
             mockDatabaseTourOrders.Setup(mr => mr.SaveTours(It.IsAny<Tour>()))
                        .Returns(mySaveToursAnswer);
 
-            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<Tour>()))
-                       .Returns(true);
-
-            mockDatabaseTourOrders.Setup(mr => mr.CopyTour(It.IsAny<string>()))
+            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<string>(),It.IsAny<string>()))
                        .Returns(true);
             
             mockDatabaseTourOrders.Setup(mr => mr.DeleteTour(It.IsAny<string>()))
@@ -88,7 +85,7 @@ namespace BusinessLayerTests
             mockFileHanlder.Setup(mr => mr.DeleteImage(It.IsAny<string>()))
                 .Returns(myDeleteImageAnswer);
 
-            mockFileHanlder.Setup(mr => mr.DeleteDescription(It.IsAny<string>()))
+            mockFileHanlder.Setup(mr => mr.DeleteFile(It.IsAny<string>()))
                 .Returns(myDeleteDescriptionAnswer);
 
             return mockFileHanlder;

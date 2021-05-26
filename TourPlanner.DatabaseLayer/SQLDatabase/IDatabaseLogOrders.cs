@@ -7,15 +7,15 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 {
     public interface IDatabaseLogOrders
     {
-        bool createLog(Log newLog);
+        bool CreateLog(Log newLog);
 
-        List<Log> getLogsofTour(string tourname);
+        List<Log> GetLogsofTour(string tourname);
 
-        bool updateLog(Log updatedLog);
+        bool UpdateLog(string logname, Log updatedLog);
 
-        bool deleteOneLog(string logname);
-        bool deleteAllLogsofTour(string tourname);
-        bool copyLogsofTour(string tourname, string copiedtourname);
+        bool DeleteOneLog(string tourname, string logname);
+        bool DeleteAllLogsofTour(string tourname);
+        bool CopyLogsofTour(string tourname, string copiedtourname);
 
     }
 }

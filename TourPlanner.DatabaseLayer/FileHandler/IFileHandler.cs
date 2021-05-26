@@ -12,13 +12,13 @@ namespace TourPlanner.DataAccessLayer
         string SaveDescription(string tourname, string description);
 
         bool ChangeFilename(string filename);
-        bool ChangeDescription(string filename, string newDescription);
-        bool DeleteImage(string imagefile);
-        bool DeleteDescription(string description);
+        bool ChangeFile(string txtfilepath, string newDescription);
+        bool DeleteImage(string imagefilepath);
+        bool DeleteFile(string txtfilepath);
 
-        bool CopyFile(string filename, string newfilename);
+        bool CopyFile(string filepath, string newfilepath);
 
-        string getDescription(string descriptionFile);
-
+        string GetFileText(string txtfilepath);
+        string SaveReport(string report,string tourname, string logname);
     }
 }

@@ -23,7 +23,7 @@
             <Grid Grid.Row="0">
                 <StackPanel>
 
-                    <TextBlock Text="Create Trip" FontSize="30" Margin="5" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Create Tour" FontSize="30" Margin="5" HorizontalAlignment="Center"/>
                     <TextBlock FontSize="20" Text="{Binding Path=ErrorMessage}" HorizontalAlignment="Center" Foreground="DarkRed">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -65,7 +65,7 @@
                         <TextBlock FontSize="15" Margin="5" Text="Destination City:"/>
                         <TextBlock FontSize="15" Margin="5" Text="Destination Country:"/>
                         <TextBlock FontSize="15" Margin="5" Text="Description:"/>
-                        <Button FontSize="15" Margin="5" Width="120" HorizontalAlignment="Left" Name="CreateButton" Command="{Binding CreateNewTourCommand}">Create new Trip</Button>
+                        <Button FontSize="15" Margin="5" Width="120" HorizontalAlignment="Left" Name="CreateButton" Command="{Binding CreateNewTourCommand}">Create new Tour</Button>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
                         <TextBox  FontSize="15" Margin="5"  Name="NewTourName" Text="{Binding TourName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>

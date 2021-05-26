@@ -141,7 +141,7 @@ namespace TourPlanner.ViewModels
             currentTourDescription = TourWorker.GetCurrentTourDescription();
             if(currentTourName==null || currentTourDescription == null)
             {
-                ErrorMessage = "No Trip was chosen. Please close this window";
+                ErrorMessage = "No Tour was chosen. Please close this window";
             }
 
         }
@@ -157,7 +157,7 @@ namespace TourPlanner.ViewModels
         {
             if (currentTourName==null|| currentTourDescription== null)
             {
-                ErrorMessage = "No Trip was chosen. Please close this window";
+                ErrorMessage = "No Tour was chosen. Please close this window";
             }
             else if (changedTourName==null&& changedTourDescription == null)
             {
@@ -186,7 +186,7 @@ namespace TourPlanner.ViewModels
                     }
                     else
                     {
-                        SuccessMessage = "Trip was successfully changed";
+                        SuccessMessage = "Tour was successfully changed";
 
                     }
                 }

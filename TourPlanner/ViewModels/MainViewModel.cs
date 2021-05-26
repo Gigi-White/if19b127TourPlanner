@@ -59,20 +59,20 @@ namespace TourPlanner.ViewModels
 
         //--------------------------------------------------------
 
-        private string searchTour;
-        public string SearchTour
+        private string searchElement;
+        public string SearchElement
         {
             get
             {
-                return searchTour;
+                return searchElement;
             }
             set
             {
-                if (searchTour != value)
+                if (searchElement != value)
                 {
-                    searchTour = value;
+                    searchElement = value;
                     SearchTours();
-                    RaisePropertyChangedEvent(nameof(SearchTour));
+                    RaisePropertyChangedEvent(nameof(SearchElement));
                 }
             }
         }
@@ -87,13 +87,21 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (currentTour != value && value != null)
+                if (currentTour != value)
                 {
                     currentTour = value;
-                    FillRouteInfo();
+                    if (currentTour != null)                       
+                    {
+                        FillRouteInfo();
+                        CurrentTourImage = currentTour.Imagefile;
+                    }
+                    else
+                    {
+                        RouteInfo.Clear();
+                        CurrentTourImage = null;
+                    }
                     TourWorker.SetCurrentTour(currentTour);
-                    CleanMessages();
-                    CurrentTourImage = currentTour.Imagefile;
+                    CleanMessages();                   
                     RaisePropertyChangedEvent(nameof(CurrentTour));
                 }
             }
@@ -148,19 +156,7 @@ namespace TourPlanner.ViewModels
 
         }
 
-        private BitmapImage CreateBitmapImage(string imagePath)
-        {
-            if (imagePath == null)
-            {
-                return null;
-            }
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(imagePath);
-            image.EndInit();
-            return image;
-        }
+
 
 
         private string searchOption;
@@ -183,9 +179,9 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        //------------------------------------------------------------------
 
-
-        //--------------------------------------------------------
+        //constructor--------------------------------------------------------
         public MainViewModel()
         {
 
@@ -232,10 +228,10 @@ namespace TourPlanner.ViewModels
 
         private void SearchTours()
         {
-            if (searchTour != null && searchTour != "" && searchOption != null && searchOption != "")
+            if (searchElement != null && searchElement != "" && searchOption != null && searchOption != "")
             {
 
-                FillTourList(TourWorker.SearchTours(searchTour, searchOption));
+                FillTourList(TourWorker.SearchTours(searchElement, searchOption));
             }
             else
             {
@@ -249,7 +245,7 @@ namespace TourPlanner.ViewModels
 
         private ICommand deleteTourCommand;
 
-        public ICommand DeleteTourCommand => deleteTourCommand ??= new RelayCommand(DeleteTour);
+        public ICommand DeleteCommand => deleteTourCommand ??= new RelayCommand(DeleteTour);
 
         private void DeleteTour(object commandParameter)
         {
@@ -277,7 +273,7 @@ namespace TourPlanner.ViewModels
 
         private ICommand copyTourCommand;
 
-        public ICommand CopyTourCommand => copyTourCommand ??= new RelayCommand(CopyTour);
+        public ICommand CopyCommand => copyTourCommand ??= new RelayCommand(CopyTour);
 
         private void CopyTour(object commandParameter)
         {
@@ -286,17 +282,31 @@ namespace TourPlanner.ViewModels
                 if (TourWorker.CopyCurrentTour(currentTour))
                 {
                     CurrentTour = null;
-                    TourMessage = "Tour was successfully deleted";
+                    TourMessage = "Tour was successfully copied";
                 }
                 else
                 {
-                    ErrorMessage = "The deletion could not be completed";
+                    ErrorMessage = "The copy could not be copied";
                 }
             }
             else
             {
                 ErrorMessage = "Please select a Tour first";
             }
+        }
+
+        private BitmapImage CreateBitmapImage(string imagePath)
+        {
+            if (imagePath == null)
+            {
+                return null;
+            }
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(imagePath);
+            image.EndInit();
+            return image;
         }
 
         private void CleanMessages()

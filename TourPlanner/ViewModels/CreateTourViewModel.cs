@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using TourPlanner.BusinessLayer;
@@ -11,6 +13,8 @@ namespace TourPlanner.ViewModels
     class CreateTourViewModel : ViewModelBase
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private static Regex whitelist;
 
         private string successMessage;
         public string SuccessMessage
@@ -57,7 +61,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (tourName != value)
+                if (tourName != value && CheckText(30, whitelist, value, "Tour Name"))
                 {
                     tourName = value;
                     CleanMessages();
@@ -78,7 +82,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (startCity != value)
+                if (startCity != value && CheckText(30, whitelist, value, "Tour Name"))
                 {
                     startCity = value;
                     CleanMessages();
@@ -98,7 +102,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (startCountry != value)
+                if (startCountry != value && CheckText(30, whitelist, value, "Tour Name"))
                 {
                     startCountry = value;
                     CleanMessages();
@@ -117,7 +121,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (endCity != value)
+                if (endCity != value && CheckText(30, whitelist, value, "Tour Name"))
                 {
                     endCity = value;
                     CleanMessages();
@@ -136,7 +140,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (endCountry != value)
+                if (endCountry != value && CheckText(30, whitelist, value, "Tour Name"))
                 {
                     endCountry = value;
                     CleanMessages();
@@ -154,7 +158,7 @@ namespace TourPlanner.ViewModels
             }
             set
             {
-                if (description != value)
+                if (description != value && CheckText(200, whitelist, value, "Tour Name"))
                 {
                     description = value;
                     CleanMessages();
@@ -162,7 +166,11 @@ namespace TourPlanner.ViewModels
                 }
             }
         }
-
+       
+        public  CreateTourViewModel()
+        {
+            whitelist = new Regex(ConfigurationManager.AppSettings["Whitelist"].ToString());
+        }
 
 
         private ICommand createNewTourCommand;
@@ -209,6 +217,63 @@ namespace TourPlanner.ViewModels
             }
             
         }
+
+        private bool CheckText(int lenght, Regex mywhitelist, string text, string field)
+        {
+            if (CheckLength(lenght, text, field) && CheckWhiteList(mywhitelist, text, field))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
+        private bool CheckLength(int length, string text, string field)
+        {
+            if (text == null)
+            {
+                return true;
+            }
+            if (text.Length < length)
+            {
+                return true;
+            }
+            else
+            {
+                ErrorMessage = "Its not allowed that " + field + " has more then " + length + " characters";
+                return false;
+            }
+        }
+
+        private bool CheckWhiteList(Regex myWhiteList, string text, string field)
+        {
+            if (text == null || text == "")
+            {
+                return true;
+            }
+
+            if (myWhiteList.IsMatch(text))
+            {
+                return true;
+            }
+
+            if (myWhiteList == whitelist)
+            {
+                ErrorMessage = "For " + field + " only use letters and numbers";
+                return false;
+            }
+            else
+            {
+                ErrorMessage = "For " + field + " only use numbers";
+                return false;
+            }
+
+        }
+
 
         private void CleanMessages()
         {

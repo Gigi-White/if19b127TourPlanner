@@ -7,6 +7,7 @@ namespace TourPlanner.BusinessLayer
     public class TourItemFactory
     {
         private static ITourItemFactory instance;
+        private static ILogItemFactory logInstance;
 
         public static ITourItemFactory GetMainViewInstance()
         {
@@ -15,6 +16,15 @@ namespace TourPlanner.BusinessLayer
                 instance = new TourItemFactoryImpl(); 
             }
             return instance;
+        }
+
+        public static ILogItemFactory GetLogViewInstance()
+        {
+            if (logInstance == null)
+            {
+                logInstance = new LogItemFactoryImpl();
+            }
+            return logInstance;
         }
     }
 

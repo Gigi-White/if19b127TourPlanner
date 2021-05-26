@@ -15,7 +15,7 @@ namespace TourPlanner.BusinessLayer
         private List<Tour> AllTours { get; set; }
         private Tour currentTour { get; set; }
         private List<RawRouteInfo> CurrentRouteInfo { get; set; }
-        private  IDatabaseTourOrders mydatabaseTourOrders;
+        private IDatabaseTourOrders mydatabaseTourOrders;
         private IDatabaseRouteOrders mydatabaseRouteOrders;
         private IDatabaseLogOrders mydatabaseLogOrders;
         private IHttpConnection myHttpConnection;
@@ -71,7 +71,7 @@ namespace TourPlanner.BusinessLayer
         {
             if (currentTour != null)
             {
-                string myText = myFileHandler.getDescription(currentTour.Descriptionfile);
+                string myText = myFileHandler.GetFileText(currentTour.Descriptionfile);
                 return myText;
             }
             else 
@@ -245,18 +245,37 @@ namespace TourPlanner.BusinessLayer
 
         //Delete Current Tour Code----------------------------------------------------------------------
         public bool DeleteCurrentTour(Tour currentTour)
-        {          
-            OnUpdateTourList();
-            if (mydatabaseTourOrders.DeleteTour(currentTour.Name) && mydatabaseRouteOrders.DeleteRouteData(currentTour.Name) && mydatabaseLogOrders.deleteAllLogsofTour(currentTour.Name) && myFileHandler.DeleteDescription(currentTour.Descriptionfile) && myFileHandler.DeleteImage(currentTour.Imagefile))
-            {
-                AllTours.Remove(currentTour);
-                OnUpdateTourList();
-                return true;
+        {
+            List<Log> myLogList = mydatabaseLogOrders.GetLogsofTour(currentTour.Name);
+
+            if (!mydatabaseTourOrders.DeleteTour(currentTour.Name)) {
+                return false;
             }
-            else
+            if (!myFileHandler.DeleteFile(currentTour.Descriptionfile))
             {
                 return false;
             }
+            if (!myFileHandler.DeleteImage(currentTour.Imagefile))
+            {
+                return false;
+            }
+            if (!myFileHandler.DeleteImage(currentTour.Imagefile))
+            {
+                return false;
+            }
+            foreach(var item in myLogList)
+            {
+                if (!myFileHandler.DeleteFile(item.reportfile))
+                {
+                    return false;
+                }
+            }
+
+            
+            AllTours.Remove(currentTour);
+            OnUpdateTourList();
+            return true;
+            
 
 
              
@@ -275,15 +294,29 @@ namespace TourPlanner.BusinessLayer
                 FormattedTime = currentTour.FormattedTime
 
             };
+
+
                       
             copiedTour.Name = currentTour.Name + "copy";
+
+            //check if tour with copy name already exists 
+            foreach(var item in AllTours)
+            {
+                if(item.Name == copiedTour.Name)
+                {
+                    return false;
+                }
+            }
 
             copiedTour.Imagefile = currentTour.Imagefile.Replace(".png", "copy.png");
             copiedTour.Descriptionfile = currentTour.Descriptionfile.Replace(".txt", "copy.txt");
 
             copiedTour.CreationDate = System.DateTime.Now.ToString(@"dd\/MM\/yyyy h\:mm tt");
 
+
             
+
+
             if (!myFileHandler.CopyFile(currentTour.Imagefile, copiedTour.Imagefile))
             {
 
@@ -305,11 +338,10 @@ namespace TourPlanner.BusinessLayer
                 return false;
             }
 
-            if(!mydatabaseLogOrders.copyLogsofTour(currentTour.Name, copiedTour.Name))
+            if (!HandleCopieLogs(copiedTour.Name))
             {
                 return false;
             }
-            
             
             AllTours.Add(copiedTour);
             OnUpdateTourList();
@@ -317,8 +349,32 @@ namespace TourPlanner.BusinessLayer
             return true;
         }
 
-        
-        
+        //Help Function to copy All Logs of the Tour
+
+        private bool HandleCopieLogs(string copiedTourName)
+        {
+            try
+            {
+
+
+                List<Log> myLogList = mydatabaseLogOrders.GetLogsofTour(currentTour.Name);
+                foreach (var item in myLogList)
+                {
+                    item.tourname = copiedTourName;
+                    string currentReportPath = item.reportfile;
+                    item.reportfile = item.reportfile.Replace(".txt", "copy.txt");
+                    myFileHandler.CopyFile(currentReportPath, item.reportfile);
+                    mydatabaseLogOrders.CreateLog(item);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        //Modify current Tour------------------------------------------------------------------------------------
         public bool ModifyTour(string currentTourName, string changedTourName, string changedTourDescription)
         {
             bool worked = true;
@@ -331,12 +387,16 @@ namespace TourPlanner.BusinessLayer
                 }
 
             }
+            //check if user wants to change the tourname
             if (currentTourName != changedTourName)
             {
+                //if yes, first change the tourname in the database
                 worked = mydatabaseTourOrders.ChangeTour(currentTourName,changedTourName);
+                //then change the toruname for the Logs in the database + the name of the report file
+                worked = HandlechangeTourLogs(currentTourName, changedTourName);
             }
-
-            worked = myFileHandler.ChangeDescription(toModifyTour.Descriptionfile, changedTourDescription);
+            //change the text of the description file
+            worked = myFileHandler.ChangeFile(toModifyTour.Descriptionfile, changedTourDescription);
             if (worked)
             {
                 toModifyTour.Name = changedTourName;
@@ -346,6 +406,28 @@ namespace TourPlanner.BusinessLayer
 
             return worked;
         }
+
+
+        private bool HandlechangeTourLogs(string currentTourName, string changedTourName)
+        {
+            //first get all logs of the tour who s name gets changed
+            List<Log> myLogList = mydatabaseLogOrders.GetLogsofTour(changedTourName);
+            //get the new toruname for the logs and the report file and save both in the database + change the name of the report txt file 
+            foreach(var item in myLogList)
+            {
+                string oldFilename = item.reportfile;
+                item.reportfile = item.reportfile.Replace(currentTourName + item.logname + ".txt", changedTourName + item.logname + ".txt");
+                if (!myFileHandler.CopyFile(oldFilename, item.reportfile)|| !myFileHandler.DeleteFile(oldFilename))
+                {
+                    return false;
+                }
+
+            }
+
+            return true;
+        }
+        //------------------------------------------------------------------------------------------
+
     }
-        
+
 }

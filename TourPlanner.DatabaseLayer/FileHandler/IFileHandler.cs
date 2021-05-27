@@ -22,5 +22,7 @@ namespace TourPlanner.DataAccessLayer
         string SaveReport(string report,string tourname, string logname);
         bool CreateTourReport(Tour currentTour, List<RawRouteInfo> routeList, List<Log> logList);
         bool CreateSummarizeReport(Tour currentTour, List<Log> logList);
+
+        bool ExportTour(JsonTour exportData);
     }
 }

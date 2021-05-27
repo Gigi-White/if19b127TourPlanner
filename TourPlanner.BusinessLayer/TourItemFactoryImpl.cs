@@ -448,13 +448,81 @@ namespace TourPlanner.BusinessLayer
 
             return true;
         }
+        //--------------------------------------------------------------------------------------------
 
 
+        //Export Tour--------------------------------------------------------------------------------
+        public bool ExportTour(Tour currentTour)
+        {
+
+            //get all data from the current tour: Route and Log Data
+            List<RawRouteInfo> routeList = mydatabaseRouteOrders.GetRouteInfo(currentTour.Name);
+            List<Log> logList = mydatabaseLogOrders.GetLogsofTour(currentTour.Name);
+
+            //create a new Tour where you can change the data without changing the current tour data
+            Tour myCurrentTour = new Tour
+            {
+                Name = currentTour.Name,
+                Start = currentTour.Start,
+                End = currentTour.End,
+                CreationDate = currentTour.CreationDate,
+                Distance = currentTour.Distance,
+                FormattedTime = currentTour.FormattedTime,
+                Imagefile = currentTour.Imagefile,
+                Descriptionfile = currentTour.Descriptionfile
+            };
 
 
+            //get the image and save it as 64Byte string with helpfunction "ConvertImageToString"
+            myCurrentTour.Imagefile = ConvertImageToString(myCurrentTour.Imagefile);
+            if (myCurrentTour.Imagefile == "")
+            {
+                return false;
+            }
 
-        //------------------------------------------------------------------------------------------
+            //get the Tour Description 
+            myCurrentTour.Descriptionfile = myFileHandler.GetFileText(myCurrentTour.Descriptionfile);
 
-    }
+            //get the Log Reports
+            foreach (var item in logList)
+            {
+                item.reportfile =myFileHandler.GetFileText(item.reportfile);
+            }
+
+            //save all in a Json Tour object
+            JsonTour exportData = new JsonTour();
+            exportData.tourData = myCurrentTour;
+            exportData.routeData = routeList;
+            exportData.logData = logList;
+
+            //Export the Tour 
+
+            if (!myFileHandler.ExportTour(exportData))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        //heplfunction to convert image to base64string-------------
+        private string ConvertImageToString(string imagefile)
+        {
+            try
+            {
+                byte[] imageArray = System.IO.File.ReadAllBytes(imagefile);
+                string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                return base64ImageRepresentation;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+
+            //------------------------------------------------------------------------------------------
+
+        }
 
 }

@@ -94,7 +94,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button FontSize="15" Margin="5" Grid.Column="0" Name="ExportButton" HorizontalAlignment="Center">Export</Button>
+                        <Button FontSize="15" Margin="5" Grid.Column="0" Name="ExportButton" HorizontalAlignment="Center" Command="{Binding ExportTourCommand}">Export</Button>
                         <Button FontSize="15" Margin="5" Grid.Column="1" Name="ImportButton" HorizontalAlignment="Center">Import</Button>
                         <Button FontSize="15" Margin="5" Grid.Column="2" Name="TourReportButton" HorizontalAlignment="Center" Command="{Binding CreateReportCommand}">Create Report</Button>
                         <Button FontSize="15" Margin="5" Grid.Column="3" Name="TourLogButton" HorizontalAlignment="Center" Click="ShowLogsButton_Click">Show Logs</Button>

@@ -4,6 +4,7 @@ using iText.Kernel.Pdf.Canvas.Draw;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,11 +25,13 @@ namespace TourPlanner.DataAccessLayer
         private string descriptionfolder;
         private string logreportfolder;
         private string pdfFolder;
+        private string jsonFolder;
 
 
         //constructor-----------------------------------------------------------------------------------------
         public FileHandler()
         {
+            //create all necessary folders for the programme 
             folderpath = ConfigurationManager.AppSettings["FolderDirectory"].ToString();
             urlImageDownload = ConfigurationManager.AppSettings["UrlImageDownload"].ToString();
             descriptionfolder = folderpath + "\\descriptionFolder";
@@ -39,6 +42,8 @@ namespace TourPlanner.DataAccessLayer
             System.IO.Directory.CreateDirectory(logreportfolder);
             pdfFolder = folderpath + "\\pdfFolder";
             System.IO.Directory.CreateDirectory(pdfFolder);
+            jsonFolder = folderpath + "\\jsonFolder";
+            System.IO.Directory.CreateDirectory(jsonFolder);
         }
         //------------------------------------------------------------------------------------------------------
 
@@ -48,7 +53,6 @@ namespace TourPlanner.DataAccessLayer
         {
  
             string imagePath = imagefolder + "\\" + tourname + ".png";
-
 
             string fullUrl = urlImageDownload +
                              "session=" +
@@ -338,6 +342,45 @@ namespace TourPlanner.DataAccessLayer
         }
         //----------------------------------------------------------------------------------------------
 
+        //Export Tour Data as Json File-----------------------------------------------------------------
+        public bool ExportTour(JsonTour exportData)
+        {
 
+            try
+            {         
+                //create a Json File out of this JsonTour Object 
+
+                string jsonFile = JsonConvert.SerializeObject(exportData);
+
+                //check if json name already exists in the json folder
+                string jsonFilename = jsonFolder + "\\" + exportData.tourData.Name + ".json";
+                int filenumber = 0;
+                while (File.Exists(jsonFilename))
+                {
+                    filenumber++;
+                    jsonFilename = jsonFolder + "\\" + exportData.tourData.Name + filenumber + ".json"; ;
+                }
+
+                //save the json folder in the file
+                using (var tw = new StreamWriter(jsonFilename, true))
+                {
+                    tw.WriteLine(jsonFile.ToString());
+                    tw.Close();
+                }
+
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------
+
+        //Import Tour Data from Json File---------------------------------------------------------------
+
+        //----------------------------------------------------------------------------------------------
     }
 }

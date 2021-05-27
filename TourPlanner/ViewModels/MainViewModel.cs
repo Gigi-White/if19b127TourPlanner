@@ -319,6 +319,27 @@ namespace TourPlanner.ViewModels
         }
 
 
+        private ICommand exportTourCommand;
+
+        public ICommand ExportTourCommand => exportTourCommand ??= new RelayCommand(ExportTour);
+
+        private void ExportTour(object commandParameter)
+        {
+            if (currentTour == null)
+            {
+                ErrorMessage = "Please select a Tour first";
+                return;
+            }
+            if (TourWorker.ExportTour(currentTour))
+            {
+                TourMessage = "Tour Export was successfull";
+            }
+            else
+            {
+                ErrorMessage = "There was a problem while trying to Export the Tour";
+            }
+        }
+
         //--------------------------------------------------------------------------------
         private BitmapImage CreateBitmapImage(string imagePath)
         {

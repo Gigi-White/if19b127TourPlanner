@@ -5,12 +5,14 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net;
 using TourPlanner.Models;
+
 
 namespace TourPlanner.DataAccessLayer
 {
@@ -51,7 +53,7 @@ namespace TourPlanner.DataAccessLayer
         //methodes for the tour--------------------------------------------------------------------------------
         public string DownloadSaveImage(MainMapSearchData searchData, string tourname)
         {
- 
+
             string imagePath = imagefolder + "\\" + tourname + ".png";
 
             string fullUrl = urlImageDownload +
@@ -70,18 +72,18 @@ namespace TourPlanner.DataAccessLayer
                     webClient.DownloadFile(fullUrl, imagePath);
                     webClient.Dispose();
                 }
-               
+
 
                 return imagePath;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                log.Error("Maintenance: Falied to download the image",ex);
+                log.Error("Maintenance: Falied to download the image", ex);
                 return "null";
 
             }
 
-           
+
 
 
         }
@@ -96,7 +98,7 @@ namespace TourPlanner.DataAccessLayer
 
         public string SaveDescription(string description, string tourname)
         {
-            string descritionPath = descriptionfolder +"\\"+ tourname + ".txt";
+            string descritionPath = descriptionfolder + "\\" + tourname + ".txt";
             StreamWriter newTextfile = File.CreateText(descritionPath);
             newTextfile.WriteLine(description);
             newTextfile.Close();
@@ -110,16 +112,16 @@ namespace TourPlanner.DataAccessLayer
 
         //Logfile metodes--------------------------------------------------------------------------------------------
 
-        public string SaveReport(string report,string tourname, string logname)
+        public string SaveReport(string report, string tourname, string logname)
         {
-            
-            string logReportPath = logreportfolder + "\\"+ tourname + logname + ".txt";
+
+            string logReportPath = logreportfolder + "\\" + tourname + logname + ".txt";
             StreamWriter newTextfile = File.CreateText(logReportPath);
             newTextfile.WriteLine(report);
             newTextfile.Close();
             log.Debug("new logfile of " + logname + " was created");
             return logReportPath;
-            
+
         }
 
 
@@ -161,7 +163,7 @@ namespace TourPlanner.DataAccessLayer
 
 
         //Create Report PDF files----------------------------------------------------------------------- 
-        
+
         //Create Tour Report PDF
         public bool CreateTourReport(Tour currentTour, List<RawRouteInfo> routeList, List<Log> logList)
         {
@@ -169,10 +171,10 @@ namespace TourPlanner.DataAccessLayer
             try
             {
                 //create pdf FilePath with name---------
-                string pdfPath = pdfFolder + "\\" + currentTour.Name +".pdf" ;
+                string pdfPath = pdfFolder + "\\" + currentTour.Name + ".pdf";
                 int filenumber = 0;
                 //check if file with this name already exists
-                while(File.Exists(pdfPath))
+                while (File.Exists(pdfPath))
                 {
                     filenumber++;
                     pdfPath = pdfFolder + "\\" + currentTour.Name + filenumber + ".pdf";
@@ -245,7 +247,7 @@ namespace TourPlanner.DataAccessLayer
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -265,7 +267,7 @@ namespace TourPlanner.DataAccessLayer
                 while (File.Exists(pdfPath))
                 {
                     filenumber++;
-                    pdfPath = pdfFolder + "\\" + currentTour.Name +"Sum"+ filenumber + ".pdf";
+                    pdfPath = pdfFolder + "\\" + currentTour.Name + "Sum" + filenumber + ".pdf";
                 }
 
 
@@ -306,13 +308,13 @@ namespace TourPlanner.DataAccessLayer
                 //create Tour Log Summary;
                 document.Add(new Paragraph("Log Data Summary").SetTextAlignment(TextAlignment.CENTER).SetFontSize(15).SetMarginBottom(10));
                 int numberLogs = logList.Count;
-                float averageRating=0;
-                float averageSpeed=0;
-                float sumDistance=0;
-                float sumTotalTime=0;
-                
-                foreach(var item in logList)
-                {                   
+                float averageRating = 0;
+                float averageSpeed = 0;
+                float sumDistance = 0;
+                float sumTotalTime = 0;
+
+                foreach (var item in logList)
+                {
                     averageRating += item.rating;
                     averageSpeed += float.Parse(item.averageSpeed);
                     sumDistance += float.Parse(item.distance);
@@ -323,7 +325,7 @@ namespace TourPlanner.DataAccessLayer
                     averageRating = averageRating / numberLogs;
                     averageSpeed = averageSpeed / numberLogs;
                 }
-                
+
                 document.Add(new Paragraph($"Number of Tour Logs:\t{numberLogs}"));
                 document.Add(new Paragraph($"Average Rating:\t{averageRating:0.0}"));
                 document.Add(new Paragraph($"Average Speed:\t{averageSpeed:0.0}km/h"));
@@ -347,7 +349,7 @@ namespace TourPlanner.DataAccessLayer
         {
 
             try
-            {         
+            {
                 //create a Json File out of this JsonTour Object 
 
                 string jsonFile = JsonConvert.SerializeObject(exportData);
@@ -379,8 +381,70 @@ namespace TourPlanner.DataAccessLayer
 
         //----------------------------------------------------------------------------------------------
 
-        //Import Tour Data from Json File---------------------------------------------------------------
 
+
+
+
+
+        //Import Tour Data from Json File---------------------------------------------------------------
+        public bool CheckJsonFile(string jsonFilePath)
+        {
+
+
+            if (!File.Exists(jsonFilePath))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+
+
+
+
+        public JObject GetJsonFile(string jsonFilePath)
+        {
+            JObject jsonTour;
+            try
+            {
+                jsonTour = JObject.Parse(File.ReadAllText(jsonFilePath));
+                return jsonTour;
+            }
+            catch (JsonReaderException jex)
+            {
+                //Exception in parsing json
+                Console.WriteLine(jex.Message);
+                return null;
+            }
+        }
         //----------------------------------------------------------------------------------------------
+
+        //save base64 string image------------------------------------------------------------------
+        public string SaveImage(string tourname, string base64Image)
+        {
+
+            //check if file already existsexists 
+            string filepath = imagefolder + tourname + ".png";
+
+            try
+            {
+
+                byte[] data = Convert.FromBase64String(base64Image);
+                using (var imageFile = new FileStream(filepath, FileMode.Create))
+                {
+                    imageFile.Write(data, 0, data.Length);
+                    imageFile.Flush();
+                }
+                return filepath;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TourPlanner.Models;
@@ -24,5 +25,9 @@ namespace TourPlanner.DataAccessLayer
         bool CreateSummarizeReport(Tour currentTour, List<Log> logList);
 
         bool ExportTour(JsonTour exportData);
+
+        bool CheckJsonFile(string jsonFilePath);
+        JObject GetJsonFile(string jsonFilePath);
+        string SaveImage(string tourname, string base64Image);
     }
 }

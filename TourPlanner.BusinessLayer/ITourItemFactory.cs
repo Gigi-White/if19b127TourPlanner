@@ -31,5 +31,6 @@ namespace TourPlanner.BusinessLayer
         bool ModifyTour(string currentTourName, string changedTourName, string currentTourDescription);
         bool CreateReport(Tour currentTour);
         bool ExportTour(Tour currentTour);
+        string ImportTour(string jsonFile);
     }
 }

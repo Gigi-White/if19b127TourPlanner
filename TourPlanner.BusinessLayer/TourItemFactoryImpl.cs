@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Text.RegularExpressions;
@@ -519,10 +522,137 @@ namespace TourPlanner.BusinessLayer
                 return "";
             }
         }
+        //Import Tour from Json File---------------------------------------------------------------
+        public string ImportTour(string jsonFile)
+        {
+            string filepath = ConfigurationManager.AppSettings["FolderDirectory"].ToString();
+            string jsonFilePath = filepath + "\\jsonFolder\\" + jsonFile;
+            //check if file exists and check if it is a json file
+            if (!myFileHandler.CheckJsonFile(jsonFilePath))
+            {
+                return "This file does not exist in the folder";
+            }
+            JObject myJsonTour= myFileHandler.GetJsonFile(jsonFilePath);
+            if(myJsonTour == null)
+            {
+                return "This file is not a json file";
+            }
+            //check if the json file has the right schema
+
+           
+            JSchemaGenerator generator = new JSchemaGenerator();  //create schema 
+
+            JSchema jsonTourSchema = generator.Generate(typeof(JsonTour));
+
+            if (!myJsonTour.IsValid(jsonTourSchema))
+            {
+                return "This has not the right json schema";
+            }
+            //check if tour already exists
+            foreach (var item in AllTours)
+            {
+                if (item.Name == myJsonTour["tourData"]["Name"].ToString())
+                {
+                    return "This file already exists";
+                }
+            }
+
+            //create the imagefile and save it in folder
+            string base64Image = myJsonTour["tourData"]["Imagefile"].ToString();
+
+            string imageFilePath = myFileHandler.SaveImage(myJsonTour["tourData"]["Name"].ToString(), base64Image);
+
+            if (imageFilePath == "")
+            {
+                return "There was a error in the system";
+            }
+
+            //create the text file for the tour
+            string description = myJsonTour["tourData"]["Descriptionfile"].ToString();
+            string descriptionFile = myFileHandler.SaveDescription(myJsonTour["tourData"]["Name"].ToString(), description);
+
+            //fill logs
+            List<Log> logList = new List<Log>();
+            foreach (var log  in myJsonTour["tourData"][0]["logData"])
+            {
+                logList.Add(new Log
+                {
+                    tourname = log["tourname"].ToString(),
+                    logname = log["logname"].ToString(),
+                    date = log["date"].ToString(),
+                    reportfile = log["reportfile"].ToString(),
+                    distance = log["distance"].ToString(),
+                    totalTime = log["totalTime"].ToString(),
+                    rating = int.Parse(log["rating"].ToString()),
+                    travelBy = log["totalTime"].ToString(),
+                    averageSpeed = log["averageSpeed"].ToString(),
+                    recommandRestaurant = log["recommandRestaurant"].ToString(),
+                    recommandHotel = log["recommandHotel"].ToString(),
+                    sightWorthSeeing = log["recommandRestaurant"].ToString()
+                }
+
+                );
+
+            }
+            //create log files
+            foreach (var item in logList)
+            {
+                item.reportfile = myFileHandler.SaveReport(item.reportfile, item.tourname, item.logname);
+            }
+
+            //create tour object and rawrouteinfo objects
+            Tour myNewTour = new Tour();
+
+            myNewTour.Name = myJsonTour["tourData"]["Name"].ToString();
+            myNewTour.Start = myJsonTour["tourData"]["Start"].ToString();
+            myNewTour.End = myJsonTour["tourData"]["End"].ToString();
+            myNewTour.CreationDate = myJsonTour["tourData"]["CreationDate"].ToString();
+            myNewTour.Distance = float.Parse(myJsonTour["tourData"]["CreationDate"].ToString());
+            myNewTour.FormattedTime = myJsonTour["tourData"]["FormattedTime"].ToString();
+            myNewTour.Imagefile = imageFilePath;
+
+            List<RawRouteInfo> routeList = new List<RawRouteInfo>();
+            foreach (var route in myJsonTour["tourData"][0]["routeData"])
+            {
+                routeList.Add(new RawRouteInfo
+                {
+                    tourName = route["tourName"].ToString(),
+                    maneuverNumber = int.Parse(route["maneuverNumber"].ToString()),
+                    narrative = route["narrative"].ToString(),
+                    distance = float.Parse(route["distance"].ToString()),
+                    formattedTime = route["formattedTime"].ToString()
+
+                }
+                );
+                
+            }
+            //save everything in the database
+
+            if (!mydatabaseTourOrders.SaveTours(myNewTour))                      
+            {
+                return "There was a error in the system";
+            }
+            
+            foreach (var item in logList)
+            {
+                if (!mydatabaseLogOrders.CreateLog(item)) 
+                {
+                    return "There was a error in the system";
+                };
+            }
+            if (!mydatabaseRouteOrders.SaveRouteInfo(routeList))
+            {
+                return "There was a error in the system";
+            }
 
 
-            //------------------------------------------------------------------------------------------
 
+            OnUpdateTourList();
+            return "";
         }
+
+        //------------------------------------------------------------------------------------------
+
+    }
 
 }

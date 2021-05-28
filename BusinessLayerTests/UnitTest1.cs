@@ -22,17 +22,16 @@ namespace BusinessLayerTests
             {
                 Distance = 100,
                 FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
+            };  
             string tourname = "mytour";
 
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var databaserouteOrders = UnitTestMocks.GeneratesDatabaseRouteOrdersMock(UnitTestMocks.standardRawRouteInfoList(), tourname);
+            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.StandardTourList(), true);
+            var databaserouteOrders = UnitTestMocks.GeneratesDatabaseRouteOrdersMock(UnitTestMocks.StandardRawRouteInfoList(), tourname);
             var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
+            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file\\image.png", "file\\description.txt", "Ich bin ein File Text", "file\\report.txt",null);
+            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.StandardRawRouteInfoList(), UnitTestMocks.StandardMainMapSearchData(), onlyTimeAndDistance);
 
-            element = new TourItemFactoryImpl(databaseConnection.Object, databaserouteOrders.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
+            element = new TourItemFactoryImpl(databaseConnection.Object, databaserouteOrders.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object);
         }
 
 
@@ -40,23 +39,7 @@ namespace BusinessLayerTests
         [Test]
         public void RegexTestNumbersLetters()
         {
-            
-            /*Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
-            string tourname = "mytour";
 
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var databaserouteOrders = UnitTestMocks.GeneratesDatabaseRouteOrdersMock(UnitTestMocks.standardRawRouteInfoList(), tourname);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, databaserouteOrders.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-            */
             TourSearch goodtest = new TourSearch
             {
                 newTourName="TestTour",
@@ -76,21 +59,6 @@ namespace BusinessLayerTests
         public void RegexTestDotsCommasAndSpaces()
         {
 
-            /*Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
-
-
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-            */
             TourSearch goodtest = new TourSearch
             {
                 newTourName = "Test Tour",
@@ -109,22 +77,7 @@ namespace BusinessLayerTests
         [Test]
         public void RegexTestFalseSigns()
         {
-            /*
-            Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
 
-
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-            */
             TourSearch badTest = new TourSearch
             {
                 newTourName = "!!hello",
@@ -147,22 +100,7 @@ namespace BusinessLayerTests
         [Test]
         public void SearchTourTestFullWord()
         {
-            /*
-            Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
 
-
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-            */
             string foundTourname = "TestTourZwei";
 
             IEnumerable<Tour> foundTour = element.SearchTours("Graz", "Start");
@@ -172,23 +110,7 @@ namespace BusinessLayerTests
         [Test]
         public void SearchTourTestWordPart()
         {
-            /*
-            Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
 
-
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-
-            */
             string foundTournameOne = "TestTour";
             string foundTournameTwo = "TestTourZwei";
             
@@ -210,24 +132,7 @@ namespace BusinessLayerTests
         [Test]
         public void SearchTourTestDistancet()
         {
-            /*
-            Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
 
-
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-
-            */
-            
             string foundTourname = "TestTourZwei";
 
             //string[] list = new string[2];
@@ -246,21 +151,7 @@ namespace BusinessLayerTests
         [Test]
         public void CreateToursTest()
         {
-            /*
-            Tour onlyTimeAndDistance = new Tour
-            {
-                Distance = 100,
-                FormattedTime = "00:20"
-            };
-            string thewhitelist = "[\\w.,]+$";
 
-            var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.standardTourList(), true);
-            var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
-            var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file/image.png", "file/description.txt", true, true);
-            var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.standardRawRouteInfoList(), UnitTestMocks.standardMainMapSearchData(), onlyTimeAndDistance);
-
-            ITourItemFactory element = new TourItemFactoryImpl(databaseConnection.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object, thewhitelist);
-            */
             TourSearch test = new TourSearch
             {
                 newTourName = "mynewTour",

@@ -4,13 +4,15 @@ using Newtonsoft.Json.Schema.Generation;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using TourPlanner.DataAccessLayer;
 using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
+[assembly: InternalsVisibleTo("BusinessLayerTests")]
 namespace TourPlanner.BusinessLayer
 {
-    public class TourItemFactoryImpl : ITourItemFactory
+    internal class TourItemFactoryImpl : ITourItemFactory
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -38,15 +40,17 @@ namespace TourPlanner.BusinessLayer
 
 
         }
-        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders,IDatabaseRouteOrders databaseRouteOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
+        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders,IDatabaseRouteOrders databaseRouteOrders, IDatabaseLogOrders databaseLogOrders,
+            IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler)
         {
             mydatabaseTourOrders = databaseTourOrders;
             mydatabaseRouteOrders = databaseRouteOrders;
-           myHttpConnection = httpConnection;
+            mydatabaseLogOrders = databaseLogOrders;
+            myHttpConnection = httpConnection;
             myFileHandler = filehandler;
             myResponseHandler = responseHandler;
             AllTours = mydatabaseTourOrders.GetTours();
-            whitelist = new Regex(thewhitelist);
+            whitelist = new Regex(ConfigurationManager.AppSettings["Whitelist"].ToString());
 
         }
 

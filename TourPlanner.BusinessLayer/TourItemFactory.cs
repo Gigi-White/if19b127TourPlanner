@@ -2,6 +2,7 @@
 using System.Configuration;
 using TourPlanner.DataAccessLayer;
 
+
 namespace TourPlanner.BusinessLayer
 {
     public class TourItemFactory

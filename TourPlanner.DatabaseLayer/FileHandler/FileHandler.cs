@@ -147,11 +147,6 @@ namespace TourPlanner.DataAccessLayer
             return text;
         }
 
-        public bool ChangeFilename(string filename)
-        {
-            return true;
-        }
-
         public bool CopyFile(string filename, string newfilename)
         {
 

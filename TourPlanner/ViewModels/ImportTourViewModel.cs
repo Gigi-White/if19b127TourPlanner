@@ -79,13 +79,14 @@ namespace TourPlanner.ViewModels
             if (jsonFilePath == null || jsonFilePath == "")
             {
                 ErrorMessage = "Please write a File Name in the field";
+                return;
             }
             
             string message = TourWorker.ImportTour(jsonFilePath);
             if(message != "")
             {
-                ErrorMessage = message;
                 JsonFilePath = "";
+                ErrorMessage = message;              
                 return;
             }
             JsonFilePath = "";

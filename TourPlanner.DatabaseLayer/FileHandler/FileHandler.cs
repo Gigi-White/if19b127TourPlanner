@@ -426,7 +426,7 @@ namespace TourPlanner.DataAccessLayer
         {
 
             //check if file already existsexists 
-            string filepath = imagefolder + tourname + ".png";
+            string filepath = imagefolder +"\\"+ tourname + ".png";
 
             try
             {
@@ -435,7 +435,8 @@ namespace TourPlanner.DataAccessLayer
                 using (var imageFile = new FileStream(filepath, FileMode.Create))
                 {
                     imageFile.Write(data, 0, data.Length);
-                    imageFile.Flush();
+                    imageFile.Close();
+                 
                 }
                 return filepath;
             }

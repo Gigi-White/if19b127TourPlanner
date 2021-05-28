@@ -535,7 +535,7 @@ namespace TourPlanner.BusinessLayer
             JObject myJsonTour= myFileHandler.GetJsonFile(jsonFilePath);
             if(myJsonTour == null)
             {
-                return "This file is not a json file";
+                return "This file is not a JSON file";
             }
             //check if the json file has the right schema
 
@@ -546,7 +546,7 @@ namespace TourPlanner.BusinessLayer
 
             if (!myJsonTour.IsValid(jsonTourSchema))
             {
-                return "This has not the right json schema";
+                return "This has not the right JSON schema";
             }
             //check if tour already exists
             foreach (var item in AllTours)
@@ -569,26 +569,26 @@ namespace TourPlanner.BusinessLayer
 
             //create the text file for the tour
             string description = myJsonTour["tourData"]["Descriptionfile"].ToString();
-            string descriptionFile = myFileHandler.SaveDescription(myJsonTour["tourData"]["Name"].ToString(), description);
+            string descriptionFile = myFileHandler.SaveDescription(description, myJsonTour["tourData"]["Name"].ToString());
 
             //fill logs
             List<Log> logList = new List<Log>();
-            foreach (var log  in myJsonTour["tourData"][0]["logData"])
+            foreach (var mylog  in myJsonTour["logData"])
             {
                 logList.Add(new Log
                 {
-                    tourname = log["tourname"].ToString(),
-                    logname = log["logname"].ToString(),
-                    date = log["date"].ToString(),
-                    reportfile = log["reportfile"].ToString(),
-                    distance = log["distance"].ToString(),
-                    totalTime = log["totalTime"].ToString(),
-                    rating = int.Parse(log["rating"].ToString()),
-                    travelBy = log["totalTime"].ToString(),
-                    averageSpeed = log["averageSpeed"].ToString(),
-                    recommandRestaurant = log["recommandRestaurant"].ToString(),
-                    recommandHotel = log["recommandHotel"].ToString(),
-                    sightWorthSeeing = log["recommandRestaurant"].ToString()
+                    tourname = mylog["tourname"].ToString(),
+                    logname = mylog["logname"].ToString(),
+                    date = mylog["date"].ToString(),
+                    reportfile = mylog["reportfile"].ToString(),
+                    distance = mylog["distance"].ToString(),
+                    totalTime = mylog["totalTime"].ToString(),
+                    rating = int.Parse(mylog["rating"].ToString()),
+                    travelBy = mylog["totalTime"].ToString(),
+                    averageSpeed = mylog["averageSpeed"].ToString(),
+                    recommandRestaurant = mylog["recommandRestaurant"].ToString(),
+                    recommandHotel = mylog["recommandHotel"].ToString(),
+                    sightWorthSeeing = mylog["recommandRestaurant"].ToString()
                 }
 
                 );
@@ -607,12 +607,13 @@ namespace TourPlanner.BusinessLayer
             myNewTour.Start = myJsonTour["tourData"]["Start"].ToString();
             myNewTour.End = myJsonTour["tourData"]["End"].ToString();
             myNewTour.CreationDate = myJsonTour["tourData"]["CreationDate"].ToString();
-            myNewTour.Distance = float.Parse(myJsonTour["tourData"]["CreationDate"].ToString());
+            myNewTour.Distance = float.Parse(myJsonTour["tourData"]["Distance"].ToString());
             myNewTour.FormattedTime = myJsonTour["tourData"]["FormattedTime"].ToString();
             myNewTour.Imagefile = imageFilePath;
+            myNewTour.Descriptionfile = descriptionFile;
 
             List<RawRouteInfo> routeList = new List<RawRouteInfo>();
-            foreach (var route in myJsonTour["tourData"][0]["routeData"])
+            foreach (var route in myJsonTour["routeData"])
             {
                 routeList.Add(new RawRouteInfo
                 {
@@ -646,7 +647,7 @@ namespace TourPlanner.BusinessLayer
             }
 
 
-
+            AllTours.Add(myNewTour);
             OnUpdateTourList();
             return "";
         }

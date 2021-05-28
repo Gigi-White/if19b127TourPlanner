@@ -14,8 +14,8 @@
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="60*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
 
         </Grid.RowDefinitions>
 
@@ -41,7 +41,7 @@
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding TourMessage}" Value="{x:Null}">
+                                <DataTrigger Binding="{Binding SuccessMessage}" Value="{x:Null}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>

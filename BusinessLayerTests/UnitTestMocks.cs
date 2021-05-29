@@ -21,8 +21,8 @@ namespace BusinessLayerTests
                        .Returns(myTours);
             mockDatabaseTourOrders.Setup(mr => mr.SaveTours(It.IsAny<Tour>()))
                        .Returns(saveToursAnswer);
-            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<string>(),It.IsAny<string>()))
-                       .Returns(true);           
+            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<string>(), It.IsAny<string>()))
+                       .Returns(true);
             mockDatabaseTourOrders.Setup(mr => mr.DeleteTour(It.IsAny<string>()))
                        .Returns(true);
 
@@ -46,7 +46,7 @@ namespace BusinessLayerTests
 
         }
 
-      
+
         public static Mock<IDatabaseLogOrders> GeneratesDatabaseLogOrdersMock(List<Log> logList)
         {
             var mockDatabaseLogOrders = new Mock<IDatabaseLogOrders>();
@@ -87,6 +87,8 @@ namespace BusinessLayerTests
                 .Returns(imagepath);
             mockFileHanlder.Setup(mr => mr.SaveDescription(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(descriptionpath);
+            mockFileHanlder.Setup(mr => mr.ChangeFile(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(true);
             mockFileHanlder.Setup(mr => mr.DeleteImage(It.IsAny<string>()))
                 .Returns(true);
             mockFileHanlder.Setup(mr => mr.DeleteFile(It.IsAny<string>()))
@@ -224,7 +226,7 @@ namespace BusinessLayerTests
 
         public static JObject StandardJObect()
         {
-
+            return new JObject();
         }
         public static MainMapSearchData StandardMainMapSearchData()
         {
@@ -234,8 +236,34 @@ namespace BusinessLayerTests
 
                 boundingBox = new List<string>() { "10", "20", "30", "40" }
             };
-    
+
         }
+
+        public static JObject TestMapqestResponse() {
+
+            return new JObject
+            {
+            new JProperty("route",
+            new JObject(
+                new JProperty("legs",
+                    new JArray(
+                        new JProperty("maneuvers",
+                            new JArray(
+                                new JObject(
+                                    new JProperty("index", 0),
+                                    new JProperty("narrative", "Links abbiegen"),
+                                    new JProperty("distance", 1.000),
+                                    new JProperty("formattedTime", "00:10:00")
+                                    ),
+                                new JObject(
+                                    new JProperty("index", 1),
+                                    new JProperty("narrative", "Rechts abbiegen"),
+                                    new JProperty("distance", 10.000),
+                                    new JProperty("formattedTime", "00:20:00"))))))))
+
+            };
+        }
+
     }
-    
 }
+

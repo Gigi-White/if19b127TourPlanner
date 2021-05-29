@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using TourPlanner.BusinessLayer;
 using TourPlanner.Models;
@@ -13,7 +14,7 @@ namespace BusinessLayerTests
 {
     public class Tests
     {
-        ITourItemFactory element;
+        ITourItemFactory testTourWorker;
 
         [SetUp]
         public void Setup()
@@ -23,15 +24,15 @@ namespace BusinessLayerTests
                 Distance = 100,
                 FormattedTime = "00:20"
             };  
-            string tourname = "mytour";
-
+            string tourname = "mytour";       
             var databaseConnection = UnitTestMocks.GeneratesDatabaseTourOrdersMock(UnitTestMocks.StandardTourList(), true);
             var databaserouteOrders = UnitTestMocks.GeneratesDatabaseRouteOrdersMock(UnitTestMocks.StandardRawRouteInfoList(), tourname);
+            var databaselogOrders = UnitTestMocks.GeneratesDatabaseLogOrdersMock(UnitTestMocks.StandardLogList());
             var httpConnection = UnitTestMocks.GeneratesHttpConnectionMock("myJsonResponse");
             var fileHandler = UnitTestMocks.GenerateFileHanlderMock("file\\image.png", "file\\description.txt", "Ich bin ein File Text", "file\\report.txt",null);
             var httpResponseHandler = UnitTestMocks.GetResponseHandlerMock(UnitTestMocks.StandardRawRouteInfoList(), UnitTestMocks.StandardMainMapSearchData(), onlyTimeAndDistance);
 
-            element = new TourItemFactoryImpl(databaseConnection.Object, databaserouteOrders.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object);
+            testTourWorker = new TourItemFactoryImpl(databaseConnection.Object, databaserouteOrders.Object, databaselogOrders.Object, httpConnection.Object, fileHandler.Object, httpResponseHandler.Object);
         }
 
 
@@ -51,7 +52,7 @@ namespace BusinessLayerTests
             };
             bool Expected = true;
 
-            bool result=element.CheckNewTourData(goodtest);
+            bool result=testTourWorker.CheckNewTourData(goodtest);
             Assert.AreEqual(Expected, result);
 
         }
@@ -70,7 +71,7 @@ namespace BusinessLayerTests
             };
             bool Expected = true;
 
-            bool result = element.CheckNewTourData(goodtest);
+            bool result = testTourWorker.CheckNewTourData(goodtest);
             Assert.AreEqual(Expected, result);
 
         }
@@ -80,16 +81,36 @@ namespace BusinessLayerTests
 
             TourSearch badTest = new TourSearch
             {
-                newTourName = "!!hello",
-                fromCity = "hello?",
+                newTourName = "hallo\"",
+                fromCity = "hello",
                 fromCountry = "hello",
-                toCity = "hello+-",
+                toCity = "hello",
                 toCountry = "Austria",
                 tourDescription = "Dies ist ein Test, mal sehen ob das auch geht."
             };
             bool Expected = false;
 
-            bool result = element.CheckNewTourData(badTest);
+            bool result = testTourWorker.CheckNewTourData(badTest);
+            Assert.AreEqual(Expected, result);
+
+        }
+
+        [Test]
+        public void RegexTestSQLInjection()
+        {
+
+            TourSearch badTest = new TourSearch
+            {
+                newTourName = "My new tour;UPDATE USER SET TYPE=\"admin\" WHERE ID=23;",
+                fromCity = "hello",
+                fromCountry = "hello",
+                toCity = "hello",
+                toCountry = "Austria",
+                tourDescription = "Dies ist ein Test, mal sehen ob das auch geht."
+            };
+            bool Expected = false;
+
+            bool result = testTourWorker.CheckNewTourData(badTest);
             Assert.AreEqual(Expected, result);
 
         }
@@ -103,7 +124,7 @@ namespace BusinessLayerTests
 
             string foundTourname = "TestTourZwei";
 
-            IEnumerable<Tour> foundTour = element.SearchTours("Graz", "Start");
+            IEnumerable<Tour> foundTour = testTourWorker.SearchTours("Graz", "Start");
             
             Assert.AreEqual(foundTourname, foundTour.First().Name);
         }
@@ -115,7 +136,7 @@ namespace BusinessLayerTests
             string foundTournameTwo = "TestTourZwei";
             
             string[] list = new string[2];
-            IEnumerable<Tour> foundTour = element.SearchTours("Test", "Name");
+            IEnumerable<Tour> foundTour = testTourWorker.SearchTours("Test", "Name");
            
             int i = 0;
             foreach (Tour item in foundTour)
@@ -136,7 +157,7 @@ namespace BusinessLayerTests
             string foundTourname = "TestTourZwei";
 
             //string[] list = new string[2];
-            IEnumerable<Tour> foundTour = element.SearchTours("150", "Distance");
+            IEnumerable<Tour> foundTour = testTourWorker.SearchTours("150", "Distance");
 
             Assert.AreEqual(foundTourname, foundTour.First().Name);
            
@@ -163,14 +184,75 @@ namespace BusinessLayerTests
             };
 
 
-            element.CreateTours(test);
+            testTourWorker.CreateTours(test);
 
-            IEnumerable <Tour> newTour = element.SearchTours("Paris", "Start");
+            IEnumerable <Tour> newTour = testTourWorker.SearchTours("Paris", "Start");
 
             Assert.AreEqual(test.newTourName, newTour.First().Name);
 
 
         }
 
+        //DeleteTour
+        [Test]
+        public void DeleteToursTest()
+        {
+
+
+
+            IEnumerable<Tour> testList = testTourWorker.GetTours();
+            Assert.AreEqual(2, testList.Count());
+            
+            bool result = testTourWorker.DeleteCurrentTour(testList.First());
+            IEnumerable<Tour> changedList = testTourWorker.GetTours();
+
+            Assert.AreEqual(true, result);
+            Assert.AreEqual(1, changedList.Count());
+
+
+        }
+
+        //CopyTour
+        [Test]
+        public void CopyTourTest() {
+            IEnumerable<Tour> testList = testTourWorker.GetTours();
+            Assert.AreEqual(2, testList.Count());
+
+            bool result = testTourWorker.CopyCurrentTour(testList.First());
+            IEnumerable<Tour> changedList = testTourWorker.GetTours();
+
+            Assert.AreEqual(true, result);
+            Assert.AreEqual(3, changedList.Count());
+            Assert.AreEqual("TestTourcopy", changedList.Last().Name);
+
+        }
+        //ModifyTour
+        [Test]
+        public void ModifyTourTest()
+        {
+
+            bool result = testTourWorker.ModifyTour("TestTour","Modified Tour","Text I gues");
+            IEnumerable<Tour> changedList = testTourWorker.GetTours();
+
+            Assert.AreEqual(true, result);
+            Assert.AreEqual("Modified Tour", changedList.First().Name);
+
+        }
+
+
+        //#######################################################################################
+
+        //HTTP Response Handler
+        [Test]
+        public void checkHTTPResponseHandler()
+        {
+            IHttpResponseHandler myResponseHandler = new HttpResponseHandler();
+            string myJsonString = UnitTestMocks.TestMapqestResponse().ToString();
+            myResponseHandler.SetJObject(myJsonString);
+
+            List <RawRouteInfo> routeList = myResponseHandler.GrabRouteData("testTour");
+
+            Assert.AreEqual(2, routeList.Count());
+        }
     }
 }

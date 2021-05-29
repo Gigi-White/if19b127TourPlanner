@@ -51,6 +51,7 @@ namespace TourPlanner.BusinessLayer
             myResponseHandler = responseHandler;
             AllTours = mydatabaseTourOrders.GetTours();
             whitelist = new Regex(ConfigurationManager.AppSettings["Whitelist"].ToString());
+            currentTour = AllTours[0];
 
         }
 
@@ -227,7 +228,7 @@ namespace TourPlanner.BusinessLayer
 
         public bool CheckNewTourData(TourSearch info)
         {
-            if (!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
+            if (!CheckText(info.newTourName)||!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
             {
                 return false;
             }
@@ -409,6 +410,9 @@ namespace TourPlanner.BusinessLayer
                 toModifyTour.Name = changedTourName;
                 OnUpdateTourList();
             }
+
+
+
             log.Info("Tour \"" + currentTourName + "\" was changed");
 
             return worked;

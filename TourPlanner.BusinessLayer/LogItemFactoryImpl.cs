@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using TourPlanner.DataAccessLayer;
 using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
-
+[assembly: InternalsVisibleTo("BusinessLayerTests")]
 namespace TourPlanner.BusinessLayer
 {
     internal class LogItemFactoryImpl : ILogItemFactory
@@ -25,6 +26,12 @@ namespace TourPlanner.BusinessLayer
         {
             myDatabaseLogOrders = DataConnectionFactory.GetDatabaseLogInstance();
             myFileHandler = DataConnectionFactory.GetFileHandlerInstance();
+        }
+
+        public LogItemFactoryImpl(IDatabaseLogOrders logOrders, IFileHandler fileHandler)
+        {
+            myDatabaseLogOrders = logOrders;
+            myFileHandler = fileHandler;
         }
         //----------------------------------------------------------------------
 

@@ -207,7 +207,7 @@ namespace BusinessLayerTests
                 },
                 new Log
                 {
-                    tourname = "TestTourZwei",
+                    tourname = "TestTourEins",
                     logname = "TestLogZwei",
                     date = "25.01.2005",
                     reportfile = "file/reportzwei.txt",
@@ -242,26 +242,39 @@ namespace BusinessLayerTests
         public static JObject TestMapqestResponse() {
 
             return new JObject
+             {
+             new JProperty("route",
+             new JObject(
+                 new JProperty("distance", 8.9),
+                 new JProperty("legs",
+                     new JArray(
+                         new JObject(
+                             new JProperty("formattedTime", "00:30:00"),
+                             new JProperty("maneuvers",                             
+                                 new JArray(
+                                     new JObject(
+                                         new JProperty("index", 0),
+                                         new JProperty("narrative", "Links abbiegen"),
+                                         new JProperty("distance", 1.000),
+                                         new JProperty("formattedTime", "00:10:00")
+                                         ),
+                                     new JObject(
+                                         new JProperty("index", 1),
+                                         new JProperty("narrative", "Rechts abbiegen"),
+                                         new JProperty("distance", 10.000),
+                                         new JProperty("formattedTime", "00:20:00")))))))))
+
+             };
+            
+            /*return new JObject
             {
             new JProperty("route",
             new JObject(
-                new JProperty("legs",
-                    new JArray(
-                        new JProperty("maneuvers",
-                            new JArray(
-                                new JObject(
-                                    new JProperty("index", 0),
-                                    new JProperty("narrative", "Links abbiegen"),
-                                    new JProperty("distance", 1.000),
-                                    new JProperty("formattedTime", "00:10:00")
-                                    ),
-                                new JObject(
-                                    new JProperty("index", 1),
-                                    new JProperty("narrative", "Rechts abbiegen"),
-                                    new JProperty("distance", 10.000),
-                                    new JProperty("formattedTime", "00:20:00"))))))))
-
-            };
+                new JProperty("index", 0),
+                new JProperty("narrative", "Links abbiegen"),
+                new JProperty("distance", 1.000),
+                new JProperty("formattedTime", "00:10:00")))
+            };*/
         }
 
     }

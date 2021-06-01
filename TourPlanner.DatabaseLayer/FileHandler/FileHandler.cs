@@ -73,7 +73,7 @@ namespace TourPlanner.DataAccessLayer
                     webClient.Dispose();
                 }
 
-
+                log.Debug("Successfully downloaded the image");
                 return imagePath;
             }
             catch (Exception ex)
@@ -204,7 +204,7 @@ namespace TourPlanner.DataAccessLayer
                 document.Add(new Paragraph($"Formatted Time:\t{currentTour.FormattedTime}"));
 
                 string description = GetFileText(currentTour.Descriptionfile);
-                document.Add(new Paragraph($"Formatted Time:\t{description}"));
+                document.Add(new Paragraph($"Description:\t{description}"));
 
                 document.Add(ls);
 
@@ -239,11 +239,12 @@ namespace TourPlanner.DataAccessLayer
                 }
                 document.Add(ls);
                 document.Close();
-
+                log.Debug("Tour Report was successfully created in FileHandler");
                 return true;
             }
             catch (Exception ex)
             {
+                log.Error("There was an Error in the File Handler while trying to create the Tour Report");
                 return false;
             }
         }
@@ -296,7 +297,7 @@ namespace TourPlanner.DataAccessLayer
                 document.Add(new Paragraph($"Formatted Time:\t{currentTour.FormattedTime}"));
 
                 string description = GetFileText(currentTour.Descriptionfile);
-                document.Add(new Paragraph($"Formatted Time:\t{description}"));
+                document.Add(new Paragraph($"Description:\t{description}"));
 
                 document.Add(ls);
 
@@ -329,11 +330,12 @@ namespace TourPlanner.DataAccessLayer
 
                 document.Add(ls);
                 document.Close();
-
+                log.Debug("Tour SummarizeReport was successfully created in FileHandler");
                 return true;
             }
             catch (Exception ex)
             {
+                log.Error("Error in FilHandler while trying to create SummarizeReport");
                 return false;
             }
         }
@@ -364,12 +366,13 @@ namespace TourPlanner.DataAccessLayer
                     tw.WriteLine(jsonFile.ToString());
                     tw.Close();
                 }
-
+                log.Debug("Successfully Exported Tour in Filehandler");
                 return true;
             }
 
             catch
             {
+                log.Error("Error in Filehandler while trying to Export Tour");
                 return false;
             }
         }
@@ -433,10 +436,12 @@ namespace TourPlanner.DataAccessLayer
                     imageFile.Close();
                  
                 }
+                log.Debug("Successfully saved image in file in Filehanlder");
                 return filepath;
             }
             catch
             {
+                log.Error("Error while trying to save image in Filehandler");
                 return "";
             }
         }

@@ -51,6 +51,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
                 if (!DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
                 {
                     check = false;
+                    log.Error("Error while trying to save Route in Database");
                     break;
                 }
  
@@ -75,6 +76,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(cmd);
             if (rdr == null)
             {
+                log.Error("Error while trying to Get Routinfo rom Database");
                 return null;
             }
 
@@ -94,6 +96,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
                 );
             }
             con.Close();
+            log.Debug("Sucessfully got all Route Data of Tour from Database");
             return routeInfoList;
         }
 
@@ -113,11 +116,13 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
                 con.Close();
+                log.Debug("Sucessfully deleted all Route Data of Tour from Database");
                 return true;
             }
             else
             {
                 con.Close();
+                log.Error("Error while trxing to delete Route Data");
                 return false;
             }
         }

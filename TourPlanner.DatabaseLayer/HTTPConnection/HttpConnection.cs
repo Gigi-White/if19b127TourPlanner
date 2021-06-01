@@ -9,6 +9,9 @@ namespace TourPlanner.DataAccessLayer
 {
     internal class HttpConnection : IHttpConnection
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         private string urlResource;
         private string responseFromServer;
 
@@ -41,11 +44,12 @@ namespace TourPlanner.DataAccessLayer
                     responseFromServer = reader.ReadToEnd();
                    
                 }
-
+                log.Debug("Sucessfuly got Json Response form Mapquest");
                 response.Close();
             }
             catch (Exception)
             {
+                log.Error("There was an Error in the Http Connection with Mapqust");
                 responseFromServer = "null";
             }
         }

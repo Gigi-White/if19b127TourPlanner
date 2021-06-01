@@ -95,6 +95,7 @@ namespace TourPlanner.BusinessLayer
         public IEnumerable<RawRouteInfo> GetRouteInfo(string tourname)
         {
             IEnumerable<RawRouteInfo> myRouteInfoList = mydatabaseRouteOrders.GetRouteInfo(tourname);
+            log.Info("Successfully got Tours");
             return myRouteInfoList;
         }
         //Search Tours after certan value and search Option----------------------------------------------------

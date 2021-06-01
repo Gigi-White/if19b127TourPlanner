@@ -10,7 +10,7 @@ namespace TourPlanner.DataAccessLayer
 
     internal class DatabaseTourOrders : IDatabaseTourOrders
     {
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string accessData { get; set; }
         private static string getAllToursSql = "SELECT* FROM tours";
         private static string saveToursSql = "INSERT INTO tours(tourname,tourstart,tourend,tourdistance,creationdate,imagefile,descriptionfile,formattedtime ) VALUES(@name, @start, @end, @distance, @date, @image, @description,@formattedtime)";
@@ -29,7 +29,7 @@ namespace TourPlanner.DataAccessLayer
         //Get all Tours form Database---------------------------------------------------------
         public List<Tour> GetTours()
         {
-           
+            
             var sql = getAllToursSql;
 
             //NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(sql);
@@ -37,13 +37,15 @@ namespace TourPlanner.DataAccessLayer
             con.Open();
             NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
             cmd.Prepare();
-
+            
             NpgsqlDataReader rdr = DataConnectionFactory.GetDatabaseConnectionInstance().getDatabaseData(cmd);
             if (rdr == null)
             {
+                con.Close();
+                log.Error("Error with Database Connection while trying to get all Tours");
                 return null;
             }
-
+            
             List<Tour> MyTours = new List<Tour>();
             while (rdr.Read())
             {
@@ -51,7 +53,7 @@ namespace TourPlanner.DataAccessLayer
                 {
                     Name = rdr.GetString(1),
                     Start = rdr.GetString(2),
-                    End = rdr.GetString(3),                    
+                    End = rdr.GetString(3),
                     Distance = rdr.GetInt32(4),
                     Imagefile = rdr.GetString(5),
                     CreationDate = rdr.GetString(6),
@@ -61,9 +63,12 @@ namespace TourPlanner.DataAccessLayer
                 }
                 );
             }
+                
             con.Close();
+            log.Debug("Successfuly obtained all trous form Database");
             return MyTours;
-
+            
+            
             
 
         }
@@ -91,11 +96,12 @@ namespace TourPlanner.DataAccessLayer
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
                 con.Close();
+                log.Debug("Tour sucessfully saved Tour "+ newTour.Name + " in Database");
                 return true;
             }
             else
             {
-                
+                log.Error("Error with Databaseconnection while trying to save Tour ");
                 con.Close();
                 return false;
             }
@@ -119,13 +125,16 @@ namespace TourPlanner.DataAccessLayer
             
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
+                
                 con.Close();
+                log.Debug("Tour sucessfully changed Tour " +oldTourName+ " in Database");
                 return true;
             }
             else
             {
-
+                
                 con.Close();
+                log.Error("Error with Databaseconnection while trying to change Tour ");
                 return false;
             }
         }
@@ -149,12 +158,14 @@ namespace TourPlanner.DataAccessLayer
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
                 con.Close();
+                log.Debug("Tour sucessfully deleted Tour " + tourname + " in Database");
                 return true;
             }
             else
             {
 
                 con.Close();
+                log.Error("Error while trying to delete Tour");
                 return false;
             }
         }

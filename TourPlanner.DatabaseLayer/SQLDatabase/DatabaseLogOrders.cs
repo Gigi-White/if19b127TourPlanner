@@ -8,7 +8,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
 {
     internal class DatabaseLogOrders : IDatabaseLogOrders
     {
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private static string getLogsOfTourSql = "SELECT* FROM tourlog WHERE tourname = @tourname";
         
@@ -46,12 +46,14 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
                 con.Close();
+                log.Debug("Log "+ newLog.logname + " was successfuly in Database created");
                 return true;
             }
             else
             {
 
                 con.Close();
+                log.Error("Error in Database while trying to save Log " + newLog.logname);
                 return false;
             }
           
@@ -93,6 +95,7 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
                 );
             }
             con.Close();
+            log.Debug("Successfully obtained all logs from Database from Tour" + tourname);
             return myLogs;
 
 
@@ -125,12 +128,14 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
                 con.Close();
+                log.Debug("Successfully updated Log" + logname + " in Database");
                 return true;
             }
             else
             {
 
                 con.Close();
+                log.Error("Error wiht Databaseconnection while trying to update log " + logname);
                 return false;
             }
         }
@@ -159,12 +164,14 @@ namespace TourPlanner.DataAccessLayer.SQLDatabase
             if (DataConnectionFactory.GetDatabaseConnectionInstance().updateDatabaseData(cmd))
             {
                 con.Close();
+                log.Debug("Successfully deleted Log "+ logname + " in Database");
                 return true;
             }
             else
             {
 
                 con.Close();
+                log.Error("Error with Databaseconnection while trying to  deleted Log " + logname);
                 return false;
             }
         }

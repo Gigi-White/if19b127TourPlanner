@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Moq;
+using Newtonsoft.Json.Linq;
 using TourPlanner.BusinessLayer;
 using TourPlanner.DataAccessLayer;
 using TourPlanner.DataAccessLayer.SQLDatabase;
@@ -14,19 +15,14 @@ namespace BusinessLayerTests
         public static Mock<IDatabaseTourOrders> GeneratesDatabaseTourOrdersMock(List<Tour> myTours, bool saveToursAnswer)
         {
             var mockDatabaseTourOrders = new Mock<IDatabaseTourOrders>();
-            List<Tour> allTours = myTours;
-            bool mySaveToursAnswer = saveToursAnswer;
             //create fake FileInfo Array from files array;
 
             mockDatabaseTourOrders.Setup(mr => mr.GetTours())
-                       .Returns(allTours);
-
+                       .Returns(myTours);
             mockDatabaseTourOrders.Setup(mr => mr.SaveTours(It.IsAny<Tour>()))
-                       .Returns(mySaveToursAnswer);
-
-            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<string>(),It.IsAny<string>()))
+                       .Returns(saveToursAnswer);
+            mockDatabaseTourOrders.Setup(mr => mr.ChangeTour(It.IsAny<string>(), It.IsAny<string>()))
                        .Returns(true);
-            
             mockDatabaseTourOrders.Setup(mr => mr.DeleteTour(It.IsAny<string>()))
                        .Returns(true);
 
@@ -36,30 +32,45 @@ namespace BusinessLayerTests
         public static Mock<IDatabaseRouteOrders> GeneratesDatabaseRouteOrdersMock(List<RawRouteInfo> routeinfoList, string Tourname)
         {
             var mockDatabaseRouteOrders = new Mock<IDatabaseRouteOrders>();
-            List<RawRouteInfo> routeInfo = routeinfoList;
 
             mockDatabaseRouteOrders.Setup(mr => mr.SaveRouteInfo(It.IsAny<List<RawRouteInfo>>()))
                        .Returns(true);
-
             mockDatabaseRouteOrders.Setup(mr => mr.GetRouteInfo(It.IsAny<string>()))
                        .Returns(routeinfoList);
-
             mockDatabaseRouteOrders.Setup(mr => mr.DeleteRouteData(It.IsAny<string>()))
+                       .Returns(true);
+            mockDatabaseRouteOrders.Setup(mr => mr.CopyRouteInfo(It.IsAny<string>(), It.IsAny<string>()))
                        .Returns(true);
 
             return mockDatabaseRouteOrders;
 
         }
 
-      
 
+        public static Mock<IDatabaseLogOrders> GeneratesDatabaseLogOrdersMock(List<Log> logList)
+        {
+            var mockDatabaseLogOrders = new Mock<IDatabaseLogOrders>();
+
+            mockDatabaseLogOrders.Setup(mr => mr.CreateLog(It.IsAny<Log>()))
+                .Returns(true);
+            mockDatabaseLogOrders.Setup(mr => mr.GetLogsofTour(It.IsAny<string>()))
+                .Returns(logList);
+            mockDatabaseLogOrders.Setup(mr => mr.UpdateLog(It.IsAny<string>(), It.IsAny<Log>()))
+                .Returns(true);
+            mockDatabaseLogOrders.Setup(mr => mr.DeleteOneLog(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(true);
+            mockDatabaseLogOrders.Setup(mr => mr.DeleteAllLogsofTour(It.IsAny<string>()))
+                .Returns(true);
+            mockDatabaseLogOrders.Setup(mr => mr.CopyLogsofTour(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(true);
+
+            return mockDatabaseLogOrders;
+        }
 
 
         public static Mock<IHttpConnection> GeneratesHttpConnectionMock(string jsonResponse)
         {
             var mockHttpConnection = new Mock<IHttpConnection>();
-
-            string myJsonResponse = jsonResponse;
 
             mockHttpConnection.Setup(mr => mr.GetJsonResponse(It.IsAny<TourSearch>()))
                 .Returns(jsonResponse);
@@ -68,25 +79,38 @@ namespace BusinessLayerTests
         }
 
 
-        public static Mock<IFileHandler> GenerateFileHanlderMock(string imagepath, string descriptionpath, bool deleteImageAnswer, bool deleteDescriptionAnswer)
+        public static Mock<IFileHandler> GenerateFileHanlderMock(string imagepath, string descriptionpath, string getFileText, string reportPath, JObject getJsonFile)
         {
             var mockFileHanlder = new Mock<IFileHandler>();
-            string myimagepath = imagepath;
-            string mydescriptionpath = descriptionpath;
-            bool myDeleteImageAnswer = deleteImageAnswer;
-            bool myDeleteDescriptionAnswer = deleteDescriptionAnswer;
 
             mockFileHanlder.Setup(mr => mr.DownloadSaveImage(It.IsAny<MainMapSearchData>(), It.IsAny<string>()))
-                .Returns(myimagepath);
-
+                .Returns(imagepath);
             mockFileHanlder.Setup(mr => mr.SaveDescription(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(mydescriptionpath);
-
+                .Returns(descriptionpath);
+            mockFileHanlder.Setup(mr => mr.ChangeFile(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(true);
             mockFileHanlder.Setup(mr => mr.DeleteImage(It.IsAny<string>()))
-                .Returns(myDeleteImageAnswer);
-
+                .Returns(true);
             mockFileHanlder.Setup(mr => mr.DeleteFile(It.IsAny<string>()))
-                .Returns(myDeleteDescriptionAnswer);
+                .Returns(true);
+            mockFileHanlder.Setup(mr => mr.CopyFile(It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(true);
+            mockFileHanlder.Setup(mr => mr.GetFileText(It.IsAny<string>()))
+                .Returns(getFileText);
+            mockFileHanlder.Setup(mr => mr.SaveReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(reportPath);
+            mockFileHanlder.Setup(mr => mr.CreateTourReport(It.IsAny<Tour>(), It.IsAny<List<RawRouteInfo>>(), It.IsAny<List<Log>>()))
+                .Returns(true);
+            mockFileHanlder.Setup(mr => mr.CreateSummarizeReport(It.IsAny<Tour>(), It.IsAny<List<Log>>()))
+                .Returns(true);
+            mockFileHanlder.Setup(mr => mr.ExportTour(It.IsAny<JsonTour>()))
+                .Returns(true);
+            mockFileHanlder.Setup(mr => mr.CheckJsonFile(It.IsAny<string>()))
+                .Returns(true);
+            mockFileHanlder.Setup(mr => mr.GetJsonFile(It.IsAny<string>()))
+                .Returns(getJsonFile);
+            mockFileHanlder.Setup(mr => mr.SaveImage(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(imagepath);
 
             return mockFileHanlder;
         }
@@ -100,23 +124,17 @@ namespace BusinessLayerTests
 
             mockHttpResponseHandler.Setup(mr => mr.SetJObject(It.IsAny<string>()))
                 .Verifiable();
-
             mockHttpResponseHandler.Setup(mr => mr.GrabRouteData(It.IsAny<string>()))
                 .Returns(myRouteInfoList);
-
             mockHttpResponseHandler.Setup(mr => mr.GrabMainMapData())
                 .Returns(myMapDataItem);
             mockHttpResponseHandler.Setup(mr => mr.GrabMainTimeAndDistance())
                 .Returns(myNewtour);
 
-
-
             return mockHttpResponseHandler;
-
-
         }
 
-        public static List<Tour> standardTourList()
+        public static List<Tour> StandardTourList()
         {
 
             return new List<Tour>
@@ -146,7 +164,7 @@ namespace BusinessLayerTests
             };
 
         }
-        public static List<RawRouteInfo> standardRawRouteInfoList()
+        public static List<RawRouteInfo> StandardRawRouteInfoList()
         {
             return new List<RawRouteInfo>
             {
@@ -169,7 +187,48 @@ namespace BusinessLayerTests
 
             };
         }
-        public static MainMapSearchData standardMainMapSearchData()
+        public static List<Log> StandardLogList()
+        {
+            return new List<Log>{
+                new Log
+                {
+                    tourname = "TestTourEins",
+                    logname = "TestLogEins",
+                    date = "25.12.2005",
+                    reportfile = "file/report.txt",
+                    distance = "20",
+                    totalTime = "1,4",
+                    rating = 5,
+                    travelBy = "car",
+                    averageSpeed = "70",
+                    recommandRestaurant = "TestRestaurantEins",
+                    recommandHotel = "TestHotelEins",
+                    sightWorthSeeing = "TestLandschaftEins"
+                },
+                new Log
+                {
+                    tourname = "TestTourEins",
+                    logname = "TestLogZwei",
+                    date = "25.01.2005",
+                    reportfile = "file/reportzwei.txt",
+                    distance = "30",
+                    totalTime = "5,4",
+                    rating = 3,
+                    travelBy = "on foot",
+                    averageSpeed = "50",
+                    recommandRestaurant = "TestRestaurantZwei",
+                    recommandHotel = "TestHotelZwei",
+                    sightWorthSeeing = "TestLandschaftZwei"
+                }
+
+            };
+        }
+
+        public static JObject StandardJObect()
+        {
+            return new JObject();
+        }
+        public static MainMapSearchData StandardMainMapSearchData()
         {
             return new MainMapSearchData
             {
@@ -177,8 +236,47 @@ namespace BusinessLayerTests
 
                 boundingBox = new List<string>() { "10", "20", "30", "40" }
             };
-    
+
         }
+
+        public static JObject TestMapqestResponse() {
+
+            return new JObject
+             {
+             new JProperty("route",
+             new JObject(
+                 new JProperty("distance", 8.9),
+                 new JProperty("legs",
+                     new JArray(
+                         new JObject(
+                             new JProperty("formattedTime", "00:30:00"),
+                             new JProperty("maneuvers",                             
+                                 new JArray(
+                                     new JObject(
+                                         new JProperty("index", 0),
+                                         new JProperty("narrative", "Links abbiegen"),
+                                         new JProperty("distance", 1.000),
+                                         new JProperty("formattedTime", "00:10:00")
+                                         ),
+                                     new JObject(
+                                         new JProperty("index", 1),
+                                         new JProperty("narrative", "Rechts abbiegen"),
+                                         new JProperty("distance", 10.000),
+                                         new JProperty("formattedTime", "00:20:00")))))))))
+
+             };
+            
+            /*return new JObject
+            {
+            new JProperty("route",
+            new JObject(
+                new JProperty("index", 0),
+                new JProperty("narrative", "Links abbiegen"),
+                new JProperty("distance", 1.000),
+                new JProperty("formattedTime", "00:10:00")))
+            };*/
+        }
+
     }
-    
 }
+

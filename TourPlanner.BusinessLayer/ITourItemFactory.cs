@@ -29,5 +29,8 @@ namespace TourPlanner.BusinessLayer
         bool CheckText(string text);
         IEnumerable<RawRouteInfo> GetRouteInfo(string tourname);
         bool ModifyTour(string currentTourName, string changedTourName, string currentTourDescription);
+        bool CreateReport(Tour currentTour);
+        bool ExportTour(Tour currentTour);
+        string ImportTour(string jsonFile);
     }
 }

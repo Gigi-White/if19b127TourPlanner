@@ -295,6 +295,52 @@ namespace TourPlanner.ViewModels
             }
         }
 
+
+        private ICommand createReportCommand;
+
+        public ICommand CreateReportCommand => createReportCommand ??= new RelayCommand(CreateReport);
+
+
+        private void CreateReport (object commandParameter)
+        {
+            if (currentTour == null)
+            {
+                ErrorMessage = "Please select a Tour first";
+                return;
+            }
+            if (TourWorker.CreateReport(currentTour))
+            {
+                TourMessage = "Tour Report was successfully created";
+            }
+            else
+            {
+                ErrorMessage = "There was a problem while trying to create the Tour Report";
+            }
+        }
+
+
+        private ICommand exportTourCommand;
+
+        public ICommand ExportTourCommand => exportTourCommand ??= new RelayCommand(ExportTour);
+
+        private void ExportTour(object commandParameter)
+        {
+            if (currentTour == null)
+            {
+                ErrorMessage = "Please select a Tour first";
+                return;
+            }
+            if (TourWorker.ExportTour(currentTour))
+            {
+                TourMessage = "Tour Export was successfull";
+            }
+            else
+            {
+                ErrorMessage = "There was a problem while trying to Export the Tour";
+            }
+        }
+
+        //--------------------------------------------------------------------------------
         private BitmapImage CreateBitmapImage(string imagePath)
         {
             if (imagePath == null)

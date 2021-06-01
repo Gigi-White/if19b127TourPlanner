@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TourPlanner.Models;
@@ -10,8 +11,6 @@ namespace TourPlanner.DataAccessLayer
 
         string DownloadSaveImage(MainMapSearchData searchData, string tourname);
         string SaveDescription(string tourname, string description);
-
-        bool ChangeFilename(string filename);
         bool ChangeFile(string txtfilepath, string newDescription);
         bool DeleteImage(string imagefilepath);
         bool DeleteFile(string txtfilepath);
@@ -20,5 +19,13 @@ namespace TourPlanner.DataAccessLayer
 
         string GetFileText(string txtfilepath);
         string SaveReport(string report,string tourname, string logname);
+        bool CreateTourReport(Tour currentTour, List<RawRouteInfo> routeList, List<Log> logList);
+        bool CreateSummarizeReport(Tour currentTour, List<Log> logList);
+
+        bool ExportTour(JsonTour exportData);
+
+        bool CheckJsonFile(string jsonFilePath);
+        JObject GetJsonFile(string jsonFilePath);
+        string SaveImage(string tourname, string base64Image);
     }
 }

@@ -1,13 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using TourPlanner.DataAccessLayer;
 using TourPlanner.DataAccessLayer.SQLDatabase;
 using TourPlanner.Models;
+[assembly: InternalsVisibleTo("BusinessLayerTests")]
 namespace TourPlanner.BusinessLayer
 {
-    public class TourItemFactoryImpl : ITourItemFactory
+    internal class TourItemFactoryImpl : ITourItemFactory
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -35,15 +40,18 @@ namespace TourPlanner.BusinessLayer
 
 
         }
-        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders,IDatabaseRouteOrders databaseRouteOrders, IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler, string thewhitelist)
+        public TourItemFactoryImpl(IDatabaseTourOrders databaseTourOrders,IDatabaseRouteOrders databaseRouteOrders, IDatabaseLogOrders databaseLogOrders,
+            IHttpConnection httpConnection, IFileHandler filehandler, IHttpResponseHandler responseHandler)
         {
             mydatabaseTourOrders = databaseTourOrders;
             mydatabaseRouteOrders = databaseRouteOrders;
-           myHttpConnection = httpConnection;
+            mydatabaseLogOrders = databaseLogOrders;
+            myHttpConnection = httpConnection;
             myFileHandler = filehandler;
             myResponseHandler = responseHandler;
             AllTours = mydatabaseTourOrders.GetTours();
-            whitelist = new Regex(thewhitelist);
+            whitelist = new Regex(ConfigurationManager.AppSettings["Whitelist"].ToString());
+            currentTour = AllTours[0];
 
         }
 
@@ -220,7 +228,7 @@ namespace TourPlanner.BusinessLayer
 
         public bool CheckNewTourData(TourSearch info)
         {
-            if (!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
+            if (!CheckText(info.newTourName)||!CheckText(info.fromCity) || !CheckText(info.fromCountry) || !CheckText(info.toCity) || !CheckText(info.toCountry)|| !CheckText(info.tourDescription))
             {
                 return false;
             }
@@ -402,6 +410,9 @@ namespace TourPlanner.BusinessLayer
                 toModifyTour.Name = changedTourName;
                 OnUpdateTourList();
             }
+
+
+
             log.Info("Tour \"" + currentTourName + "\" was changed");
 
             return worked;
@@ -426,6 +437,229 @@ namespace TourPlanner.BusinessLayer
 
             return true;
         }
+
+
+        //------------------------------------------------------------------------------------------
+
+        //Create Tour Report------------------------------------------------------------------------
+
+        public bool CreateReport(Tour currentTour)
+        {
+            List<RawRouteInfo> routeList = mydatabaseRouteOrders.GetRouteInfo(currentTour.Name);
+            List<Log> logList = mydatabaseLogOrders.GetLogsofTour(currentTour.Name);
+
+            if(!myFileHandler.CreateTourReport(currentTour, routeList, logList))
+            {
+                return false;
+            }
+            if(!myFileHandler.CreateSummarizeReport(currentTour, logList))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        //--------------------------------------------------------------------------------------------
+
+
+        //Export Tour--------------------------------------------------------------------------------
+        public bool ExportTour(Tour currentTour)
+        {
+
+            //get all data from the current tour: Route and Log Data
+            List<RawRouteInfo> routeList = mydatabaseRouteOrders.GetRouteInfo(currentTour.Name);
+            List<Log> logList = mydatabaseLogOrders.GetLogsofTour(currentTour.Name);
+
+            //create a new Tour where you can change the data without changing the current tour data
+            Tour myCurrentTour = new Tour
+            {
+                Name = currentTour.Name,
+                Start = currentTour.Start,
+                End = currentTour.End,
+                CreationDate = currentTour.CreationDate,
+                Distance = currentTour.Distance,
+                FormattedTime = currentTour.FormattedTime,
+                Imagefile = currentTour.Imagefile,
+                Descriptionfile = currentTour.Descriptionfile
+            };
+
+
+            //get the image and save it as 64Byte string with helpfunction "ConvertImageToString"
+            myCurrentTour.Imagefile = ConvertImageToString(myCurrentTour.Imagefile);
+            if (myCurrentTour.Imagefile == "")
+            {
+                return false;
+            }
+
+            //get the Tour Description 
+            myCurrentTour.Descriptionfile = myFileHandler.GetFileText(myCurrentTour.Descriptionfile);
+
+            //get the Log Reports
+            foreach (var item in logList)
+            {
+                item.reportfile =myFileHandler.GetFileText(item.reportfile);
+            }
+
+            //save all in a Json Tour object
+            JsonTour exportData = new JsonTour();
+            exportData.tourData = myCurrentTour;
+            exportData.routeData = routeList;
+            exportData.logData = logList;
+
+            //Export the Tour 
+
+            if (!myFileHandler.ExportTour(exportData))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        //heplfunction to convert image to base64string-------------
+        private string ConvertImageToString(string imagefile)
+        {
+            try
+            {
+                byte[] imageArray = System.IO.File.ReadAllBytes(imagefile);
+                string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                return base64ImageRepresentation;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+        //Import Tour from Json File---------------------------------------------------------------
+        public string ImportTour(string jsonFile)
+        {
+            string filepath = ConfigurationManager.AppSettings["FolderDirectory"].ToString();
+            string jsonFilePath = filepath + "\\jsonFolder\\" + jsonFile;
+            //check if file exists and check if it is a json file
+            if (!myFileHandler.CheckJsonFile(jsonFilePath))
+            {
+                return "This file does not exist in the folder";
+            }
+            JObject myJsonTour= myFileHandler.GetJsonFile(jsonFilePath);
+            if(myJsonTour == null)
+            {
+                return "This file is not a JSON file";
+            }
+            //check if the json file has the right schema
+
+           
+            JSchemaGenerator generator = new JSchemaGenerator();  //create schema 
+
+            JSchema jsonTourSchema = generator.Generate(typeof(JsonTour));
+
+            if (!myJsonTour.IsValid(jsonTourSchema))
+            {
+                return "This has not the right JSON schema";
+            }
+            //check if tour already exists
+            foreach (var item in AllTours)
+            {
+                if (item.Name == myJsonTour["tourData"]["Name"].ToString())
+                {
+                    return "This file already exists";
+                }
+            }
+
+            //create the imagefile and save it in folder
+            string base64Image = myJsonTour["tourData"]["Imagefile"].ToString();
+
+            string imageFilePath = myFileHandler.SaveImage(myJsonTour["tourData"]["Name"].ToString(), base64Image);
+
+            if (imageFilePath == "")
+            {
+                return "There was a error in the system";
+            }
+
+            //create the text file for the tour
+            string description = myJsonTour["tourData"]["Descriptionfile"].ToString();
+            string descriptionFile = myFileHandler.SaveDescription(description, myJsonTour["tourData"]["Name"].ToString());
+
+            //fill logs
+            List<Log> logList = new List<Log>();
+            foreach (var mylog  in myJsonTour["logData"])
+            {
+                logList.Add(new Log
+                {
+                    tourname = mylog["tourname"].ToString(),
+                    logname = mylog["logname"].ToString(),
+                    date = mylog["date"].ToString(),
+                    reportfile = mylog["reportfile"].ToString(),
+                    distance = mylog["distance"].ToString(),
+                    totalTime = mylog["totalTime"].ToString(),
+                    rating = int.Parse(mylog["rating"].ToString()),
+                    travelBy = mylog["totalTime"].ToString(),
+                    averageSpeed = mylog["averageSpeed"].ToString(),
+                    recommandRestaurant = mylog["recommandRestaurant"].ToString(),
+                    recommandHotel = mylog["recommandHotel"].ToString(),
+                    sightWorthSeeing = mylog["recommandRestaurant"].ToString()
+                }
+
+                );
+
+            }
+            //create log files
+            foreach (var item in logList)
+            {
+                item.reportfile = myFileHandler.SaveReport(item.reportfile, item.tourname, item.logname);
+            }
+
+            //create tour object and rawrouteinfo objects
+            Tour myNewTour = new Tour();
+
+            myNewTour.Name = myJsonTour["tourData"]["Name"].ToString();
+            myNewTour.Start = myJsonTour["tourData"]["Start"].ToString();
+            myNewTour.End = myJsonTour["tourData"]["End"].ToString();
+            myNewTour.CreationDate = myJsonTour["tourData"]["CreationDate"].ToString();
+            myNewTour.Distance = float.Parse(myJsonTour["tourData"]["Distance"].ToString());
+            myNewTour.FormattedTime = myJsonTour["tourData"]["FormattedTime"].ToString();
+            myNewTour.Imagefile = imageFilePath;
+            myNewTour.Descriptionfile = descriptionFile;
+
+            List<RawRouteInfo> routeList = new List<RawRouteInfo>();
+            foreach (var route in myJsonTour["routeData"])
+            {
+                routeList.Add(new RawRouteInfo
+                {
+                    tourName = route["tourName"].ToString(),
+                    maneuverNumber = int.Parse(route["maneuverNumber"].ToString()),
+                    narrative = route["narrative"].ToString(),
+                    distance = float.Parse(route["distance"].ToString()),
+                    formattedTime = route["formattedTime"].ToString()
+
+                }
+                );
+                
+            }
+            //save everything in the database
+
+            if (!mydatabaseTourOrders.SaveTours(myNewTour))                      
+            {
+                return "There was a error in the system";
+            }
+            
+            foreach (var item in logList)
+            {
+                if (!mydatabaseLogOrders.CreateLog(item)) 
+                {
+                    return "There was a error in the system";
+                };
+            }
+            if (!mydatabaseRouteOrders.SaveRouteInfo(routeList))
+            {
+                return "There was a error in the system";
+            }
+
+
+            AllTours.Add(myNewTour);
+            OnUpdateTourList();
+            return "";
+        }
+
         //------------------------------------------------------------------------------------------
 
     }
